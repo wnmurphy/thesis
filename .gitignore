@@ -9,3 +9,6 @@ client/dist
 client/lib
 
 .env
+
+.floo
+.flooignore
