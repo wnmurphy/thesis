@@ -32,3 +32,6 @@ bower_components/
 
 client/dist
 client/lib
+
+.floo
+.flooignore
