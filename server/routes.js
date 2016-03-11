@@ -94,7 +94,7 @@ module.exports = function(app, express) {
   });
 
 
-
+//commit purpose
 //spot
   //get
   app.get('/api/spot/:id', function(req, res) {
