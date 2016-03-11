@@ -4,3 +4,8 @@ bower_components/
 
 build/
 dist/
+
+client/dist
+client/lib
+
+.env

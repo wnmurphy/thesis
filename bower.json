@@ -1,0 +1,23 @@
+{
+  "name": "thesis",
+  "description": "",
+  "main": "index.html",
+  "authors": [
+    "Michelle <mtlassig@gmail.com>"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/MThorsell/thesis",
+  "moduleType": [],
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "client/lib",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "react": "^0.14.7",
+    "babel-browser": "*"
+  }
+}
