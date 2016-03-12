@@ -13,7 +13,7 @@ module.exports = function(app, express) {
   //post making haps
   app.post('/api/create', function(req, res) {
     var spot = req.body;
-    console.log('spot', spot);
+
     helpers.createSpot(spot, function(spot_id) {
       res.json(spot_id);
     }, function(err) {
@@ -24,8 +24,7 @@ module.exports = function(app, express) {
 //search
   //post specific hap
   app.post('/api/search', function(req, res) {
-    var search = req.body.params;
-
+    var search = req.body.search;
     helpers.search(search, function(results) {
       res.json(results);
     }, function(err) {
@@ -69,12 +68,12 @@ module.exports = function(app, express) {
   app.post('/api/login', function(req, res) {
     var user_info = {
       username: req.body.username, 
-      password: req.body.password, 
-      email: req.body.email
+      password: req.body.password
     };
 
     helpers.signin(user_info, function(result) {
-      res.json(result);
+      res.json(result.Items[0].username);
+      //res.direct('/#/mainpage', result)
     }, function(err) {
       res.send(404);
     });
@@ -83,8 +82,7 @@ module.exports = function(app, express) {
 //profile
   app.get('/api/profile/:id', function(req, res) {
     var id = req.params.id;
-    
-    helpers.getProfile(username, function(result) {
+    helpers.getProfile(id, function(result) {
       res.json(result);
     }, function(err) {
       res.send(404);
@@ -97,8 +95,8 @@ module.exports = function(app, express) {
 //spot
   //get
   app.get('/api/spot/:id', function(req, res) {
-    var id = req.params.id;
-    console.log(id);
+    var id = Number(req.params.id);
+
     helpers.getSpot(id, function(result) {
       res.json(result);
     }, function(err) {
