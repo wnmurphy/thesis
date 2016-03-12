@@ -1,7 +1,12 @@
 $primary-color: #9d6697;
 $color-dark: darken($primary-color, 10);
-
 $nav-height: 45px;
+
+form {
+  input {
+    display: block;
+  }
+}
 
 #app-container {
   position: fixed;
