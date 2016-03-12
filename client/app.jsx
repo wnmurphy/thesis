@@ -1,12 +1,19 @@
 /** @jsx React.DOM */
+var Router = window.ReactRouter.Router;
+var Route = window.ReactRouter.Route;
+var Link = window.ReactRouter.Link;
 
-var AppView = React.createClass({
-  render: function() {
-    console.log("Rendering");
-    return (
-      <div>Hello New World</div>
-    );
-  }
-});
+var routes = (
+  <Router>
+    <Route path="/" component={MapView} />
+    <Route path="/spot/:spotId" component={SpotView} /> 
+    <Route path="/create" component={CreateView} />
+    <Route path="/search" component={SearchView} />
+    <Route path="/feed" component={FeedView} />
+    <Route path="/signup" component={SignupView} />
+    <Route path="/login" component={LoginView} />
+    <Route path="/profile/:profileId" component={ProfileView} />
+  </Router>
+);
 
-ReactDOM.render(<AppView/>, document.getElementById('app-container'));
+ReactDOM.render(routes, document.getElementById('app-container'));
