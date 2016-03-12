@@ -1,8 +1,29 @@
+$primary-color: #9d6697;
+$color-dark: darken($primary-color, 10);
+
+$nav-height: 45px;
+
 #nav-container {
   position: fixed;
-  background-color: #9e60d4;
-  height: 50px;
-  top: calc(100vh - 50px);
+  background-color: $primary-color;
+  height: $nav-height;
+  top: calc(100vh - #{$nav-height});
   left: 0;
   width: 100vw;
+
+  a {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    width: calc(100vw / 4);
+    height: $nav-height;
+
+    &:hover {
+      background-color: $color-dark;
+    }
+
+    .selected {
+
+    }
+  }
 }
