@@ -102,8 +102,11 @@ module.exports = {
     };
 
     dbSchema.scan(params, function(err, data) {
-      
-      if(data.Count === 0) {
+      if(err) {
+        console.error('Error signing up user', err);
+        fail(err);
+      }
+      else if(data.Count === 0) {
         console.log('err', err);
         var params = {
           TableName : "Users",
@@ -115,7 +118,6 @@ module.exports = {
             console.error("Unable to query. Error:", JSON.stringify(err, null, 2));
           } 
           else {
-            console.log('incrementing');
             info.userId = data.Item.lastId + 1;
 
             params = {
@@ -125,7 +127,7 @@ module.exports = {
                 lastId: info.userId
               }
             };
-            console.log('params', params);
+            
             dbSchema.put(params, function(err, data) {
               if(err) {
                 console.error('Error updating data item', err);
