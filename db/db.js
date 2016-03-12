@@ -8,14 +8,17 @@ aws.config.update({
 });
 
 var db = new aws.DynamoDB();
+var dbSchema = new aws.DynamoDB.DocumentClient();
 
 var userTableParams = {
   TableName: "Users",
   KeySchema: [
-    {AttributeName: "userId", KeyType: "HASH"} 
+    {AttributeName: "userId", KeyType: "HASH"},
+    {AttributeName: "username", KeyType: "RANGE"} 
   ],
   AttributeDefinitions: [
-    {AttributeName: "userId", AttributeType: "N"}
+    {AttributeName: "userId", AttributeType: "N"},
+    {AttributeName: "username", AttributeType: "S"} 
   ],
   ProvisionedThroughput: {
     ReadCapacityUnits: 2, 
@@ -53,11 +56,50 @@ db.createTable(spotTableParams, function (err, data) {
   }
 });
 
+  var params = {
+    TableName: "Users",
+    Item: {
+      userId: 0,
+      lastId: 0
+    },
+    ConditionExpression: 'attribute_not_exists(userId)'
+  };
+
+  dbSchema.put(params, function(err, data) {
+    if (err) {
+      console.error('on item put', err);
+    }  
+    else {
+      console.log('data', data);
+    } 
+  });
+
+
+  params = {
+    TableName: "Spots",
+    Item: {
+      spotId: 0,
+      lastId: 0
+    },
+    ConditionExpression: 'attribute_not_exists(spotId)'
+  };
+
+  dbSchema.put(params, function(err, data) {
+    if (err) {
+      console.error('on item put', err);
+    }  
+    else {
+      console.log('data', data);
+    } 
+  });
+
+
 db.listTables(function(err, data) {
   console.log(data);
 });
 
 module.exports.db = db;
+
 
 
 
