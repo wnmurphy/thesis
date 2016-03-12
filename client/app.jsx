@@ -7,16 +7,20 @@ var createHashHistory = window.History.createHashHistory;
 var browserHistory = useRouterHistory(createHashHistory)({queryKey: false});
 
 var routes = (
+  <div>
   <Router history={browserHistory}>
     <Route path="/" component={MapView} />
-    <Route path="/spot/:spotId" component={SpotView} /> 
+    <Route path="/spot/:spotId" component={SpotView} />
     <Route path="/create" component={CreateView} />
     <Route path="/search" component={SearchView} />
     <Route path="/feed" component={FeedView} />
     <Route path="/signup" component={SignupView} />
     <Route path="/login" component={LoginView} />
+    <Route path="/profile" component={ProfileView} />
     <Route path="/profile/:profileId" component={ProfileView} />
   </Router>
+  </div>
 );
 
 ReactDOM.render(routes, document.getElementById('app-container'));
+ReactDOM.render(<NavBar />, document.getElementById('nav-container'));
