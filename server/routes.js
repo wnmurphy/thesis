@@ -12,12 +12,12 @@ module.exports = function(app, express) {
 //create
   //post making haps
   app.post('/api/create', function(req, res) {
-    var spot = req.body.spot;
-
+    var spot = req.body;
+    console.log('spot', spot);
     helpers.createSpot(spot, function(spot_id) {
       res.json(spot_id);
     }, function(err) {
-      res.send(404);
+      res.send(err);
     });
   });
 
