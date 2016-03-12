@@ -56,7 +56,7 @@ module.exports = {
       };
       dbSchema.put(params, function(err, data) {
         if (err) {
-          console.error('on item put', err);
+          console.error('error on item put', err);
           fail(error);
         }  
         else {
@@ -70,12 +70,101 @@ module.exports = {
   },
   search: function(search, success, fail) {
     success(2);
+
   },
   getSpots: function(location, success, fail) {
-    success(3);
+    //location
+    var params = {
+      TableName : "Spots"
+      //FilterExpression: 'asdfsadf' //this will eventually be used to filter lat and long ranges
+    };
+
+    dbSchema.query(params, function(err, data) {
+      if (err) {
+        console.error("Unable to query get spots. Error:", JSON.stringify(err, null, 2));
+        fail(err);
+      } else {
+        success(data);
+      }
+    });
   },
   signup: function(info, success, fail) {
-    success(4);
+    console.log('info', info);
+    var params = {
+    TableName: "Users",
+      FilterExpression: "#username in (:userid)",
+      ExpressionAttributeNames:{
+          "#username": "username"
+      },
+      ExpressionAttributeValues: {
+          ":userid": info.username
+      }
+    };
+
+    dbSchema.scan(params, function(err, data) {
+      
+      if(data.Count === 0) {
+        console.log('err', err);
+        var params = {
+          TableName : "Users",
+          Key: {userId: 0}
+        };
+       
+        dbSchema.get(params, function(err, data) {
+          if (err) {
+            console.error("Unable to query. Error:", JSON.stringify(err, null, 2));
+          } 
+          else {
+            console.log('incrementing');
+            info.userId = data.Item.lastId + 1;
+
+            params = {
+              TableName: "Users",
+              Item: {
+                userId: 0,
+                lastId: info.userId
+              }
+            };
+            console.log('params', params);
+            dbSchema.put(params, function(err, data) {
+              if(err) {
+                console.error('Error updating data item', err);
+              }
+              else {
+                console.log('Updated data item successfully');
+              }
+            });
+
+            params = {
+              TableName: "Users",
+              Item: {
+                userId: info.userId,
+                username: info.username,
+                password: info.password, //<-- need to hash/salt
+                email: info.email
+              }
+            };
+
+            dbSchema.put(params, function(err, data) {
+              if(err) {
+                console.error("Error creating new user", err);
+                fail(err);
+              }
+              else {
+                success(data);
+              }
+            });
+          }
+        });
+      }
+      else {
+        console.log('data', data);
+        fail("user already exists");
+      }
+    });
+
+
+
   },
   signin: function(info, success, fail) {
     success(5);

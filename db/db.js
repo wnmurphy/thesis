@@ -13,10 +13,12 @@ var dbSchema = new aws.DynamoDB.DocumentClient();
 var userTableParams = {
   TableName: "Users",
   KeySchema: [
-    {AttributeName: "userId", KeyType: "HASH"} 
+    {AttributeName: "userId", KeyType: "HASH"},
+    {AttributeName: "username", KeyType: "RANGE"} 
   ],
   AttributeDefinitions: [
-    {AttributeName: "userId", AttributeType: "N"}
+    {AttributeName: "userId", AttributeType: "N"},
+    {AttributeName: "username", AttributeType: "S"} 
   ],
   ProvisionedThroughput: {
     ReadCapacityUnits: 2, 

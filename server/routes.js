@@ -81,9 +81,8 @@ module.exports = function(app, express) {
   });  
 
 //profile
-  //post
-  app.post('/api/profile', function(req, res) {
-    var username = req.body.username;
+  app.get('/api/profile/:id', function(req, res) {
+    var id = req.params.id;
     
     helpers.getProfile(username, function(result) {
       res.json(result);
