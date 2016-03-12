@@ -1,7 +1,8 @@
-/*#nav-contatainer {
-  position: absolute;
+#nav-container {
+  position: fixed;
   background-color: #9e60d4;
   height: 50px;
   top: calc(100vh - 50px);
+  left: 0;
   width: 100vw;
-}*/
+}

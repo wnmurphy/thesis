@@ -3,6 +3,7 @@ var concat = require('gulp-concat');
 var uglify = require('gulp-uglify');
 var react = require('gulp-react');
 var html = require('gulp-html-replace');
+var sass = require('gulp-sass');
 
 var path = {
   all: [
@@ -11,6 +12,7 @@ var path = {
     'client/*.jsx',
     'client/**/*.js',
     'client/**/*.jsx',
+    'client/**/*.scss',
     '!client/dist/*.js',
     '!client/dist/*.html',
     '!client/dist/*.jsx',
@@ -35,7 +37,7 @@ var path = {
   minified_out: 'min.js',
   dest_src: 'client/dist/src',
   dest_build: 'client/dist/build',
-  dest: 'client/dist' 
+  dest: 'client/dist'
 };
 
 gulp.task('transform', function() {
@@ -44,8 +46,14 @@ gulp.task('transform', function() {
   .pipe(gulp.dest(path.dest_src));
 });
 
+gulp.task('styles', function() {
+    gulp.src('client/**/*.scss')
+        .pipe(sass().on('error', sass.logError))
+        .pipe(gulp.dest('client/dist/'))
+});
+
 gulp.task('watch', function() {
-  gulp.watch(path.all, ['transform']);
+  gulp.watch(path.all, ['transform', 'styles']);
 });
 
 gulp.task('default', ['watch']);
@@ -65,6 +73,3 @@ gulp.task('replacehtml', function() {
 });
 
 gulp.task('production', ['replacehtml', 'build']);
-
-
-
