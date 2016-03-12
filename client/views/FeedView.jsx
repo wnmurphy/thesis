@@ -4,7 +4,43 @@ var FeedView = React.createClass({
   render: function() {
     console.log("Rendering FeedView");
     return (
-      <div>FeedView</div>
+      <div>
+        <div>FeedView</div>
+        <div>Sample item</div>
+        <div>Sample item</div>
+        <div>Sample item</div>
+        <div>Sample item</div>
+        <div>Sample item</div>
+        <div>Sample item</div>
+        <div>Sample item</div>
+        <div>Sample item</div>
+        <div>Sample item</div>
+        <div>Sample item</div>
+        <div>Sample item</div>
+        <div>Sample item</div>
+        <div>Sample item</div>
+        <div>Sample item</div>
+        <div>Sample item</div>
+        <div>Sample item</div>
+        <div>Sample item</div>
+        <div>Sample item</div>
+        <div>Sample item</div>
+        <div>Sample item</div>
+        <div>Sample item</div>
+        <div>Sample item</div>
+        <div>Sample item</div>
+        <div>Sample item</div>
+        <div>Sample item</div>
+        <div>Sample item</div>
+        <div>Sample item</div>
+        <div>Sample item</div>
+        <div>Sample item</div>
+        <div>Sample item</div>
+        <div>Sample item</div>
+        <div>Sample item</div>
+        <div>Sample item</div>
+        <div>Last item</div>
+      </div>
     );
   }
 });
