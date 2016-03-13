@@ -1,5 +1,6 @@
 $primary-color: #d99c5a;
 $color-dark: darken($primary-color, 10);
+$color-light: lighten($primary-color, 10);
 $nav-height: 45px;
 
 form {
@@ -29,17 +30,23 @@ form {
     display: inline-flex;
     justify-content: center;
     align-items: center;
-    width: calc(100vw / 4);
+    width: calc((100vw - 3px) / 4 );
     height: $nav-height;
     color: #fff;
     text-decoration: none;
+    border-right: 1px solid $color-light;
 
-    &:hover {
+    &:last-child {
+      border: 0px;
+    }
+
+    &.active {
       background-color: $color-dark;
     }
-
-    .selected {
-
+    
+    &:hover {
+      background-color: $color-light;
     }
+
   }
 }
