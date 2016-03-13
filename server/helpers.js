@@ -140,7 +140,7 @@ module.exports = {
         console.error("Unable to query get spots. Error:", JSON.stringify(err, null, 2));
         fail(err);
       } else {
-        success(data);
+        success(data.Items);
       }
     });
   },
