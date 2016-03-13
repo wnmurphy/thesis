@@ -13,29 +13,26 @@ var CreateView = React.createClass({
   getLocation: function () {
     var currentLocation = {};
     var context = this;
-    // The following call is asynchronous and takes a few seconds...
-    // This should also probably be eventually moved to MapView, as
-    // location will be needed there first to render the map.
-    navigator.geolocation.getCurrentPosition(function(position){
+    navigator.geolocation.getCurrentPosition(function (position) {
       currentLocation.latitude = position.coords.latitude;
       currentLocation.longitude = position.coords.longitude;
       context.setState({location: currentLocation});
-    }, function(error){
+    }, function (error) {
       console.log(error);
     });
   },
 
-  sendSpot: function(event) {
+  sendSpot: function (event) {
     event.preventDefault();
     $.ajax({
       method: 'POST',
       url: '/api/create',
       dataType: 'json',
       data: this.state,
-      success: function(data) {
+      success: function (data) {
         console.log("SUCCESS");
       },
-      error: function(error) {
+      error: function (error) {
         console.log(error);
       }
     })
@@ -49,12 +46,10 @@ var CreateView = React.createClass({
   },
 
   render: function () {
-    // stores state to global to hold on nav change
     globalState.createState = this.state;
     console.log("Rendering CreateView", globalState.createState);
     return (
       <form id="createSpotForm" onChange={this.handleChange} onSubmit={this.sendSpot}>
-        CreateView
         <input type="text" id="name" placeholder="spot title" defaultValue={this.state.name || ''} />
         <input type="text" id="creator" placeholder="created by..." defaultValue={this.state.creator || ''} />
         <input type="text" id="category" placeholder="category" defaultValue={this.state.category || ''} />
