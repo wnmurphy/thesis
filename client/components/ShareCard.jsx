@@ -59,7 +59,7 @@ var ShareEmail = React.createClass({
   }
 });
 
-// Currently just a link to Google+
+// Shares to Google+. Can only share link, no caption.
 var ShareGoogle = React.createClass({
   getDefaultProps: function () {
     return {url: messageDefaults.url}
@@ -73,18 +73,21 @@ var ShareGoogle = React.createClass({
   }
 });
 
-// Currently just a link to facebook
+// Shares to facebook. Can only share link, no caption.
 var ShareFacebook = React.createClass({
+  getDefaultProps: function () {
+    return {url: messageDefaults.url}
+  },
   render: function () {
     return (
-      <a href='https://www.facebook.com/' target="_blank" className="facebook">
+      <a href={'http://www.facebook.com/sharer/sharer.php?u='+this.props.url} target="_blank" className="facebook">
         <i className="fa fa-facebook"></i>
       </a>
     );
   }
 });
 
-// Currently just a link to Twitter
+// Shares to twitter, no problem.
 var ShareTwitter = React.createClass({
   getDefaultProps: function () {
     return {contents: messageDefaults.contents}
@@ -113,7 +116,7 @@ var ShareCard = React.createClass({
         <ShareSMS contents={this.props.contents} />
         <ShareEmail contents={this.props.contents} subject={this.props.subject}/>
         <ShareGoogle url={this.props.url} />
-        <ShareFacebook contents={this.props.contents} />
+        <ShareFacebook url={this.props.url} />
         <ShareTwitter contents={this.props.contents} />
       </div>
     );
