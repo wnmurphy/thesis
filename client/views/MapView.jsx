@@ -1,7 +1,7 @@
 /** @jsx React.DOM */
 
 var MapView = React.createClass({
-  
+
   getInitialState: function () {
     return {
       spots: []
@@ -66,7 +66,7 @@ var MapView = React.createClass({
       var contentString = '<div>Name: ' + spot.name + '</div>' +
                           '<div>Host: ' + spot.creator + '</div>' +
                           '<div>Description: ' + spot.description + '</div>';
-          
+
       var spot = new google.maps.Marker({
         position: {lat: spot.location.latitude, lng:spot.location.longitude},
         map: map,
@@ -78,18 +78,23 @@ var MapView = React.createClass({
       var infoWindow = new google.maps.InfoWindow({
         content: contentString
       })
-      
+
       google.maps.event.addListener(spot, 'click', function () {
         infoWindow.setContent(this.info);
         infoWindow.open(map, this);
       })
-    }  
+    }
   },
 
   render: function () {
     return (
-      <div>
+      <div className="map-view-container">
         <div id="map"></div>  
+        <div className="create-button-container">
+          <a href="#/create" className="circle">
+            <i className="material-icons">add</i>
+          </a>
+        </div>
       </div>
     );
   }
