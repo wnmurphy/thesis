@@ -91,10 +91,12 @@ var MapView = React.createClass({
 
     console.log("initializing spot markers");
 
-    for(var i = 0; i < this.state.spots.length - 1; i++) {
+    for(var i = 0; i < this.state.spots.length; i++) {
 
       var spot = this.state.spots[i];
-
+      if(spot.lastId) {
+        continue;
+      }
 
       var contentString = '<div>Name: ' + spot.name + '</div>' +
                           '<div>Host: ' + spot.creator + '</div>' +
