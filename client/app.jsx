@@ -20,6 +20,7 @@ var routes = (
     <Route path="/login" component={LoginView} />
     <Route path="/profile" component={ProfileView} />
     <Route path="/profile/:profileId" component={ProfileView} />
+    <Route path="/share" component={ShareCard} />
   </Router>
   </div>
 );
