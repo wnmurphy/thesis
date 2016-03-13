@@ -3,6 +3,8 @@
 // This will be used as the min time (ms) to show
 // welcome-view-container
 
+var welcomeScreenTimout = 1000;
+
 var MapView = React.createClass({
 
   getInitialState: function () {
@@ -53,7 +55,7 @@ var MapView = React.createClass({
     })
   },
 
-  getLocation: function (callback) {
+  getLocation: function () {
     var currentLocation = {};
     var context = this;
     navigator.geolocation.getCurrentPosition(function(position){
