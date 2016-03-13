@@ -77,7 +77,7 @@ body {
 
 .share-card {
   display: flex;
-  height: $app-view-height;
+  height: calc(100vh - #{$nav-height});
   width: 100vw;
   justify-content: center;
   align-items: center;
@@ -141,7 +141,7 @@ body {
 }
 
 .create-button-container {
-  position: absolute;;
+  position: absolute;
   left: calc(100vw - (#{$nav-height} * 1.5));
   top: calc(#{$nav-height} * 0.5);
 
