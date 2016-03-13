@@ -11,7 +11,6 @@ var MapView = React.createClass({
       spots: [],
       selected: {}
     };
-    this.getLocation();
   },
 
   componentWillMount: function () {
@@ -34,14 +33,14 @@ var MapView = React.createClass({
       method: 'GET',
       url: '/api/map',
       dataType: 'json',
-      success: function(data) {
+      success: function (data) {
         context.setState({spots: data});
         console.log("SUCCESS: ", context.state.spots);
         setTimeout (function () {
           context.initSpots();
-        }, 5000);
+        }, 2000);
       },
-      error: function(error) {
+      error: function (error) {
         console.log("ERROR: ", error);
       }
     })
@@ -106,7 +105,10 @@ var MapView = React.createClass({
         position: {lat: spot.location.latitude, lng:spot.location.longitude},
         map: context.state.map,
         id: spot.spotId,
-        info: contentString
+        info: contentString,
+        getId: function() {
+          return this.id;
+        }
       });
 
       var infoWindow = new google.maps.InfoWindow({
@@ -116,7 +118,7 @@ var MapView = React.createClass({
       google.maps.event.addListener(spot, 'click', function () {
         infoWindow.setContent(this.info);
         infoWindow.open(context.state.map, this);
-        context.setState({selected: this.id});
+        context.setState({selected: this.getId()});
         console.log(context.state.selected);
       })
     }
