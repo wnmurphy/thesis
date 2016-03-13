@@ -60,9 +60,12 @@ var ShareEmail = React.createClass({
 
 // Currently just a link to Google+
 var ShareGoogle = React.createClass({
+  getDefaultProps: function () {
+    return {contents: messageDefaults.contents}
+  },
   render: function () {
     return (
-      <a href='https://plus.google.com/' target="_blank" className="googleplus">
+      <a href={'https://plus.google.com/share?url='+this.props.contents} target="_blank" className="googleplus">
         <i className="fa fa-google-plus"></i>
       </a>
     );
