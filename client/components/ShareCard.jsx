@@ -82,9 +82,12 @@ var ShareFacebook = React.createClass({
 
 // Currently just a link to Twitter
 var ShareTwitter = React.createClass({
+  getDefaultProps: function () {
+    return {contents: messageDefaults.contents}
+  },
   render: function () {
     return (
-      <a href='https://twitter.com/' target="_blank" className="twitter">
+      <a href={'https://twitter.com/home?status='+this.props.contents} target="_blank" className="twitter">
         <i className="fa fa-twitter"></i>
       </a>
     );
