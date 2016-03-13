@@ -1,7 +1,8 @@
 // Default values for contents (body) and subject of messages.
 var messageDefaults = {
   contents: 'Check out Spots! www.spots.com',
-  subject: 'Check out Spots'
+  subject: 'Check out Spots',
+  url: 'http://www.spots.com'
 }
 
 
@@ -58,33 +59,42 @@ var ShareEmail = React.createClass({
   }
 });
 
-// Currently just a link to Google+
+// Shares to Google+. Can only share link, no caption.
 var ShareGoogle = React.createClass({
+  getDefaultProps: function () {
+    return {url: messageDefaults.url}
+  },
   render: function () {
     return (
-      <a href='https://plus.google.com/' target="_blank" className="googleplus">
+      <a href={'https://plus.google.com/share?url='+this.props.url} target="_blank" className="googleplus">
         <i className="fa fa-google-plus"></i>
       </a>
     );
   }
 });
 
-// Currently just a link to facebook
+// Shares to facebook. Can only share link, no caption.
 var ShareFacebook = React.createClass({
+  getDefaultProps: function () {
+    return {url: messageDefaults.url}
+  },
   render: function () {
     return (
-      <a href='https://www.facebook.com/' target="_blank" className="facebook">
+      <a href={'http://www.facebook.com/sharer/sharer.php?u='+this.props.url} target="_blank" className="facebook">
         <i className="fa fa-facebook"></i>
       </a>
     );
   }
 });
 
-// Currently just a link to Twitter
+// Shares to twitter, no problem.
 var ShareTwitter = React.createClass({
+  getDefaultProps: function () {
+    return {contents: messageDefaults.contents}
+  },
   render: function () {
     return (
-      <a href='https://twitter.com/' target="_blank" className="twitter">
+      <a href={'https://twitter.com/home?status='+this.props.contents} target="_blank" className="twitter">
         <i className="fa fa-twitter"></i>
       </a>
     );
@@ -95,7 +105,8 @@ var ShareCard = React.createClass({
   getDefaultProps: function () {
     return {
       contents: messageDefaults.contents,
-      subject: messageDefaults.subject
+      subject: messageDefaults.subject,
+      url: messageDefaults.url
     }
   },
 
@@ -104,8 +115,8 @@ var ShareCard = React.createClass({
       <div className='share-card'>
         <ShareSMS contents={this.props.contents} />
         <ShareEmail contents={this.props.contents} subject={this.props.subject}/>
-        <ShareGoogle contents={this.props.contents} />
-        <ShareFacebook contents={this.props.contents} />
+        <ShareGoogle url={this.props.url} />
+        <ShareFacebook url={this.props.url} />
         <ShareTwitter contents={this.props.contents} />
       </div>
     );
