@@ -47,6 +47,14 @@ var MapView = React.createClass({
     })
   },
 
+
+  componentDidMount: function () {
+    var context = this;
+    setTimeout(function() {
+      context.initMap();
+    }, 500);
+  },
+
   getLocation: function () {
     var currentLocation = {};
     var context = this;
