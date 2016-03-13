@@ -135,7 +135,7 @@ module.exports = {
       //FilterExpression: 'asdfsadf' //this will eventually be used to filter lat and long ranges
     };
     //find all spots 
-    dbSchema.query(params, function(err, data) {
+    dbSchema.scan(params, function(err, data) {
       if (err) {
         console.error("Unable to query get spots. Error:", JSON.stringify(err, null, 2));
         fail(err);
