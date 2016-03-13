@@ -107,21 +107,25 @@ module.exports = {
             ":search": search
           }
         };
+      }
+    });
 
-        dbSchema.scan(params, function(err, data) {
-          if(err) {
-            console.error('Error seraching for criteria in spots table',err);
-            fail(error);
-          }
-          else {
-            data.Items.forEach(function(item) {
-              queriedArr.push(item);
-            });
-            console.log('queriedArr', queriedArr);
-            success(queriedArr);
-          }
+    dbSchema.scan(params, function(err, data) {
+      if(err) {
+        console.error('Error seraching for criteria in spots table',err);
+        fail(error);
+      }
+      else {
+        data.Items.forEach(function(item) {
+          queriedArr.push(item);
         });
+        console.log('queriedArr', queriedArr);
+        success(queriedArr);
+      }
+    });
+    
   },
+
   getSpots: function(location, success, fail) {
     //location
     var params = {

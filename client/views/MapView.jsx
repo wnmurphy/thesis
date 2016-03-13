@@ -113,6 +113,7 @@ var MapView = React.createClass({
     for(var i = 0; i < this.state.spots.length; i++) {
 
       var spot = this.state.spots[i];
+
       if(spot.lastId) {
         continue;
       }
