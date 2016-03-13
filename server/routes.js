@@ -36,9 +36,8 @@ module.exports = function(app, express) {
   //localhost:8080/feed or map
   //get request
   app.get('/api/map', function(req, res) {
-    var location = req.params.location; 
-
-    helpers.getSpots(location, function(results) {
+    // var location = req.params.location; 
+    helpers.getSpots(null, function(results) { //null was location
       res.json(results);
     }, function(err) {
       res.send(404);

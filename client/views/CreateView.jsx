@@ -145,6 +145,7 @@ var CreateView = React.createClass({
     var newState = {};
     newState[event.target.id] = event.target.value;
     this.setState(newState);
+    console.log(this.state);
   },
 
   changeAddress: function (event) {
