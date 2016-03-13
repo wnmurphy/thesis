@@ -4,7 +4,8 @@ var MapView = React.createClass({
   
   getInitialState: function () {
     return {
-      spots: []
+      spots: [],
+      selected: {}
     };
   },
 
@@ -24,16 +25,17 @@ var MapView = React.createClass({
       }
     })
   },
-  componentDidUpdate: function () {
-    this.initMap();
-    this.render();
+
+  componentDidMount: function () {
+    var context = this;
+    setTimeout(function() {
+      context.initMap();
+    }, 100);
   },
+
   getLocation: function () {
     var currentLocation = {};
     var context = this;
-    // The following call is asynchronous and takes a few seconds...
-    // This should also probably be eventually moved to MapView, as
-    // location will be needed there first to render the map.
     navigator.geolocation.getCurrentPosition(function(position){
       currentLocation.latitude = position.coords.latitude;
       currentLocation.longitude = position.coords.longitude;
@@ -42,9 +44,12 @@ var MapView = React.createClass({
       console.log(error);
     });
   },
-  initMap: function() {
-    var marker;
+
+  initMap: function () {
+    var context = this;
+
     var position = {lat: this.state.location.latitude, lng: this.state.location.longitude};
+
     var map = new google.maps.Map(document.getElementById('map'), {
       center: position,
       scrollwheel: true,
@@ -57,18 +62,20 @@ var MapView = React.createClass({
       title: 'My Location'
     });
 
+    myMarker.setIcon('http://maps.google.com/mapfiles/arrow.png');
+
     for(var i = 0; i < this.state.spots.length - 1; i++) {
 
       var spot = this.state.spots[i];
+
       var contentString = '<div>Name: ' + spot.name + '</div>' +
                           '<div>Host: ' + spot.creator + '</div>' +
                           '<div>Description: ' + spot.description + '</div>';
           
-      marker = new google.maps.Marker({
+      var spot = new google.maps.Marker({
         position: {lat: spot.location.latitude, lng:spot.location.longitude},
         map: map,
-        name: spot.name,
-        description: spot.description,
+        id: spot.spotId,
         info: contentString
       });
 
@@ -76,18 +83,20 @@ var MapView = React.createClass({
         content: contentString
       })
       
-      google.maps.event.addListener(marker, 'click', function() {
+      google.maps.event.addListener(spot, 'click', function () {
         infoWindow.setContent(this.info);
         infoWindow.open(map, this);
+        context.setState({selected: this.id});
+        console.log(context.state.selected);
       })
     }  
   },
-  render: function() {
+
+  render: function () {
     return (
       <div>
         <div id="map"></div>  
       </div>
-
     );
   }
 });
