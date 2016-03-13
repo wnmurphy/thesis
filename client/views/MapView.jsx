@@ -27,7 +27,11 @@ var MapView = React.createClass({
   render: function() {
     var spots = this.state.spots.map(function(spot) {
       return (
-        <p>{spot.name}</p>
+        <div>
+        <p>Name: {spot.name}</p>
+        <p>Creator: {spot.creator}</p>
+        <p>Description: {spot.description}</p>
+        </div>
       )
     }, this)
     return (
