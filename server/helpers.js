@@ -90,6 +90,7 @@ module.exports = {
     dbSchema.scan(params, function(err, data) {
       if(err) {
         console.error('Error seraching for criteria in user table',err);
+        fail(error);
       }
       else {
         data.Items.forEach(function(item) {
@@ -111,7 +112,8 @@ module.exports = {
 
         dbSchema.scan(params, function(err, data) {
           if(err) {
-            console.error('Error seraching for criteria in user table',err);
+            console.error('Error seraching for criteria in spots table',err);
+            fail(error);
           }
           else {
             data.Items.forEach(function(item) {
@@ -172,6 +174,7 @@ module.exports = {
         dbSchema.get(params, function(err, data) {
           if (err) {
             console.error("Unable to query. Error:", JSON.stringify(err, null, 2));
+            fail(err);
           } 
           else {
             info.userId = data.Item.lastId + 1;
@@ -187,6 +190,7 @@ module.exports = {
             dbSchema.put(params, function(err, data) {
               if(err) {
                 console.error('Error updating data item', err);
+                fail(error);
               }
               else {
                 console.log('Updated data item successfully');

@@ -9,6 +9,7 @@ var MapView = React.createClass({
   },
 
   componentWillMount: function () {
+    this.getLocation();
     var context = this;
     $.ajax({
       method: 'GET',
@@ -23,20 +24,68 @@ var MapView = React.createClass({
       }
     })
   },
+  componentDidUpdate: function () {
+    this.initMap();
+    this.render();
+  },
+  getLocation: function () {
+    var currentLocation = {};
+    var context = this;
+    // The following call is asynchronous and takes a few seconds...
+    // This should also probably be eventually moved to MapView, as
+    // location will be needed there first to render the map.
+    navigator.geolocation.getCurrentPosition(function(position){
+      currentLocation.latitude = position.coords.latitude;
+      currentLocation.longitude = position.coords.longitude;
+      context.setState({location: currentLocation});
+    }, function(error){
+      console.log(error);
+    });
+  },
+  initMap: function() {
+    var marker;
+    var position = {lat: this.state.location.latitude, lng: this.state.location.longitude};
+    var map = new google.maps.Map(document.getElementById('map'), {
+      center: position,
+      scrollwheel: true,
+      zoom: 13
+    });
 
+    var myMarker = new google.maps.Marker({
+      position: position,
+      map: map,
+      title: 'My Location'
+    });
+
+    for(var i = 0; i < this.state.spots.length - 1; i++) {
+
+      var spot = this.state.spots[i];
+      var contentString = '<div>Name: ' + spot.name + '</div>' +
+                          '<div>Host: ' + spot.creator + '</div>' +
+                          '<div>Description: ' + spot.description + '</div>';
+          
+      marker = new google.maps.Marker({
+        position: {lat: spot.location.latitude, lng:spot.location.longitude},
+        map: map,
+        name: spot.name,
+        description: spot.description,
+        info: contentString
+      });
+
+      var infoWindow = new google.maps.InfoWindow({
+        content: contentString
+      })
+      
+      google.maps.event.addListener(marker, 'click', function() {
+        infoWindow.setContent(this.info);
+        infoWindow.open(map, this);
+      })
+    }  
+  },
   render: function() {
-    var spots = this.state.spots.map(function(spot) {
-      return (
-        <div>
-        <p>Name: {spot.name}</p>
-        <p>Creator: {spot.creator}</p>
-        <p>Description: {spot.description}</p>
-        </div>
-      )
-    }, this)
     return (
-      <div>Map View
-      <div>{spots}</div>
+      <div>
+        <div id="map"></div>  
       </div>
 
     );
