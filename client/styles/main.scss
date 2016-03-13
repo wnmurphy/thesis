@@ -1,4 +1,4 @@
-$primary-color: #9d6697;
+$primary-color: #d99c5a;
 $color-dark: darken($primary-color, 10);
 $nav-height: 45px;
 
@@ -31,6 +31,8 @@ form {
     align-items: center;
     width: calc(100vw / 4);
     height: $nav-height;
+    color: #fff;
+    text-decoration: none;
 
     &:hover {
       background-color: $color-dark;
