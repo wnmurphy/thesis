@@ -6,6 +6,8 @@ var useRouterHistory = window.ReactRouter.useRouterHistory;
 var createHashHistory = window.History.createHashHistory;
 var browserHistory = useRouterHistory(createHashHistory)({queryKey: false});
 
+var globalState = {};
+
 var routes = (
   <div>
   <Router history={browserHistory}>
