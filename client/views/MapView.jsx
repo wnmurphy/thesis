@@ -47,15 +47,7 @@ var MapView = React.createClass({
     })
   },
 
-
-  componentDidMount: function () {
-    // var context = this;
-    // setTimeout(function() {
-    //   context.initMap();
-    // }, 500);
-  },
-
-  getLocation: function (cb) {
+  getLocation: function () {
     var currentLocation = {};
     var context = this;
     navigator.geolocation.getCurrentPosition(function(position){
@@ -63,17 +55,15 @@ var MapView = React.createClass({
       currentLocation.longitude = position.coords.longitude;
       console.log(currentLocation);
       context.setState({location: currentLocation});
-      cb(currentLocation);
     }, function(error){
       console.log(error);
     });
   },
 
-  initMap: function (location) {
-    
+  initMap: function () {
     var context = this;
 
-    var position = {lat:location.latitude, lng: location.longitude};
+    var position = {lat: this.state.location.latitude, lng: this.state.location.longitude};
 
     console.log('initMap position:', position);
     var map = new google.maps.Map(document.getElementById('map'), {
@@ -101,9 +91,12 @@ var MapView = React.createClass({
 
     console.log("initializing spot markers");
 
-    for(var i = 0; i < this.state.spots.length - 1; i++) {
+    for(var i = 0; i < this.state.spots.length; i++) {
 
       var spot = this.state.spots[i];
+      if(spot.lastId) {
+        continue;
+      }
 
       var contentString = '<div>Name: ' + spot.name + '</div>' +
                           '<div>Host: ' + spot.creator + '</div>' +
