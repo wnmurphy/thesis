@@ -4,7 +4,8 @@ var MapView = React.createClass({
 
   getInitialState: function () {
     return {
-      spots: []
+      spots: [],
+      selected: {}
     };
   },
 
@@ -25,9 +26,11 @@ var MapView = React.createClass({
     })
   },
 
-  componentDidUpdate: function () {
-    this.initMap();
-    this.render();
+  componentDidMount: function () {
+    var context = this;
+    setTimeout(function() {
+      context.initMap();
+    }, 100);
   },
 
   getLocation: function () {
@@ -43,6 +46,8 @@ var MapView = React.createClass({
   },
 
   initMap: function () {
+    var context = this;
+
     var position = {lat: this.state.location.latitude, lng: this.state.location.longitude};
 
     var map = new google.maps.Map(document.getElementById('map'), {
@@ -70,8 +75,7 @@ var MapView = React.createClass({
       var spot = new google.maps.Marker({
         position: {lat: spot.location.latitude, lng:spot.location.longitude},
         map: map,
-        name: spot.name,
-        description: spot.description,
+        id: spot.spotId,
         info: contentString
       });
 
@@ -82,6 +86,8 @@ var MapView = React.createClass({
       google.maps.event.addListener(spot, 'click', function () {
         infoWindow.setContent(this.info);
         infoWindow.open(map, this);
+        context.setState({selected: this.id});
+        console.log(context.state.selected);
       })
     }
   },
@@ -89,7 +95,7 @@ var MapView = React.createClass({
   render: function () {
     return (
       <div className="map-view-container">
-        <div id="map"></div>  
+        <div id="map"></div>
         <div className="create-button-container">
           <a href="#/create" className="circle">
             <i className="material-icons">add</i>
