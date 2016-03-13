@@ -1,7 +1,8 @@
 // Default values for contents (body) and subject of messages.
 var messageDefaults = {
   contents: 'Check out Spots! www.spots.com',
-  subject: 'Check out Spots'
+  subject: 'Check out Spots',
+  url: 'http://www.spots.com'
 }
 
 
@@ -61,11 +62,11 @@ var ShareEmail = React.createClass({
 // Currently just a link to Google+
 var ShareGoogle = React.createClass({
   getDefaultProps: function () {
-    return {contents: messageDefaults.contents}
+    return {url: messageDefaults.url}
   },
   render: function () {
     return (
-      <a href={'https://plus.google.com/share?url='+this.props.contents} target="_blank" className="googleplus">
+      <a href={'https://plus.google.com/share?url='+this.props.url} target="_blank" className="googleplus">
         <i className="fa fa-google-plus"></i>
       </a>
     );
@@ -101,7 +102,8 @@ var ShareCard = React.createClass({
   getDefaultProps: function () {
     return {
       contents: messageDefaults.contents,
-      subject: messageDefaults.subject
+      subject: messageDefaults.subject,
+      url: messageDefaults.url
     }
   },
 
@@ -110,7 +112,7 @@ var ShareCard = React.createClass({
       <div className='share-card'>
         <ShareSMS contents={this.props.contents} />
         <ShareEmail contents={this.props.contents} subject={this.props.subject}/>
-        <ShareGoogle contents={this.props.contents} />
+        <ShareGoogle url={this.props.url} />
         <ShareFacebook contents={this.props.contents} />
         <ShareTwitter contents={this.props.contents} />
       </div>
