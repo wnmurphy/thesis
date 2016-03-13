@@ -1,5 +1,9 @@
 /** @jsx React.DOM */
 
+// This will be used as the min time (ms) to show
+// welcome-view-container
+var welcomeScreenTimout = 2000;
+
 var MapView = React.createClass({
 
   getInitialState: function () {
@@ -24,7 +28,7 @@ var MapView = React.createClass({
     }
 
     // Added this time out to always show welcome-div
-    setTimeout(checkForCurrentLocation, 1000);
+    setTimeout(checkForCurrentLocation, welcomeScreenTimout);
 
     $.ajax({
       method: 'GET',
@@ -33,7 +37,9 @@ var MapView = React.createClass({
       success: function(data) {
         context.setState({spots: data});
         console.log("SUCCESS: ", context.state.spots);
-        context.initSpots();
+        setTimeout (function () {
+          context.initSpots();
+        }, 5000);
       },
       error: function(error) {
         console.log("ERROR: ", error);
@@ -68,6 +74,8 @@ var MapView = React.createClass({
       zoom: 13
     });
 
+    this.setState({map: map});
+
     var myMarker = new google.maps.Marker({
       position: position,
       map: map,
@@ -79,6 +87,7 @@ var MapView = React.createClass({
   },
 
   initSpots: function () {
+    var context = this;
 
     console.log("initializing spot markers");
 
@@ -86,13 +95,14 @@ var MapView = React.createClass({
 
       var spot = this.state.spots[i];
 
+
       var contentString = '<div>Name: ' + spot.name + '</div>' +
                           '<div>Host: ' + spot.creator + '</div>' +
                           '<div>Description: ' + spot.description + '</div>';
 
       var spot = new google.maps.Marker({
         position: {lat: spot.location.latitude, lng:spot.location.longitude},
-        map: map,
+        map: context.state.map,
         id: spot.spotId,
         info: contentString
       });
@@ -103,7 +113,7 @@ var MapView = React.createClass({
 
       google.maps.event.addListener(spot, 'click', function () {
         infoWindow.setContent(this.info);
-        infoWindow.open(map, this);
+        infoWindow.open(context.state.map, this);
         context.setState({selected: this.id});
         console.log(context.state.selected);
       })
