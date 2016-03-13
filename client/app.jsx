@@ -9,7 +9,6 @@ var browserHistory = useRouterHistory(createHashHistory)({queryKey: false});
 var globalState = {};
 
 var routes = (
-  <div>
   <Router history={browserHistory}>
     <Route path="/" component={MapView} />
     <Route path="/spot/:spotId" component={SpotView} />
@@ -22,7 +21,6 @@ var routes = (
     <Route path="/profile/:profileId" component={ProfileView} />
     <Route path="/share" component={ShareCard} />
   </Router>
-  </div>
 );
 
 ReactDOM.render(routes, document.getElementById('app-container'));
