@@ -77,7 +77,7 @@ body {
 
 .share-card {
   display: flex;
-  height: calc(100vh - #{$nav-height});
+  height: $app-view-height;
   width: 100vw;
   justify-content: center;
   align-items: center;
@@ -136,7 +136,7 @@ body {
 }
 
 #map, .map-view-container {
-  height: calc(100vh - #{$nav-height});
+  height: 100%;
   width: 100vw;
 }
 
