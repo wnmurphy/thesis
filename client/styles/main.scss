@@ -10,6 +10,7 @@ $primary-color: #d99c5a;
 $color-dark: darken($primary-color, 10);
 $color-light: lighten($primary-color, 10);
 $nav-height: 45px;
+$app-view-height: calc(100% - #{$nav-height});
 
 form {
   input {
@@ -36,7 +37,7 @@ body {
   position: fixed;
   left: 0;
   top: 0;
-  height: calc(100vh - #{$nav-height});
+  height: $app-view-height;
   width: 100vw;
   overflow-y: scroll;
 }
@@ -45,7 +46,7 @@ body {
   position: fixed;
   background-color: $primary-color;
   height: $nav-height;
-  top: calc(100vh - #{$nav-height});
+  top: $app-view-height;
   left: 0;
   width: 100vw;
 
@@ -135,12 +136,12 @@ body {
 }
 
 #map {
-  height: calc(100vh - #{$nav-height});
+  height: $app-view-height;
   width: 100vw;
 }
 
 .create-button-container {
-  position: absolute;;
+  position: absolute;
   left: calc(100vw - (#{$nav-height} * 1.5));
   top: calc(#{$nav-height} * 0.5);
 
