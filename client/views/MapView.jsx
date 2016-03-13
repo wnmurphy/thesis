@@ -4,18 +4,19 @@ var MapView = React.createClass({
   
   getInitialState: function () {
     return {
-          
+      spots: []
     };
   },
 
   componentWillMount: function () {
+    var context = this;
     $.ajax({
       method: 'GET',
       url: '/api/map',
       dataType: 'json',
       success: function(data) {
-        this.setState({spots: data});
-        console.log("SUCCESS: ", data);
+        context.setState({spots: data});
+        console.log("SUCCESS: ", context.state.spots);
       },
       error: function(error) {
         console.log("ERROR: ", error);
@@ -24,8 +25,16 @@ var MapView = React.createClass({
   },
 
   render: function() {
+    var spots = this.state.spots.map(function(spot) {
+      return (
+        <p>{spot.name}</p>
+      )
+    }, this)
     return (
-      <div>MapView</div>
+      <div>Map View
+      <div>{spots}</div>
+      </div>
+
     );
   }
 });
