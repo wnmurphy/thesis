@@ -55,7 +55,7 @@ var MapView = React.createClass({
     })
   },
 
-  getLocation: function () {
+  getLocation: function (callback) {
     var currentLocation = {};
     var context = this;
     navigator.geolocation.getCurrentPosition(function(position){
@@ -176,11 +176,11 @@ var LoadScreen = React.createClass({
   render: function() {
     return (
       <div className="welcome-container">
-      <div>
-        <h1>Welcome to Happn!</h1>
-        <h2>Find the Haps!</h2>
-        <p>(your HapMap is loading now)</p>
-      </div>
+        <div>
+          <h1>hapn</h1>
+          <h2>welcome!</h2>
+          <p>your map is loading...</p>
+        </div>
       </div>
     )
   }
