@@ -3,26 +3,6 @@
 var CreateView = React.createClass({
 
   componentWillMount: function () {
-    var context = this;
-    var address = 'http://maps.googleapis.com/maps/api/geocode/json?latlng=' +
-                    globalState.location.latitude + ',' + globalState.location.longitude + '&sensor=true';
-
-    $.ajax({
-      method: 'GET',
-      url: address,
-      dataType: 'json',
-      success: function (data) {
-        console.log('address data', data);
-        var addressFound = data.results[0].formatted_address;
-        context.setState({address: addressFound});
-        console.log('state address', context.state.address);
-      },
-      error: function (error) {
-        console.log("ERROR: ", error);
-      }
-    })
-
-
   },
 
   componentDidMount: function() {
@@ -34,6 +14,7 @@ var CreateView = React.createClass({
   },
 
   mapInitialize: function () {
+    var context = this;
     var myPosition = new google.maps.LatLng({lat: globalState.location.latitude, lng: globalState.location.longitude});
     var mapOptions = {
       center: myPosition,
@@ -72,9 +53,11 @@ var CreateView = React.createClass({
       infowindow.close();
       
       var place = autocomplete.getPlace();
+      context.setState({location: {latitude: place.geometry.location.lat(), longitude: place.geometry.location.lng() } });
       console.log('place', place);
       console.log('place lat', place.geometry.location.lat());
       console.log('place long', place.geometry.location.lng());
+
       if (!place.geometry) {
         return;
       }
@@ -109,10 +92,33 @@ var CreateView = React.createClass({
       dataType: 'json',
       data: this.state,
       success: function (data) {
+        globalState.createState = {};
         console.log("SUCCESS");
+        window.location = '/';
       },
       error: function (error) {
         console.log(error);
+      }
+    })
+  },
+
+  getAddress: function(event) {
+    event.preventDefault();
+    var context = this;
+    var address = 'http://maps.googleapis.com/maps/api/geocode/json?latlng=' +
+                    globalState.location.latitude + ',' + globalState.location.longitude + '&sensor=true';
+
+    $.ajax({
+      method: 'GET',
+      url: address,
+      dataType: 'json',
+      success: function (data) {
+        console.log('address data', data);
+        var addressFound = data.results[0].formatted_address;
+        context.setState({address: addressFound, location:{latitude: globalState.location.latitude, longitude:globalState.location.longitude }});
+      },
+      error: function (error) {
+        console.log("ERROR: ", error);
       }
     })
   },
@@ -123,6 +129,9 @@ var CreateView = React.createClass({
     this.setState(newState);
     console.log(this.state);
   },
+  // changeAddress: function (event) {
+  //   this.setState({address: event.target.value});
+  // },
 
   render: function () {
     globalState.createState = this.state;
@@ -133,20 +142,19 @@ var CreateView = React.createClass({
           <div id="createmap"></div>
         </div>
         <div className="create-button-container">
-          <a className="circle" onClick={this.getAddress}>
+          <a className="circle gps-found" onClick={this.getAddress}>
             <i className="material-icons">gps_fixed</i>
           </a>
         </div>
         <div>
           <form id="createSpotForm" onChange={this.handleChange} onSubmit={this.sendSpot}>
-            <input id="pac-input" className="controls" type="text" placeholder="Location" defaultValue={this.state.address || ''} />
+            <input type="text" id="pac-input" placeholder="Location" defaultValue={this.state.address || ''} />
             <input type="text" id="name" placeholder="spot title" defaultValue={this.state.name || ''} />
             <input type="text" id="creator" placeholder="created by..." defaultValue={this.state.creator || ''} />
             <input type="text" id="category" placeholder="category" defaultValue={this.state.category || ''} />
             <input type="text" id="description" placeholder="spot description" defaultValue={this.state.description || ''} />
             <input type="text" id="start" placeholder="startTime" defaultValue={this.state.start || ''} />
             <input type="text" id="end" placeholder="endTime" defaultValue={this.state.end || ''} />
-            
             <input type="submit" value="submit" />
           </form>
         </div>
