@@ -1,16 +1,22 @@
 var db = require('../db/db.js');
 var helpers = require('./helpers.js');
 
+// Socket.io
+var http = require('http').Server(app);
+var io = require('socket.io')(http);
+
 db;
 
 module.exports = function(app, express) {
-//home
+
+
+  // GET to request index.html from root.
   app.get('/', function(req, res) {
     res.sendFile('../../client/index.html');
   });
 
-//create
-  //post making haps
+
+  // POST to create a new spot from CreateView.
   app.post('/api/create', function(req, res) {
     var spot = req.body;
 
@@ -21,8 +27,8 @@ module.exports = function(app, express) {
     });
   });
 
-//search
-  //post specific hap
+
+  // POST to request search results for a specific spot from SearchView.
   app.post('/api/search', function(req, res) {
     var search = req.body.search;
     helpers.search(search, function(results) {
@@ -32,9 +38,8 @@ module.exports = function(app, express) {
     });
   });  
 
-//feed main page 
-  //localhost:8080/feed or map
-  //get request
+
+  // GET to request all spots for either MapView or FeedView.
   app.get('/api/map', function(req, res) {
     // var location = req.params.location; 
     helpers.getSpots(null, function(results) { //null was location
@@ -45,8 +50,8 @@ module.exports = function(app, express) {
 
   });
 
-//sign-up
-  //post
+
+  // POST to create a new user from SignupView.
   app.post('/api/signup', function(req, res) {
     var user_info = {
       username: req.body.username, 
@@ -62,8 +67,8 @@ module.exports = function(app, express) {
     });
   });
 
-//login
-  //post
+
+  // POST to submit user credentials from LoginView.
   app.post('/api/login', function(req, res) {
     var user_info = {
       username: req.body.username, 
@@ -78,7 +83,8 @@ module.exports = function(app, express) {
     });
   });  
 
-//profile
+
+  // GET to retrieve a user's profile by userId.
   app.get('/api/profile/:id', function(req, res) {
     var id = req.params.id;
     helpers.getProfile(id, function(result) {
@@ -90,8 +96,7 @@ module.exports = function(app, express) {
   });
 
 
-//spot
-  //get
+  // GET to retrieve a spot's information by spotId.
   app.get('/api/spot/:id', function(req, res) {
     var id = Number(req.params.id);
 

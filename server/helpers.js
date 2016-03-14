@@ -67,6 +67,7 @@ module.exports = {
       }
     });
   },
+
   search: function(search, success, fail) {
     //search is a string
     //username, user email
@@ -130,8 +131,11 @@ module.exports = {
     //location
     var params = {
       TableName : "Spots"
-      //FilterExpression: 'asdfsadf' //this will eventually be used to filter lat and long ranges
+      // FilterExpression: 'asdfsadf'
     };
+
+    //  Include logic to return only points within 3 miles of center of screen?
+
     //find all spots 
     dbSchema.scan(params, function(err, data) {
       if (err) {
@@ -142,6 +146,7 @@ module.exports = {
       }
     });
   },
+
   signup: function(info, success, fail) {
     console.log('info', info);
     var params = {
@@ -225,11 +230,51 @@ module.exports = {
   signin: function(info, success, fail) {
     success(5);
   },
+
   getProfile: function(username, success, fail) {
     success(6);
   },
+
   getSpot: function(id, success, fail) {
     success(7);
-  }
+  },
 
+  distanceBetween: function(point1, point2){
+    // Polyfill radian conversion if not present.
+    if (typeof(Number.prototype.toRad) === "undefined") {
+      Number.prototype.toRad = function() {
+        return this * Math.PI / 180;
+      }
+    } 
+
+    // Earth's radius in meters.
+    var R = 6371000;
+
+    // Make names shorter.
+    var lat1 = point1.latitude;
+    var lng1 = point1.longitude;
+    var lat2 = point2.latitude;
+    var lng2 = point2.longitude;
+
+    // Do maths. Convert degrees to radians.
+    var radLat1 = lat1.toRad();
+    var radLat2 = lat2.toRad();
+    var radDeltaLat = (lat2-lat1).toRad();
+    var radDeltaLng = (lng2-lng1).toRad();
+
+    // Find area.
+    var a = Math.sin(radDeltaLat/2) * Math.sin(radDeltaLat/2) + 
+            Math.cos(radLat1) * Math.cos(radLat2) *
+            Math.sin(radDeltaLng/2) * Math.sin(radDeltaLng/2);
+
+    // Find circumference.
+    var c = 2 * Math.atan2( Math.sqrt(a), Math.sqrt(1-a) );
+    
+    var distance = R * c;
+
+    // Convert distance (m) to distance (mi), because America has to do everything the hard way...
+    distance = distance * 0.000621371;
+
+    return distance;
+  }
 };
