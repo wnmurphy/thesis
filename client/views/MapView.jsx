@@ -3,7 +3,7 @@
 // This will be used as the min time (ms) to show
 // welcome-view-container
 
-var welcomeScreenTimout = 1000;
+var welcomeScreenTimeout = 1000;
 
 var MapView = React.createClass({
 
@@ -19,13 +19,17 @@ var MapView = React.createClass({
 
   componentDidMount: function() {
     var context = this;
+
+    // Listen for spots created by other users and refresh map.
+    // socket.on('spotAdded', this.getSpots);
+
     if(!globalState.location) {
       context.setState({showScreen: true})
       setTimeout(function() {
         context.getLocation(function(location) {
         context.initMap(location);
       });
-      }, 2000);
+      }, welcomeScreenTimeout);
     } else {
         context.setState({showScreen: false})
         context.initMap(globalState.location);

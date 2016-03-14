@@ -113,7 +113,7 @@ module.exports = {
 
     dbSchema.scan(params, function(err, data) {
       if(err) {
-        console.error('Error seraching for criteria in spots table',err);
+        console.error('Error searching for criteria in spots table',err);
         fail(error);
       }
       else {
@@ -150,9 +150,9 @@ module.exports = {
   signup: function(info, success, fail) {
     console.log('info', info);
     var params = {
-    TableName: "Users",
+      TableName: "Users",
       FilterExpression: "#username in (:userid)",
-      ExpressionAttributeNames:{
+      ExpressionAttributeNames: {
           "#username": "username"
       },
       ExpressionAttributeValues: {
@@ -223,23 +223,108 @@ module.exports = {
         fail("user already exists");
       }
     });
-
-
-
   },
+
   signin: function(info, success, fail) {
-    success(5);
+    console.log('info', info);
+    var params = {
+      TableName: "Users",
+      FilterExpression: "#username = (:userid)",
+      ExpressionAttributeNames:{
+        "#username": "username"
+      },
+      ExpressionAttributeValues: {
+         ":userid": info.username
+      }
+    };
+    
+    dbSchema.scan(params, function(err, user) {
+      if(err) {
+        console.error('Error handling user sign in', err);
+        fail(err);
+      }
+      else if(user.Count === 0) {
+        fail('user does not exist');
+      }
+      else if(user.Count === 1) {
+        if(user.Items[0].password === info.password) {
+          success(user);
+        }
+        else {
+          fail('user input wrong password');
+        }
+      }
+      else {
+        fail('same user exists');
+      }
+    });
   },
 
   getProfile: function(username, success, fail) {
-    success(6);
+    var params = {
+      TableName: "Users",
+      FilterExpression: "#username = (:userid)",
+      ExpressionAttributeNames:{
+        "#username": "username"
+      },
+      ExpressionAttributeValues: {
+        ":userid": username //<-- check to see if url sends username or userid
+      }
+    };
+
+    dbSchema.scan(params, function(err, user) {
+      if(err) {
+        console.error('Error handling user sign in', err);
+        fail(err);
+      }
+      else if(user.Count === 0) {
+        fail('user does not exist');
+      }
+      else if(user.Count === 1) {
+        success({
+          userId: user.Items[0].userId,
+          email: user.Items[0].email,
+          username: user.Items[0].username
+        });
+      }
+      else {
+        fail('same user exists');
+      }
+    });
   },
 
   getSpot: function(id, success, fail) {
-    success(7);
+    
+    var params = {
+      TableName: "Spots",
+      FilterExpression: "#spotname = (:id)",
+      ExpressionAttributeNames:{
+        "#spotname": "spotId"
+      },
+      ExpressionAttributeValues: {
+        ":id": id
+      }
+    };
+
+    dbSchema.scan(params, function(err, spot) {
+      if(err) {
+        console.error('Error handling getting spot', err);
+        fail(err);
+      }
+      else if(spot.Count === 0) {
+        fail('spot does not exist');
+      }
+      else if(spot.Count === 1) {
+        success(spot.Items[0]);
+      }
+      else {
+        fail('have more than one same spot');
+      }
+    });
   },
 
   distanceBetween: function(point1, point2){
+
     // Polyfill radian conversion if not present.
     if (typeof(Number.prototype.toRad) === "undefined") {
       Number.prototype.toRad = function() {
@@ -272,7 +357,7 @@ module.exports = {
     
     var distance = R * c;
 
-    // Convert distance (m) to distance (mi), because America has to do everything the hard way...
+    // Convert distance (m) to distance (mi).
     distance = distance * 0.000621371;
 
     return distance;
