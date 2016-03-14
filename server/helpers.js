@@ -7,15 +7,14 @@ var dbSchema = new aws.DynamoDB.DocumentClient();
 
 
 module.exports = {
-  //creating a new spot
-  //update users number of spot created
+
   createSpot: function(spot, success, fail) {
 
     var params = {
       TableName : "Spots",
       Key: {spotId: 0}
     };
-    //see if spot already exists
+
     dbSchema.get(params, function(err, data) {
       if (err) {
         console.error("Unable to query. Error:", JSON.stringify(err, null, 2));
@@ -29,14 +28,13 @@ module.exports = {
             lastId: spot.spotId
           }
         };
-        //if user does not exist, increment lastId for spot id
+
         dbSchema.put(params, function(err, data) {
           if(err) {
             console.error('Error updating data item', err);
           }
           else {
-            console.log('Updated data item successfully');
-            //if relevant information is present, we create new spot
+            console.log('Updated data item successfully', data);
             if(spot.name && spot.creator && spot.category && spot.location && spot.description && spot.start) {
               params = {
               TableName: 'Spots',
@@ -69,6 +67,7 @@ module.exports = {
       }
     });
   },
+
   search: function(search, success, fail) {
     //search is a string
     //username, user email
@@ -109,33 +108,34 @@ module.exports = {
             ":search": search
           }
         };
-
-        dbSchema.scan(params, function(err, data) {
-          if(err) {
-            console.error('Error seraching for criteria in spots table',err);
-            fail(error);
-          }
-          else {
-            data.Items.forEach(function(item) {
-              queriedArr.push(item);
-            });
-            console.log('queriedArr', queriedArr);
-            success(queriedArr);
-          }
-        });
-
       }
-      
     });
 
+    dbSchema.scan(params, function(err, data) {
+      if(err) {
+        console.error('Error seraching for criteria in spots table',err);
+        fail(error);
+      }
+      else {
+        data.Items.forEach(function(item) {
+          queriedArr.push(item);
+        });
+        console.log('queriedArr', queriedArr);
+        success(queriedArr);
+      }
+    });
     
   },
+
   getSpots: function(location, success, fail) {
-    
+    //location
     var params = {
       TableName : "Spots"
-      //FilterExpression: 'asdfsadf' //this will eventually be used to filter lat and long ranges
+      // FilterExpression: 'asdfsadf'
     };
+
+    //  Include logic to return only points within 3 miles of center of screen?
+
     //find all spots 
     dbSchema.scan(params, function(err, data) {
       if (err) {
@@ -146,9 +146,11 @@ module.exports = {
       }
     });
   },
+
   signup: function(info, success, fail) {
+    console.log('info', info);
     var params = {
-      TableName: "Users",
+    TableName: "Users",
       FilterExpression: "#username in (:userid)",
       ExpressionAttributeNames:{
           "#username": "username"
@@ -157,26 +159,23 @@ module.exports = {
           ":userid": info.username
       }
     };
-    //check if username already exists
+
     dbSchema.scan(params, function(err, data) {
-      if(err) {
-        console.error('Error signing up user', err);
-        fail(err);
-      }
-      //if user does not exist, increment user lastId
-      else if(data.Count === 0) {
+      
+      if(data.Count === 0) {
         console.log('err', err);
         var params = {
           TableName : "Users",
           Key: {userId: 0}
         };
-        //get the data pre-existed for user 0, which is only reference for userId and lastId
+       
         dbSchema.get(params, function(err, data) {
           if (err) {
             console.error("Unable to query. Error:", JSON.stringify(err, null, 2));
             fail(err);
           } 
           else {
+            console.log('incrementing');
             info.userId = data.Item.lastId + 1;
 
             params = {
@@ -186,7 +185,7 @@ module.exports = {
                 lastId: info.userId
               }
             };
-            //increment new userId to use to create new user
+            console.log('params', params);
             dbSchema.put(params, function(err, data) {
               if(err) {
                 console.error('Error updating data item', err);
@@ -206,7 +205,7 @@ module.exports = {
                 email: info.email
               }
             };
-            //add new user to db
+
             dbSchema.put(params, function(err, data) {
               if(err) {
                 console.error("Error creating new user", err);
@@ -219,7 +218,6 @@ module.exports = {
           }
         });
       }
-      //returns this if user already exists
       else {
         console.log('data', data);
         fail("user already exists");
@@ -230,101 +228,53 @@ module.exports = {
 
   },
   signin: function(info, success, fail) {
-    console.log('info', info);
-    var params = {
-    TableName: "Users",
-      FilterExpression: "#username = (:userid)",
-      ExpressionAttributeNames:{
-          "#username": "username"
-      },
-      ExpressionAttributeValues: {
-          ":userid": info.username
-      }
-    };
-
-    dbSchema.scan(params, function(err, user) {
-      if(err) {
-        console.error('Error handling user sign in', err);
-        fail(err);
-      }
-      else if(user.Count === 0) {
-        fail('user does not exist');
-      }
-      else if(user.Count === 1) {
-        if(user.Items[0].password === info.password) {
-          success(user);
-        }
-        else {
-          fail('user input wrong password');
-        }
-      }
-      else {
-        fail('same user exists');
-      }
-    });
-
+    success(5);
   },
+
   getProfile: function(username, success, fail) {
-    
-    var params = {
-    TableName: "Users",
-      FilterExpression: "#username = (:userid)",
-      ExpressionAttributeNames:{
-          "#username": "username"
-      },
-      ExpressionAttributeValues: {
-          ":userid": username //<-- check to see if url sends username or userid
-      }
-    };
-
-    dbSchema.scan(params, function(err, user) {
-      if(err) {
-        console.error('Error handling user sign in', err);
-        fail(err);
-      }
-      else if(user.Count === 0) {
-        fail('user does not exist');
-      }
-      else if(user.Count === 1) {
-        success({
-          userId: user.Items[0].userId,
-          email: user.Items[0].email,
-          username: user.Items[0].username
-        });
-      }
-      else {
-        fail('same user exists');
-      }
-    });
-
+    success(6);
   },
+
   getSpot: function(id, success, fail) {
-    var params = {
-      TableName: "Spots",
-      FilterExpression: "#spotname = (:id)",
-      ExpressionAttributeNames:{
-          "#spotname": "spotId"
-      },
-      ExpressionAttributeValues: {
-          ":id": id
-      }
-    };
+    success(7);
+  },
 
-    dbSchema.scan(params, function(err, spot) {
-      if(err) {
-        console.error('Error handling getting spot', err);
-        fail(err);
+  distanceBetween: function(point1, point2){
+    // Polyfill radian conversion if not present.
+    if (typeof(Number.prototype.toRad) === "undefined") {
+      Number.prototype.toRad = function() {
+        return this * Math.PI / 180;
       }
-      else if(spot.Count === 0) {
-        fail('spot does not exist');
-      }
-      else if(spot.Count === 1) {
-        success(spot.Items[0]);
-      }
-      else {
-        fail('have more than one same spot');
-      }
-    });
+    } 
+
+    // Earth's radius in meters.
+    var R = 6371000;
+
+    // Make names shorter.
+    var lat1 = point1.latitude;
+    var lng1 = point1.longitude;
+    var lat2 = point2.latitude;
+    var lng2 = point2.longitude;
+
+    // Do maths. Convert degrees to radians.
+    var radLat1 = lat1.toRad();
+    var radLat2 = lat2.toRad();
+    var radDeltaLat = (lat2-lat1).toRad();
+    var radDeltaLng = (lng2-lng1).toRad();
+
+    // Find area.
+    var a = Math.sin(radDeltaLat/2) * Math.sin(radDeltaLat/2) + 
+            Math.cos(radLat1) * Math.cos(radLat2) *
+            Math.sin(radDeltaLng/2) * Math.sin(radDeltaLng/2);
+
+    // Find circumference.
+    var c = 2 * Math.atan2( Math.sqrt(a), Math.sqrt(1-a) );
+    
+    var distance = R * c;
+
+    // Convert distance (m) to distance (mi), because America has to do everything the hard way...
+    distance = distance * 0.000621371;
+
+    return distance;
   }
-
 };

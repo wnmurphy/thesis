@@ -16,3 +16,5 @@ app.listen(port, function() {
 });
 
 routes(app, express);
+
+module.exports.app = app;

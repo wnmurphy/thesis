@@ -3,6 +3,8 @@
 // This will be used as the min time (ms) to show
 // welcome-view-container
 
+var welcomeScreenTimout = 1000;
+
 var MapView = React.createClass({
 
   getInitialState: function () {
@@ -113,6 +115,7 @@ var MapView = React.createClass({
     for(var i = 0; i < this.state.spots.length; i++) {
 
       var spot = this.state.spots[i];
+
       if(spot.lastId) {
         continue;
       }
@@ -173,11 +176,11 @@ var LoadScreen = React.createClass({
   render: function() {
     return (
       <div className="welcome-container">
-      <div>
-        <h1>Welcome to Happn!</h1>
-        <h2>Find the Haps!</h2>
-        <p>(your HapMap is loading now)</p>
-      </div>
+        <div>
+          <h1>hapn</h1>
+          <h2>welcome!</h2>
+          <p>your map is loading...</p>
+        </div>
       </div>
     )
   }
