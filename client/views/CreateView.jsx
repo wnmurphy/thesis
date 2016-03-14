@@ -30,6 +30,7 @@ var CreateView = React.createClass({
 
     
     var autocomplete = new google.maps.places.Autocomplete(input);
+    console.log('autocomplete', autocomplete);
     autocomplete.bindTo('bounds', map);
 
     
@@ -55,9 +56,7 @@ var CreateView = React.createClass({
       var place = autocomplete.getPlace();
       context.setState({location: {latitude: place.geometry.location.lat(), longitude: place.geometry.location.lng() } });
       console.log('place', place);
-      console.log('place lat', place.geometry.location.lat());
-      console.log('place long', place.geometry.location.lng());
-
+      context.setState({address: place.formatted_address })
       if (!place.geometry) {
         return;
       }
@@ -129,9 +128,9 @@ var CreateView = React.createClass({
     this.setState(newState);
     console.log(this.state);
   },
-  // changeAddress: function (event) {
-  //   this.setState({address: event.target.value});
-  // },
+  changeAddress: function (event) {
+    this.setState({address: event.target.value});
+  },
 
   render: function () {
     globalState.createState = this.state;
@@ -148,7 +147,7 @@ var CreateView = React.createClass({
         </div>
         <div>
           <form id="createSpotForm" onChange={this.handleChange} onSubmit={this.sendSpot}>
-            <input type="text" id="pac-input" placeholder="Location" defaultValue={this.state.address || ''} />
+            <input type="text" id="pac-input" placeholder="Location" onChange={this.changeAddress} value={this.state.address || ''} />
             <input type="text" id="name" placeholder="spot title" defaultValue={this.state.name || ''} />
             <input type="text" id="creator" placeholder="created by..." defaultValue={this.state.creator || ''} />
             <input type="text" id="category" placeholder="category" defaultValue={this.state.category || ''} />
