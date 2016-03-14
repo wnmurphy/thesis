@@ -2,61 +2,68 @@
 
 var CreateView = React.createClass({
 
-  componentWillMount: function () {
-  },
-
   componentDidMount: function() {
-    this.mapInitialize();
+    this.initMap();
   },
 
   getInitialState: function () {
     return globalState.createState || {};
   },
 
-  mapInitialize: function () {
+  initMap: function () {
+
     var context = this;
-    var myPosition = new google.maps.LatLng({lat: globalState.location.latitude, lng: globalState.location.longitude});
-    var mapOptions = {
-      center: myPosition,
+
+    var position = new google.maps.LatLng({lat: globalState.location.latitude, lng: globalState.location.longitude});
+
+    var options = {
+      center: position,
       mapTypeControl: false,
       streetViewControl: false,
       scrollwheel: true,
       zoom: 13
     };
-    var map = new google.maps.Map(document.getElementById('createmap'),
-      mapOptions);
 
-    var input = (document.getElementById('pac-input'));
+    var map = new google.maps.Map(document.getElementById('create-map'), options);
 
+    var input = (document.getElementById('address'));
     
     var autocomplete = new google.maps.places.Autocomplete(input);
-    console.log('autocomplete', autocomplete);
+
     autocomplete.bindTo('bounds', map);
 
-    
+    var infowindow = new google.maps.InfoWindow({
+      maxWidth: 200
+    });
 
-    var infowindow = new google.maps.InfoWindow();
     var marker = new google.maps.Marker({
       map: map,
-      position: myPosition
-      // getPosition: function() {
-      //   return this.position;
-      // }
-    });
-    google.maps.event.addListener(marker, 'click', function() {
-      infowindow.open(map, marker);
-      // map.panTo(this.getPosition());
+      position: position,
+      getPosition: function() {
+        return this.position;
+      }
     });
 
+    google.maps.event.addListener(marker, 'click', function() {
+      infowindow.open(map, marker);
+      map.panTo(this.getPosition());
+    });
+
+    this.setState({autocomplete: autocomplete});
     // Get the full place details when the user selects a place from the
     // list of suggestions.
     google.maps.event.addListener(autocomplete, 'place_changed', function() {
+
       infowindow.close();
       
       var place = autocomplete.getPlace();
+
       context.setState({location: {latitude: place.geometry.location.lat(), longitude: place.geometry.location.lng() } });
+
       console.log('place', place);
-      context.setState({address: place.formatted_address })
+
+      context.setState({address: place.formatted_address });
+
       if (!place.geometry) {
         return;
       }
@@ -69,21 +76,31 @@ var CreateView = React.createClass({
       }
 
       // Set the position of the marker using the place ID and location.
-      marker.setPlace(/** @type {!google.maps.Place} */ ({
+      marker.setPlace(({
         placeId: place.place_id,
         location: place.geometry.location
       }));
-      marker.setVisible(true);
 
-      infowindow.setContent('<div><strong>' + place.name + '</strong><br>' +
-          'Place ID: ' + place.place_id + '<br>' +
-          place.formatted_address + '</div>');
+      marker.setVisible(true);
+      
+      var parts = place.formatted_address.split(',');
+      var street = parts[0];
+      var locality = parts[1] + ', ' + parts[2];
+
+      var component = place.address_components[0].long_name + ' ' + place.address_components[1].short_name;
+      var placeName = place.name;
+
+      if (component === placeName) {
+        place.name = "Spot";
+      }
+
+      infowindow.setContent('<div><strong>' + place.name + '</strong><br>' + street + '<br>' + locality + '</div>');
+
       infowindow.open(map, marker);
     });
   },
 
   sendSpot: function (event) {
-    console.log('location', this.state.location);
     event.preventDefault();
     $.ajax({
       method: 'POST',
@@ -101,9 +118,11 @@ var CreateView = React.createClass({
     })
   },
 
-  getAddress: function(event) {
+  getAddress: function (event) {
     event.preventDefault();
+
     var context = this;
+
     var address = 'http://maps.googleapis.com/maps/api/geocode/json?latlng=' +
                     globalState.location.latitude + ',' + globalState.location.longitude + '&sensor=true';
 
@@ -112,9 +131,10 @@ var CreateView = React.createClass({
       url: address,
       dataType: 'json',
       success: function (data) {
-        console.log('address data', data);
+        console.log('ADDRESS: ', data);
         var addressFound = data.results[0].formatted_address;
-        context.setState({address: addressFound, location:{latitude: globalState.location.latitude, longitude:globalState.location.longitude }});
+        context.setState({ address: addressFound, location:{latitude: globalState.location.latitude, longitude:globalState.location.longitude} });
+        google.maps.event.trigger(context.state.autocomplete, 'place_changed');
       },
       error: function (error) {
         console.log("ERROR: ", error);
@@ -126,34 +146,34 @@ var CreateView = React.createClass({
     var newState = {};
     newState[event.target.id] = event.target.value;
     this.setState(newState);
-    console.log(this.state);
   },
+
   changeAddress: function (event) {
     this.setState({address: event.target.value});
   },
 
   render: function () {
     globalState.createState = this.state;
-    console.log("Rendering CreateView", globalState.createState);
+
     return (
       <div>
-        <div className="map-view-container">
-          <div id="createmap"></div>
+        <div className="create-map-view-container">
+          <div id="create-map"></div>
         </div>
-        <div className="create-button-container">
+        <div className="reset-button-container">
           <a className="circle gps-found" onClick={this.getAddress}>
             <i className="material-icons">gps_fixed</i>
           </a>
         </div>
         <div>
           <form id="createSpotForm" onChange={this.handleChange} onSubmit={this.sendSpot}>
-            <input type="text" id="pac-input" placeholder="Location" onChange={this.changeAddress} value={this.state.address || ''} />
-            <input type="text" id="name" placeholder="spot title" defaultValue={this.state.name || ''} />
-            <input type="text" id="creator" placeholder="created by..." defaultValue={this.state.creator || ''} />
-            <input type="text" id="category" placeholder="category" defaultValue={this.state.category || ''} />
-            <input type="text" id="description" placeholder="spot description" defaultValue={this.state.description || ''} />
-            <input type="text" id="start" placeholder="startTime" defaultValue={this.state.start || ''} />
-            <input type="text" id="end" placeholder="endTime" defaultValue={this.state.end || ''} />
+            <input type="text" id="address" placeholder="Location" onChange={this.changeAddress} value={this.state.address || ''} />
+            <input type="text" id="name" placeholder="Title" defaultValue={this.state.name || ''} />
+            <input type="text" id="creator" placeholder="User" defaultValue={this.state.creator || ''} />
+            <input type="text" id="category" placeholder="Category" defaultValue={this.state.category || ''} />
+            <input type="text" id="description" placeholder="Description" defaultValue={this.state.description || ''} />
+            <input type="text" id="start" placeholder="Start Time" defaultValue={this.state.start || ''} />
+            <input type="text" id="end" placeholder="End Time" defaultValue={this.state.end || ''} />
             <input type="submit" value="submit" />
           </form>
         </div>
