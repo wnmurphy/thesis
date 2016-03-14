@@ -83,7 +83,7 @@ var CreateView = React.createClass({
 
       marker.setVisible(true);
       
-      var parts = place.adr_address.split(',');
+      var parts = place.formatted_address.split(',');
       var street = parts[0];
       var locality = parts[1] + ', ' + parts[2];
 
