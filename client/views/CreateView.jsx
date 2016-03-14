@@ -7,7 +7,7 @@ var CreateView = React.createClass({
   },
 
   getInitialState: function () {
-    return globalState.createState || {};
+    return globalState.createState || {}
   },
 
   initMap: function () {
@@ -26,6 +26,20 @@ var CreateView = React.createClass({
 
     var map = new google.maps.Map(document.getElementById('create-map'), options);
 
+    var style = [{
+        featureType: "road",
+        elementType: "all",
+        stylers: [{visibility: "on"}]
+    }];
+
+    var type = new google.maps.StyledMapType(style, {name: '/'});
+
+    map.mapTypes.set('/', type);
+
+    map.setMapTypeId('/');
+
+    this.setState({map: map});
+
     var input = (document.getElementById('address'));
     
     var autocomplete = new google.maps.places.Autocomplete(input);
@@ -36,6 +50,8 @@ var CreateView = React.createClass({
       maxWidth: 200
     });
 
+    this.setState({infowindow: infowindow});
+
     var marker = new google.maps.Marker({
       map: map,
       position: position,
@@ -44,69 +60,75 @@ var CreateView = React.createClass({
       }
     });
 
-    google.maps.event.addListener(marker, 'click', function() {
-      infowindow.open(map, marker);
-      map.panTo(this.getPosition());
-    });
+    this.setState({marker: marker}, function() {
+      google.maps.event.addListener(context.state.marker, 'click', function() {
+        infowindow.open(map, this);
+        map.panTo(this.getPosition());
+      });
 
-    // this.setState({autocomplete: autocomplete});
-    // Get the full place details when the user selects a place from the
-    // list of suggestions.
-    google.maps.event.addListener(autocomplete, 'place_changed', function() {
+      google.maps.event.addListener(autocomplete, 'place_changed', function() {
 
-      infowindow.close();
-      
-      var place = autocomplete.getPlace();
+        infowindow.close();
+        
+        var place = autocomplete.getPlace();
 
-      context.setState({location: {latitude: place.geometry.location.lat(), longitude: place.geometry.location.lng() } });
+        context.setState({location: {latitude: place.geometry.location.lat(), longitude: place.geometry.location.lng() } });
 
-      console.log('place', place);
+        context.setState({address: place.formatted_address });
 
-      context.setState({address: place.formatted_address });
+        if (!place.geometry) {
+          return;
+        }
 
-      if (!place.geometry) {
-        return;
-      }
+        if (place.geometry.viewport) {
+          map.fitBounds(place.geometry.viewport);
+        } else {
+          map.setCenter(place.geometry.location);
+          map.setZoom(17);
+        }
 
-      if (place.geometry.viewport) {
-        map.fitBounds(place.geometry.viewport);
-      } else {
-        map.setCenter(place.geometry.location);
-        map.setZoom(17);
-      }
+        // Set the position of the marker using the place ID and location.
+        context.state.marker.setPlace(({
+          placeId: place.place_id,
+          location: place.geometry.location
+        }));
 
-      // Set the position of the marker using the place ID and location.
-      marker.setPlace(({
-        placeId: place.place_id,
-        location: place.geometry.location
-      }));
+        context.state.marker.setVisible(true);
+        
+        var parts = place.formatted_address.split(',');
+        var street = parts[0];
+        var locality = parts[1] + ', ' + parts[2];
 
-      marker.setVisible(true);
-      
-      var parts = place.formatted_address.split(',');
-      var street = parts[0];
-      var locality = parts[1] + ', ' + parts[2];
+        var component = place.address_components[0].long_name + ' ' + place.address_components[1].short_name;
+        var placeName = place.name;
 
-      var component = place.address_components[0].long_name + ' ' + place.address_components[1].short_name;
-      var placeName = place.name;
+        if (component === placeName) {
+          place.name = "Spot";
+        }
 
-      if (component === placeName) {
-        place.name = "Spot";
-      }
+        infowindow.setContent('<div><strong>' + place.name + '</strong><br>' + street + '<br>' + locality + '</div>');
 
-      infowindow.setContent('<div><strong>' + place.name + '</strong><br>' + street + '<br>' + locality + '</div>');
-
-      infowindow.open(map, marker);
+        infowindow.open(map, context.state.marker);
+      });
     });
   },
 
   sendSpot: function (event) {
     event.preventDefault();
+    var context = this;
     $.ajax({
       method: 'POST',
       url: '/api/create',
       dataType: 'json',
-      data: this.state,
+      data: {
+        name: context.state.name,
+        creator: context.state.creator,
+        category: context.state.category,
+        location: context.state.location,
+        description: context.state.description,
+        start: context.state.start,
+        end: context.state.end
+      },
       success: function (data) {
         globalState.createState = {};
         console.log("SUCCESS");
@@ -131,9 +153,25 @@ var CreateView = React.createClass({
       url: address,
       dataType: 'json',
       success: function (data) {
-        console.log('ADDRESS: ', data);
+
         var addressFound = data.results[0].formatted_address;
         context.setState({ address: addressFound, location:{latitude: globalState.location.latitude, longitude:globalState.location.longitude} });
+
+        context.state.marker.setPlace(({
+          placeId: data.results[0].place_id,
+          location: data.results[0].geometry.location
+        }));
+
+        context.state.map.setCenter(data.results[0].geometry.location);
+        context.state.map.setZoom(17);
+
+        var parts = data.results[0].formatted_address.split(',');
+        var street = parts[0];
+        var locality = parts[1] + ', ' + parts[2];
+
+        context.state.infowindow.setContent('<div><strong>' + "My Location" + '</strong><br>' + street + '<br>' + locality + '</div>')
+        context.state.infowindow.open(context.state.map, context.state.marker);
+
       },
       error: function (error) {
         console.log("ERROR: ", error);
@@ -154,8 +192,6 @@ var CreateView = React.createClass({
 
   render: function () {
     globalState.createState = this.state;
-    console.log('this state', this.state);
-    console.log('global state', globalState);
     return (
       <div>
         <div className="create-map-view-container">
@@ -178,7 +214,6 @@ var CreateView = React.createClass({
             <input type="submit" value="submit" />
           </form>
         </div>
-        
       </div>
     );
   }
