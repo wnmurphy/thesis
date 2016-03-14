@@ -49,6 +49,7 @@ var CreateView = React.createClass({
       map.panTo(this.getPosition());
     });
 
+    this.setState({autocomplete: autocomplete});
     // Get the full place details when the user selects a place from the
     // list of suggestions.
     google.maps.event.addListener(autocomplete, 'place_changed', function() {
@@ -84,7 +85,7 @@ var CreateView = React.createClass({
       
       var parts = place.adr_address.split(',');
       var street = parts[0];
-      var locality = parts[1] + ', ' + parts[3];
+      var locality = parts[1] + ', ' + parts[2];
 
       var component = place.address_components[0].long_name + ' ' + place.address_components[1].short_name;
       var placeName = place.name;
@@ -119,7 +120,9 @@ var CreateView = React.createClass({
 
   getAddress: function (event) {
     event.preventDefault();
+
     var context = this;
+
     var address = 'http://maps.googleapis.com/maps/api/geocode/json?latlng=' +
                     globalState.location.latitude + ',' + globalState.location.longitude + '&sensor=true';
 
@@ -131,6 +134,7 @@ var CreateView = React.createClass({
         console.log('ADDRESS: ', data);
         var addressFound = data.results[0].formatted_address;
         context.setState({ address: addressFound, location:{latitude: globalState.location.latitude, longitude:globalState.location.longitude} });
+        google.maps.event.trigger(context.state.autocomplete, 'place_changed');
       },
       error: function (error) {
         console.log("ERROR: ", error);
