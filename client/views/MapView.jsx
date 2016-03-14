@@ -12,7 +12,8 @@ var MapView = React.createClass({
     return {
       spots: globalState.spots,
       selected: {},
-      location: globalState.location
+      location: globalState.location,
+      refreshButton: "refresh-button-container"
     };
   },
 
@@ -43,6 +44,8 @@ var MapView = React.createClass({
   getSpots: function () {
     var context = this;
 
+    this.setState({refreshButton: "refresh-button-container spin"});
+
     $.ajax({
       method: 'GET',
       url: '/api/map',
@@ -51,10 +54,12 @@ var MapView = React.createClass({
         globalState.spots = data;
         context.setState({spots: data});
         console.log("SUCCESS: ", context.state.spots);
+        this.setState({refreshButton: "refresh-button-container"});
         context.initSpots();
       },
       error: function (error) {
         console.log("ERROR: ", error);
+        this.setState({refreshButton: "refresh-button-container"});
       }
     })
   },
@@ -103,7 +108,6 @@ var MapView = React.createClass({
   initSpots: function () {
     // need to make this wait to run until map loads
     var context = this;
-
     console.log("initializing spot markers");
 
     for(var i = 0; i < this.state.spots.length; i++) {
@@ -161,7 +165,7 @@ var MapView = React.createClass({
             <i className="material-icons">add</i>
           </a>
         </div>
-        <div className="refresh-button-container">
+        <div className={this.state.refreshButton}>
           <a onClick={this.getSpots} className="circle">
             <i className="material-icons">refresh</i>
           </a>
