@@ -54,12 +54,12 @@ var MapView = React.createClass({
         globalState.spots = data;
         context.setState({spots: data});
         console.log("SUCCESS: ", context.state.spots);
-        this.setState({refreshButton: "refresh-button-container"});
+        context.setState({refreshButton: "refresh-button-container"});
         context.initSpots();
       },
       error: function (error) {
         console.log("ERROR: ", error);
-        this.setState({refreshButton: "refresh-button-container"});
+        context.setState({refreshButton: "refresh-button-container"});
       }
     })
   },
