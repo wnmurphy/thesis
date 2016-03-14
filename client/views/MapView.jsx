@@ -93,6 +93,8 @@ var MapView = React.createClass({
 
     this.setState({map: map});
 
+    console.log("STATE MAP: ", this.state.map);
+
     var myMarker = new google.maps.Marker({
       position: position,
       map: map,
