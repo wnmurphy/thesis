@@ -2,13 +2,10 @@
 
 // This will be used as the min time (ms) to show
 // welcome-view-container
-var welcomeScreenTimout = 2000;
-
 
 var MapView = React.createClass({
 
   getInitialState: function () {
-    console.log(globalState);
     return {
       spots: globalState.spots,
       selected: {},
@@ -17,28 +14,21 @@ var MapView = React.createClass({
     };
   },
 
-  componentDidMount: function () {
-
+  componentWillMount: function() {
     var context = this;
-
-    var checkForCurrentLocation = function () {
-      if (context.state.location) {
-        context.initMap();
-      } else {
-        setTimeout(checkForCurrentLocation, 100);
-      }
-    }
-
-    // getCurrentPosition only if location is not in globalState
-    // otherwise just load map
-    if (!globalState.location) {
-      this.getLocation();
-      setTimeout(checkForCurrentLocation, welcomeScreenTimout);
+    if(!globalState.location) {
+      context.setState({showScreen: true})
+      setTimeout(function() {
+        context.getLocation(function(location) {
+        context.initMap(location);
+      });
+      }, 2000);
     } else {
-      this.initMap();
+      context.getLocation(function(location) {
+        context.setState({showScreen: false})
+        context.initMap(location);
+      });
     }
-
-    this.getSpots();
   },
 
   getSpots: function () {
@@ -64,13 +54,13 @@ var MapView = React.createClass({
     })
   },
 
-  getLocation: function () {
+  getLocation: function (callback) {
     var currentLocation = {};
     var context = this;
     navigator.geolocation.getCurrentPosition(function(position){
       currentLocation.latitude = position.coords.latitude;
       currentLocation.longitude = position.coords.longitude;
-      console.log(currentLocation);
+      callback(currentLocation);
       globalState.location = currentLocation;
       context.setState({location: currentLocation});
     }, function(error){
@@ -78,12 +68,17 @@ var MapView = React.createClass({
     });
   },
 
-  initMap: function () {
+  initMap: function (location) {
     var context = this;
 
-    var position = new google.maps.LatLng(this.state.location.latitude, this.state.location.longitude);
+    var position = new google.maps.LatLng(location.latitude, location.longitude);
 
-    console.log('initMap position:', position);
+    var style = [{
+        featureType: "road",
+        elementType: "all",
+        stylers: [{visibility: "on"}]
+    }];
+
     var map = new google.maps.Map(document.getElementById('map'), {
       mapTypeControl: false,
       streetViewControl: false,
@@ -91,6 +86,12 @@ var MapView = React.createClass({
       scrollwheel: true,
       zoom: 13
     });
+
+    var type = new google.maps.StyledMapType(style, {name: '/'});
+
+    map.mapTypes.set('/', type);
+
+    map.setMapTypeId('/');
 
     this.setState({map: map});
 
@@ -102,13 +103,12 @@ var MapView = React.createClass({
 
     myMarker.setIcon('http://maps.google.com/mapfiles/arrow.png');
 
-    this.initSpots();
+    this.getSpots();
   },
 
   initSpots: function () {
     // need to make this wait to run until map loads
     var context = this;
-    console.log("initializing spot markers");
 
     for(var i = 0; i < this.state.spots.length; i++) {
 
@@ -152,13 +152,7 @@ var MapView = React.createClass({
     return (
       <div className="map-view-container">
         <div id="map">
-          <div className="welcome-container">
-            <div>
-              <h1>Welcome to Happn!</h1>
-              <h2>Find the Haps!</h2>
-              <p>(your HapMap is loading now)</p>
-            </div>
-          </div>
+          {this.state.showScreen ? <LoadScreen /> : null}
         </div>
         <div className="create-button-container">
           <a href="#/create" className="circle">
@@ -174,3 +168,17 @@ var MapView = React.createClass({
     );
   }
 });
+
+var LoadScreen = React.createClass({
+  render: function() {
+    return (
+      <div className="welcome-container">
+      <div>
+        <h1>Welcome to Happn!</h1>
+        <h2>Find the Haps!</h2>
+        <p>(your HapMap is loading now)</p>
+      </div>
+      </div>
+    )
+  }
+})
