@@ -4,17 +4,19 @@
 // welcome-view-container
 var welcomeScreenTimout = 2000;
 
+
 var MapView = React.createClass({
 
   getInitialState: function () {
+    console.log(globalState);
     return {
       spots: [],
-      selected: {}
+      selected: {},
+      location: globalState.location
     };
   },
 
-  componentWillMount: function () {
-    this.getLocation();
+  componentDidMount: function () {
 
     var context = this;
 
@@ -26,8 +28,14 @@ var MapView = React.createClass({
       }
     }
 
-    // Added this time out to always show welcome-div
-    setTimeout(checkForCurrentLocation, welcomeScreenTimout);
+    // getCurrentPosition only if location is not in globalState
+    // otherwise just load map
+    if (!globalState.location) {
+      this.getLocation();
+      setTimeout(checkForCurrentLocation, welcomeScreenTimout);
+    } else {
+      this.initMap();
+    }
 
     $.ajax({
       method: 'GET',
@@ -53,6 +61,7 @@ var MapView = React.createClass({
       currentLocation.latitude = position.coords.latitude;
       currentLocation.longitude = position.coords.longitude;
       console.log(currentLocation);
+      globalState.location = currentLocation;
       context.setState({location: currentLocation});
     }, function(error){
       console.log(error);
@@ -86,6 +95,7 @@ var MapView = React.createClass({
   },
 
   initSpots: function () {
+    // need to make this wait to run until map loads
     var context = this;
 
     console.log("initializing spot markers");
