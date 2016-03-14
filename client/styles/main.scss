@@ -154,9 +154,8 @@ body {
   }
 }
 
-.create-button-container {
+.create-button-container, .refresh-button-container, .center-button-container{
   position: absolute;
-  left: calc(100vw - (#{$nav-height} * 1.5));
   top: calc(#{$nav-height} * 0.5);
 
   a {
@@ -169,6 +168,19 @@ body {
       background-color: lighten(#7de264, 10);
     }
   }
+}
+
+.create-button-container {
+  left: calc(100vw - (#{$nav-height} * 1.5));
+}
+
+.refresh-button-container {
+  left: calc(#{$nav-height} * 0.5);
+}
+
+.center-button-container{
+  left: calc(#{$nav-height} * 0.5);
+  top: calc(100% - (#{$nav-height} * 0.5));
 }
 
 

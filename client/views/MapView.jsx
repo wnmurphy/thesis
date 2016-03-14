@@ -37,6 +37,12 @@ var MapView = React.createClass({
       this.initMap();
     }
 
+    this.getSpots();
+  },
+
+  getSpots: function () {
+    var context = this;
+
     $.ajax({
       method: 'GET',
       url: '/api/map',
@@ -153,6 +159,11 @@ var MapView = React.createClass({
         <div className="create-button-container">
           <a href="#/create" className="circle">
             <i className="material-icons">add</i>
+          </a>
+        </div>
+        <div className="refresh-button-container">
+          <a onClick={this.getSpots} className="circle">
+            <i className="material-icons">refresh</i>
           </a>
         </div>
       </div>
