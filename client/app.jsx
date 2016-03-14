@@ -8,6 +8,18 @@ var browserHistory = useRouterHistory(createHashHistory)({queryKey: false});
 
 var globalState = {};
 
+var categories = {
+  General: "fa fa-anchor",
+  Food: "fa fa-anchor",
+  Entertainment: "fa fa-anchor",
+  "Health & Fitness": "fa fa-anchor",
+  "Arts & Culture": "fa fa-anchor",
+  "Parties & Nightlife": "fa fa-anchor",
+  "Nature & Outdoors": "fa fa-anchor",
+  Politics: "fa fa-anchor",
+  Education: "fa fa-anchor"
+}
+
 var routes = (
   <Router history={browserHistory}>
     <Route path="/" component={MapView} />
