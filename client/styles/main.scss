@@ -5,7 +5,7 @@
   display: none;
 }
 
-$primary-color: #d99c5a;
+$primary-color: #275187;
 $color-dark: darken($primary-color, 10);
 $color-light: lighten($primary-color, 10);
 $nav-height: 45px;
@@ -174,7 +174,7 @@ body {
     box-shadow: 0px 0px 5px #888888;
 
     &:hover {
-      background-color: lighten(#7de264, 10);
+      background-color: lighten(#1B508C, 10);
     }
   }
 }
