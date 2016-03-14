@@ -10,7 +10,7 @@ var MapView = React.createClass({
   getInitialState: function () {
     console.log(globalState);
     return {
-      spots: [],
+      spots: globalState.spots,
       selected: {},
       location: globalState.location
     };
@@ -42,11 +42,10 @@ var MapView = React.createClass({
       url: '/api/map',
       dataType: 'json',
       success: function (data) {
+        globalState.spots = data;
         context.setState({spots: data});
         console.log("SUCCESS: ", context.state.spots);
-        setTimeout (function () {
-          context.initSpots();
-        }, 2000);
+        context.initSpots();
       },
       error: function (error) {
         console.log("ERROR: ", error);
@@ -92,6 +91,7 @@ var MapView = React.createClass({
 
     myMarker.setIcon('http://maps.google.com/mapfiles/arrow.png');
 
+    this.initSpots();
   },
 
   initSpots: function () {
