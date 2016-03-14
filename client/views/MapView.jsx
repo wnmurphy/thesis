@@ -10,7 +10,8 @@ var MapView = React.createClass({
       spots: globalState.spots,
       selected: {},
       location: globalState.location,
-      refreshButton: "refresh-button-container"
+      refreshButton: "refresh-button-container",
+      buttonClass: "hide"
     };
   },
 
@@ -103,6 +104,7 @@ var MapView = React.createClass({
 
     myMarker.setIcon('http://maps.google.com/mapfiles/arrow.png');
 
+    this.setState({buttonClass: "circle"});
     this.getSpots();
   },
 
@@ -155,12 +157,12 @@ var MapView = React.createClass({
           {this.state.showScreen ? <LoadScreen /> : null}
         </div>
         <div className="create-button-container">
-          <a href="#/create" className="circle">
+          <a href="#/create" className={this.state.buttonClass}>
             <i className="material-icons">add</i>
           </a>
         </div>
         <div className={this.state.refreshButton}>
-          <a onClick={this.getSpots} className="circle">
+          <a onClick={this.getSpots} className={this.state.buttonClass}>
             <i className="material-icons">refresh</i>
           </a>
         </div>
