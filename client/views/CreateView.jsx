@@ -49,7 +49,7 @@ var CreateView = React.createClass({
       map.panTo(this.getPosition());
     });
 
-    this.setState({autocomplete: autocomplete});
+    // this.setState({autocomplete: autocomplete});
     // Get the full place details when the user selects a place from the
     // list of suggestions.
     google.maps.event.addListener(autocomplete, 'place_changed', function() {
@@ -154,7 +154,8 @@ var CreateView = React.createClass({
 
   render: function () {
     globalState.createState = this.state;
-
+    console.log('this state', this.state);
+    console.log('global state', globalState);
     return (
       <div>
         <div className="create-map-view-container">
