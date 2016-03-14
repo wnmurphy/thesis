@@ -62,7 +62,7 @@ var MapView = React.createClass({
   initMap: function () {
     var context = this;
 
-    var position = {lat: this.state.location.latitude, lng: this.state.location.longitude};
+    var position = new google.maps.LatLng(this.state.location.latitude, this.state.location.longitude);
 
     console.log('initMap position:', position);
     var map = new google.maps.Map(document.getElementById('map'), {
@@ -102,12 +102,15 @@ var MapView = React.createClass({
                           '<div>Description: ' + spot.description + '</div>';
 
       var spot = new google.maps.Marker({
-        position: {lat: spot.location.latitude, lng:spot.location.longitude},
+        position: new google.maps.LatLng(spot.location.latitude, spot.location.longitude),
         map: context.state.map,
         id: spot.spotId,
         info: contentString,
         getId: function() {
           return this.id;
+        },
+        getPosition: function() {
+          return this.position;
         }
       });
 
@@ -119,6 +122,7 @@ var MapView = React.createClass({
         infoWindow.setContent(this.info);
         infoWindow.open(context.state.map, this);
         context.setState({selected: this.getId()});
+        context.state.map.panTo(this.getPosition());
         console.log(context.state.selected);
       })
     }
