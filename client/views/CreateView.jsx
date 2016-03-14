@@ -153,10 +153,10 @@ var CreateView = React.createClass({
 
     return (
       <div>
-        <div className="map-view-container">
+        <div className="create-map-view-container">
           <div id="create-map"></div>
         </div>
-        <div className="create-button-container">
+        <div className="reset-button-container">
           <a className="circle gps-found" onClick={this.getAddress}>
             <i className="material-icons">gps_fixed</i>
           </a>
