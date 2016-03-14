@@ -2,7 +2,8 @@ var db = require('../db/db.js');
 var helpers = require('./helpers.js');
 
 // Socket.io
-var http = require('http').Server(app);
+var server = require('./server.js');
+var http = require('http').Server(server.app);
 var io = require('socket.io')(http);
 
 db;
@@ -105,6 +106,28 @@ module.exports = function(app, express) {
     }, function(err) {
       res.send(404);
     });
+  });
+
+  // Sockets
+
+  io.sockets.on('connection', function(socket) {
+
+    /* Spot socket */
+
+    // Listen for whenever a new spot is created, and 
+    // broadcast spotAdded event to trigger client-side map refresh.
+    socket.on('addSpot', function(){
+      socket.broadcast.emit('spotAdded');
+    });
+
+
+    /* Chat socket */
+
+    // Listen for whenever a chat message is sent.
+    socket.on('chatMessage', function(spotId, user, message){
+      socket.broadcast.emit('chatMessage', spotId, user, message);
+    });
+
   });
 
 };
