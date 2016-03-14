@@ -134,7 +134,6 @@ var CreateView = React.createClass({
         console.log('ADDRESS: ', data);
         var addressFound = data.results[0].formatted_address;
         context.setState({ address: addressFound, location:{latitude: globalState.location.latitude, longitude:globalState.location.longitude} });
-        google.maps.event.trigger(context.state.autocomplete, 'place_changed');
       },
       error: function (error) {
         console.log("ERROR: ", error);
