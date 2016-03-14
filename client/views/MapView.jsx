@@ -15,7 +15,7 @@ var MapView = React.createClass({
     };
   },
 
-  componentWillMount: function() {
+  componentDidMount: function() {
     var context = this;
     if(!globalState.location) {
       context.setState({showScreen: true})
@@ -25,10 +25,8 @@ var MapView = React.createClass({
       });
       }, 2000);
     } else {
-      context.getLocation(function(location) {
         context.setState({showScreen: false})
-        context.initMap(location);
-      });
+        context.initMap(globalState.location);
     }
   },
 
