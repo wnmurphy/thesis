@@ -3,6 +3,7 @@ for these tests to pass */
 
 var aws = require('aws-sdk');
 var helpers = require('../server/helpers.js');
+var routes = require('../server/routes.js');
 var expect = require('chai').expect;
 var db = new aws.DynamoDB();
 var dbSchema = new aws.DynamoDB.DocumentClient();
@@ -247,6 +248,11 @@ describe("Persistent Spot and User Server", function() {
       });
     });
     //need to write tests for helper function distanceBetween
+  });
+});
+describe("Server routes", function() {
+  it('should be able to server the main page', function(done) {
+
   });
 });
 
