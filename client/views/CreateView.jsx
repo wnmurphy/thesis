@@ -189,9 +189,9 @@ var CreateView = React.createClass({
         </div>
         <div>
           <form id="createSpotForm" onChange={this.handleChange} onSubmit={this.sendSpot}>
-            <input type="text" id="address" placeholder="Location" onChange={this.changeAddress} value={this.state.address || ''} />
-            <input type="text" id="name" placeholder="Title" defaultValue={this.state.name || ''} />
-            <input type="text" id="creator" placeholder="User" defaultValue={this.state.creator || ''} />
+            <input type="text" id="address" placeholder="Location" onChange={this.changeAddress} value={this.state.address || ''} required />
+            <input type="text" id="name" placeholder="Title" defaultValue={this.state.name || ''} required />
+            <input type="text" id="creator" placeholder="User" defaultValue={this.state.creator || ''} required />
             <select valueLink={valueLink}>
               <option id="category">Select Category</option>
               <option id="category" value="Food">Food</option>
@@ -203,9 +203,11 @@ var CreateView = React.createClass({
               <option id="category" value="Politics">Politics</option>
               <option id="category" value="Education">Education</option>
             </select>
-            <input type="text" id="description" placeholder="Description" defaultValue={this.state.description || ''} />
-            <input type="time" id="start" placeholder="Start Time" defaultValue={this.state.start || ''} />
-            <input type="time" id="end" placeholder="End Time" defaultValue={this.state.end || ''} />
+            <input type="text" id="description" placeholder="Description" defaultValue={this.state.description || ''} required />
+            <span>Start Time</span>
+            <input type="time" id="start" placeholder="Start" defaultValue={this.state.start || ''} required />
+            <span>End Time</span>
+            <input type="time" id="end" placeholder="End" defaultValue={this.state.end || ''} />
             <input type="submit" value="submit" />
           </form>
         </div>
