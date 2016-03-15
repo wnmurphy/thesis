@@ -128,7 +128,10 @@ var MapView = React.createClass({
 
       var contentString = '<div>Name: ' + spot.name + '</div>' +
                           '<div>Host: ' + spot.creator + '</div>' +
-                          '<div>Description: ' + spot.description + '</div>';
+                          '<div>Category: ' + spot.category + '</div>' +
+                          '<div>Description: ' + spot.description + '</div>' +
+                          '<div>Start Time: ' + spot.start + '</div>' +
+                          '<div>End Time: ' + spot.end + '</div>';
 
       var spot = new google.maps.Marker({
         position: new google.maps.LatLng(spot.location.latitude, spot.location.longitude),

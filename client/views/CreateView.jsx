@@ -228,8 +228,8 @@ var CreateView = React.createClass({
               <option id="category" value="Education">Education</option>
             </select>
             <input type="text" id="description" placeholder="Description" defaultValue={this.state.description || ''} />
-            <input type="text" id="start" placeholder="Start Time" defaultValue={this.state.start || ''} />
-            <input type="text" id="end" placeholder="End Time" defaultValue={this.state.end || ''} />
+            <input type="time" id="start" placeholder="Start Time" defaultValue={this.state.start || ''} />
+            <input type="time" id="end" placeholder="End Time" defaultValue={this.state.end || ''} />
             <input type="submit" value="submit" />
           </form>
         </div>
