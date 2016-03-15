@@ -117,21 +117,41 @@ var MapView = React.createClass({
   initSpots: function () {
     // need to make this wait to run until map loads
     var context = this;
-
+    var am_pm = 'AM';
     for(var i = 0; i < this.state.spots.length; i++) {
 
       var spot = this.state.spots[i];
+      var start, end, startMinutes, endMinutes;
+      
 
       if(spot.lastId) {
         continue;
+      }
+      
+      if(spot.start) {
+        start = Number(spot.start.split(":")[0]);
+        startMinutes = spot.start.split(":")[1];
+        if(start > 12) {
+          start -= 12;
+          am_pm = 'PM';
+        }
+      }
+
+      if(spot.end) {
+        end = Number(spot.end.split(":")[0]);
+        endMinutes = spot.end.split(":")[1];
+        if(end > 12) {
+          end -= 12;
+          am_pm = 'PM';
+        }
       }
 
       var contentString = '<div>Name: ' + spot.name + '</div>' +
                           '<div>Host: ' + spot.creator + '</div>' +
                           '<div>Category: ' + spot.category + '</div>' +
                           '<div>Description: ' + spot.description + '</div>' +
-                          '<div>Start Time: ' + spot.start + '</div>' +
-                          '<div>End Time: ' + spot.end + '</div>';
+                          '<div>Start Time: ' + start + ':' + startMinutes + ' ' + am_pm + '</div>' +
+                          '<div>End Time: ' + end + ':' + endMinutes + ' ' + am_pm + '</div>';
 
       var spot = new google.maps.Marker({
         position: new google.maps.LatLng(spot.location.latitude, spot.location.longitude),
