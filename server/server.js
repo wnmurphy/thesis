@@ -4,7 +4,6 @@ var parser = require('body-parser');
 var routes = require('./routes.js');
 
 var app = express();
-
 var port = process.env.PORT || 8080;
 
 app.use(morgan('tiny'));
@@ -15,6 +14,7 @@ app.listen(port, function() {
   console.log('listening on port', port);
 });
 
-routes(app, express);
+var http = require('http').Server(app);
+var io = require('socket.io')(http);
 
-module.exports.app = app;
+routes(app, express, io);

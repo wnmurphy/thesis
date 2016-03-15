@@ -1,15 +1,7 @@
 var db = require('../db/db.js');
 var helpers = require('./helpers.js');
 
-// Socket.io
-var server = require('./server.js');
-var http = require('http').Server(server.app);
-var io = require('socket.io')(http);
-
-db;
-
-module.exports = function(app, express) {
-
+module.exports = function(app, express, io) {
 
   // GET to request index.html from root.
   app.get('/', function(req, res) {
