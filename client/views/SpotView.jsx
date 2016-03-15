@@ -3,13 +3,7 @@
 var SpotView = React.createClass({
   getInitialState: function() {
       return {
-          spot: {
-            name: 'party',
-            creator: 'michelle',
-            category: 'entertainment',
-            description: 'have fun',
-            start: '10'
-          }
+          spot: {}
       };
   },
 
@@ -30,7 +24,7 @@ var SpotView = React.createClass({
       dataType: 'json',
       success: function (data) {
         console.log("data: ", data);
-        // context.setState({spot: data});
+        context.setState({spot: data});
         console.log("SUCCESS: ", context.state.spot);
         context.setState({loading: false});
         context.initMap();
@@ -53,7 +47,7 @@ var SpotView = React.createClass({
           <div id="create-map">Map will be here</div>
         </div>
         <div className='spot-view-container'>
-          <div className='spot-view-category-icon'>
+          <div className='category-icon-container'>
             <i className="fa fa-anchor"></i>
           </div>
           <h1>{this.state.spot.name}</h1>
