@@ -162,7 +162,12 @@ module.exports = {
 
     dbSchema.scan(params, function(err, data) {
       
-      if(data.Count === 0) {
+      if(err) {
+        console.error('Error signing up user', err);
+        fail(err);
+      }
+      //if user does not exist, increment user lastId
+      else if(data.Count === 0) {
         console.log('err', err);
         var params = {
           TableName : "Users",
