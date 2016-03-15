@@ -3,7 +3,9 @@ for these tests to pass */
 
 var aws = require('aws-sdk');
 var helpers = require('../server/helpers.js');
+var routes = require('../server/routes.js');
 var expect = require('chai').expect;
+var request = require('request');
 var db = new aws.DynamoDB();
 var dbSchema = new aws.DynamoDB.DocumentClient();
 
@@ -247,6 +249,45 @@ describe("Persistent Spot and User Server", function() {
       });
     });
     //need to write tests for helper function distanceBetween
+  });
+});
+describe("Server routes", function() {
+  it('should be able to serve the main page', function(done) {
+    request({
+      method: "GET",
+      uri: "http://localhost:8080/"
+    }, function (err, res, body){
+      if (err) {
+        console.error("Error getting main page ", err);
+        done();
+      }
+      expect(res.statusCode).to.equal(200);
+      expect(body).to.be.not.empty;
+      expect(body).to.contain('<div');
+      done();
+    });
+  });
+  it('should return a 200 when creating a new spot', function(done) {
+    request({
+      method: "POST",
+      uri: "http://localhost:8080/api/create",
+      json: {
+        name: "test1", 
+        creator: 'Johnny', 
+        category: 'entertainment',
+        location: 'Arizona',
+        description: 'test createSpot',
+        start: '10'
+      }
+    }, function(err, res, body){
+      if (err) {
+        console.error("Error creating new spot ", err);
+        done();
+      }
+      expect(res.statusCode).to.equal(200);
+      expect(body).to.be.empty;
+      done();
+    });
   });
 });
 
