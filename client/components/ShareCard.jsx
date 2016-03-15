@@ -11,7 +11,7 @@ var messageDefaults = {
 // Doesn't load anything if not on iOS or Android.
 var ShareSMS = React.createClass({
   getDefaultProps: function () {
-    return {contents: messageDefaults.contents}
+    return {contents: messageDefaults.contents};
   },
 
   getInitialState: function () {
@@ -23,7 +23,7 @@ var ShareSMS = React.createClass({
     if (state.iOS) {
       state.formatted = 'sms:&body=';
     } else {
-      state.formatted = 'sms:;body=';
+      state.formatted = 'sms:?body=';
     }
     return state;
   },
