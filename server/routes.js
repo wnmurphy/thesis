@@ -23,7 +23,7 @@ module.exports = function(app, express) {
 
     helpers.createSpot(spot, function(spot_id) {
       res.json(spot_id);
-      io.broadcast.emit('addSpot');
+      io.emit('addSpot');
     }, function(err) {
       res.send(err);
     });
@@ -118,7 +118,7 @@ module.exports = function(app, express) {
     // Listen for whenever a new spot is created, and 
     // broadcast spotAdded event to trigger client-side map refresh.
     io.on('addSpot', function(){
-      socket.broadcast.emit('spotAdded');
+      io.emit('spotAdded');
     });
 
 
@@ -126,7 +126,7 @@ module.exports = function(app, express) {
 
     // Listen for whenever a chat message is sent.
     io.on('chatMessage', function(spotId, user, message){
-      io.broadcast.emit('chatMessage', spotId, user, message);
+      io.emit('chatMessage', spotId, user, message);
     });
 
   });
