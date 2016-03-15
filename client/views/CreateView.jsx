@@ -115,6 +115,7 @@ var CreateView = React.createClass({
 
   sendSpot: function (event) {
     event.preventDefault();
+    console.log('this state', this.state);
     var context = this;
     $.ajax({
       method: 'POST',
@@ -179,6 +180,10 @@ var CreateView = React.createClass({
     })
   },
 
+  selectChange: function(category) {
+    this.setState({category: category});
+  },
+
   handleChange: function (event) {
     var newState = {};
     newState[event.target.id] = event.target.value;
@@ -192,6 +197,10 @@ var CreateView = React.createClass({
 
   render: function () {
     globalState.createState = this.state;
+    var valueLink = {
+      value: this.state.category,
+      requestChange: this.selectChange
+    };
     return (
       <div>
         <div className="create-map-view-container">
@@ -207,7 +216,17 @@ var CreateView = React.createClass({
             <input type="text" id="address" placeholder="Location" onChange={this.changeAddress} value={this.state.address || ''} />
             <input type="text" id="name" placeholder="Title" defaultValue={this.state.name || ''} />
             <input type="text" id="creator" placeholder="User" defaultValue={this.state.creator || ''} />
-            <input type="text" id="category" placeholder="Category" defaultValue={this.state.category || ''} />
+            <select valueLink={valueLink}>
+              <option id="category">Select Category</option>
+              <option id="category" value="Food">Food</option>
+              <option id="category" value="Entertainment">Entertainment</option>
+              <option id="category" value="Health & Fitness">Health & Fitness</option>
+              <option id="category" value="Arts & Culture">Arts & Culture</option>
+              <option id="category" value="Parties & Nightlife">Parties & Nightlife</option>
+              <option id="category" value="Nature & Outdoors">Nature & Outdoors</option>
+              <option id="category" value="Politics">Politics</option>
+              <option id="category" value="Education">Education</option>
+            </select>
             <input type="text" id="description" placeholder="Description" defaultValue={this.state.description || ''} />
             <input type="text" id="start" placeholder="Start Time" defaultValue={this.state.start || ''} />
             <input type="text" id="end" placeholder="End Time" defaultValue={this.state.end || ''} />
