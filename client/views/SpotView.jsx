@@ -8,7 +8,7 @@ var SpotView = React.createClass({
   },
 
   componentDidMount: function() {
-      this.getSpot();  
+      this.getSpot();
   },
 
   getSpot: function() {
@@ -47,10 +47,12 @@ var SpotView = React.createClass({
           <div id="create-map">Map will be here</div>
         </div>
         <div className='spot-view-container'>
-          <div className='category-icon-container'>
-            <i className="fa fa-anchor"></i>
+          <div className="spot-name-container">
+            <div className='category-icon-container'>
+              <i className="fa fa-anchor"></i>
+            </div>
+            <span className='spot-name'>{this.state.spot.name}</span>
           </div>
-          <h1>{this.state.spot.name}</h1>
           <h3>@{this.state.spot.start}</h3>
           <h4>created by: {this.state.spot.creator}</h4>
           <p>description: {this.state.spot.description}</p>
