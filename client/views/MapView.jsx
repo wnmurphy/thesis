@@ -59,7 +59,7 @@ var MapView = React.createClass({
         console.log("SUCCESS: ", context.state.spots);
         context.setState({refreshButton: "refresh-button-container"});
         context.initSpots();
-  
+
       },
       error: function (error) {
         console.log("ERROR: ", error);
@@ -91,19 +91,18 @@ var MapView = React.createClass({
 
       var spot = this.state.spots[i];
       var start, end, startMinutes, endMinutes;
-      
+
 
       if(spot.lastId) {
         continue;
       }
-      
+
       if(spot.start) {
         start = Number(spot.start.split(":")[0]);
         startMinutes = spot.start.split(":")[1];
-        if(start < 12) {
-          start_am_pm = 'AM';
-        }
-        if(start === 12) {
+
+        if(start > 12) {
+          start -= 12;
           start_am_pm = 'PM';
         }
         if(start === 0) {
@@ -119,7 +118,7 @@ var MapView = React.createClass({
             start_am_pm = 'PM';
           }
         }
-        
+
       }
 
       if(spot.end) {
@@ -144,7 +143,7 @@ var MapView = React.createClass({
             end_am_pm = 'PM';
           }
         }
-        
+
       }
 
       var contentString = '<div>Name: ' + spot.name + '</div>' +
@@ -154,7 +153,12 @@ var MapView = React.createClass({
                           '<div>Start Time: ' + start + ':' + startMinutes + ' ' + start_am_pm + '</div>' +
                           '<div>End Time: ' + end + ':' + endMinutes + ' ' + end_am_pm + '</div>';
 
+      var icon = {
+        url: '/pin.png'
+      }
+
       var spot = new google.maps.Marker({
+        icon: icon,
         position: new google.maps.LatLng(spot.location.latitude, spot.location.longitude),
         map: context.state.map,
         id: spot.spotId,
