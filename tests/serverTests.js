@@ -103,16 +103,15 @@ describe("Persistent Spot and User Server", function() {
             expect(spot.name).to.equal('test1');
             expect(spot.creator).to.equal('Johnny');
             expect(spot.location).to.equal('Arizona');
-            done();
+            helpers.search('test', function(results){
+              expect(results.length).to.be.above(0);
+              expect(results[0].name).to.contain('test');
+              done();
+            }, function(err){
+              console.error("Failed to search for spot", err);
+              done();
+            });
           }
-        });
-        helpers.search('test', function(results){
-          expect(results.length).to.be.above(0);
-          expect(results[0].name).to.contain('test');
-          done();
-        }, function(err){
-          console.error("Failed to search for spot", err);
-          done();
         });
       }, function(err){
         console.error("Error: ", err);
@@ -127,6 +126,7 @@ describe("Persistent Spot and User Server", function() {
       }, 
       function(user){
         helpers.search('John', function(users) {
+          //search works here
           expect(users.length).to.be.above(0);
           expect(users[0].username).to.contain('John');
           done();
@@ -150,7 +150,6 @@ describe("Persistent Spot and User Server", function() {
           start: '10'
         }, function(data){
           helpers.getSpots(null, function(array){
-            console.log("Array: ", array);
             expect(array).to.be.an('array');
             expect(array.length).to.be.above(0);
             done();
@@ -287,6 +286,38 @@ describe("Server routes", function() {
       expect(res.statusCode).to.equal(200);
       expect(body).to.be.empty;
       done();
+    });
+  });
+  it('should return a 200 when searching', function(done) {
+    helpers.createSpot({
+      name: "test1", 
+      creator: 'Johnny', 
+      category: 'entertainment',
+      location: 'Arizona',
+      description: 'test createSpot',
+      start: '10'
+    }, function(data) {
+      request({
+        method: "POST",
+        uri: "http://localhost:8080/api/search",
+        json: {
+          search: "test"
+        }
+      }, function(err, res, body) {
+        console.log("Results: ", body);
+        if (err) {
+          console.error("Error creating new spot ", err);
+          done();
+        }
+        expect(res.statusCode).to.equal(200);
+        expect(body).to.be.not.empty;
+        done();
+      });
+    }, function(err) {
+      if (err) {
+        console.error("Error creating new spot ", err);
+        done();
+      }
     });
   });
 });
