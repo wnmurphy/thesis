@@ -2,7 +2,9 @@
 
 var SpotView = React.createClass({
   getInitialState: function() {
+    var hash = window.location.hash.substr(1);
     return {
+      spotHash: hash,
       spot: {}
     };
   },
@@ -13,7 +15,6 @@ var SpotView = React.createClass({
   },
 
   getSpot: function() {
-    console.log("spotView");
     var context = this;
 
     this.setState({loading: true});
@@ -21,7 +22,7 @@ var SpotView = React.createClass({
     $.ajax({
       method: 'GET',
       //refactor to get correct spotId
-      url: '/api/spot/1',
+      url: '/api' + context.state.spotHash,
       dataType: 'json',
       success: function (data) {
         console.log("data: ", data);
