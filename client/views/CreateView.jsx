@@ -3,9 +3,15 @@
 var CreateView = React.createClass({
 
   componentDidMount: function() {
-    var location = globalState.location;
-
-    initMap(location, this, this.searchMap);
+    var context = this;
+    var setLocation = globalState.location;
+    if(!setLocation) {
+      getLocation(function(location) {
+        initMap(location, context, context.searchMap);
+      }, this);
+    } else {
+      initMap(setLocation, context, context.searchMap);
+    }
   },
 
   getInitialState: function () {

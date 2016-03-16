@@ -27,12 +27,12 @@ var MapView = React.createClass({
     if(!globalState.location) {
       context.setState({showScreen: true})
       setTimeout(function() {
-        context.getLocation(function(location) {
+        getLocation(function(location) {
         initMap(location, context, function() {
           context.setState({buttonClass: "circle"});
           context.getSpots();
         });
-      });
+      }, context);
       }, welcomeScreenTimeout);
     } else {
         context.setState({showScreen: false})
@@ -68,19 +68,19 @@ var MapView = React.createClass({
     })
   },
 
-  getLocation: function (callback) {
-    var currentLocation = {};
-    var context = this;
-    navigator.geolocation.getCurrentPosition(function(position){
-      currentLocation.latitude = position.coords.latitude;
-      currentLocation.longitude = position.coords.longitude;
-      callback(currentLocation);
-      globalState.location = currentLocation;
-      context.setState({location: currentLocation});
-    }, function(error){
-      console.log(error);
-    });
-  },
+  // getLocation: function (callback) {
+  //   var currentLocation = {};
+  //   var context = this;
+  //   navigator.geolocation.getCurrentPosition(function(position){
+  //     currentLocation.latitude = position.coords.latitude;
+  //     currentLocation.longitude = position.coords.longitude;
+  //     callback(currentLocation);
+  //     globalState.location = currentLocation;
+  //     context.setState({location: currentLocation});
+  //   }, function(error){
+  //     console.log(error);
+  //   });
+  // },
 
   initSpots: function () {
     // need to make this wait to run until map loads

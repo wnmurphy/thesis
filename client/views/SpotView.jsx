@@ -20,7 +20,6 @@ var SpotView = React.createClass({
 
   componentDidMount: function() {
     this.getSpot();
-    initMap(globalState.location, this);
   },
 
   getSpot: function() {
