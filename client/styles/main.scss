@@ -196,8 +196,8 @@ body {
 }
 
 .center-button-container{
-  left: calc(100vw - (#{$nav-height} * 1.5));
-  top: calc(100vh - (#{$nav-height} * 4.5));
+  left: calc(#{$nav-height} * 0.5);
+  top: calc(100vh - (#{$nav-height} * 2.50));
 }
 
 .reset-button-container {
@@ -305,6 +305,10 @@ form {
 .show-share-card {
   z-index: 1;
   opacity: 100;
+}
+
+.gm-style a[title='Click to see this area on Google Maps'] { 
+  display: none!important; 
 }
 
 // #map-controls {
