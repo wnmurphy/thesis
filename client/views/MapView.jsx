@@ -18,6 +18,7 @@ var MapView = React.createClass({
   },
 
   componentDidMount: function() {
+
     var context = this;
 
     // Listen for spots created by other users and refresh map.
@@ -43,7 +44,7 @@ var MapView = React.createClass({
   },
 
   getSpots: function () {
-    console.log("RUNNING");
+
     var context = this;
 
     this.setState({refreshButton: "refresh-button-container spin"});
@@ -83,7 +84,6 @@ var MapView = React.createClass({
 
   initSpots: function () {
     // need to make this wait to run until map loads
-    console.log("INITING SPOTS");
     var context = this;
     var start_am_pm = 'AM';
     var end_am_pm = 'AM'
