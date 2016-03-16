@@ -70,7 +70,7 @@ var SpotView = React.createClass({
         <div className='spot-view-container'>
           <div className="spot-name-container">
             <div className='category-icon-container'>
-              <i className={categories[this.state.spot.category]}></i>
+              <i className={categories[this.state.spot.category] || categories.General}></i>
             </div>
             <span className='spot-name'>{this.state.spot.name}</span>
           </div>
