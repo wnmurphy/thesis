@@ -104,20 +104,18 @@ var ShareTwitter = React.createClass({
 var ShareCard = React.createClass({
   getDefaultProps: function () {
     return {
-      contents: messageDefaults.contents,
-      subject: messageDefaults.subject,
-      url: messageDefaults.url
+      shareProps: messageDefaults
     }
   },
 
   render: function () {
     return (
       <div className='share-card'>
-        <ShareSMS contents={this.props.contents} />
-        <ShareEmail contents={this.props.contents} subject={this.props.subject}/>
-        <ShareGoogle url={this.props.url} />
-        <ShareFacebook url={this.props.url} />
-        <ShareTwitter contents={this.props.contents} />
+        <ShareSMS contents={this.props.shareProps.contents} />
+        <ShareEmail contents={this.props.shareProps.contents} subject={this.props.shareProps.subject}/>
+        <ShareGoogle url={this.props.shareProps.url} />
+        <ShareFacebook url={this.props.shareProps.url} />
+        <ShareTwitter contents={this.props.shareProps.contents} />
       </div>
     );
   }
