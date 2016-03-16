@@ -260,15 +260,15 @@ module.exports = {
     });
   },
 
-  getProfile: function(username, success, fail) {
+  getProfile: function(id, success, fail) {
     var params = {
       TableName: "Users",
-      FilterExpression: "#username = (:userid)",
+      FilterExpression: "#userId = (:userId)",
       ExpressionAttributeNames:{
-        "#username": "username"
+        "#userId": "userId"
       },
       ExpressionAttributeValues: {
-        ":userid": username //<-- check to see if url sends username or userid
+        ":userId": (Number(id))
       }
     };
 
