@@ -3,42 +3,18 @@
 var CreateView = React.createClass({
 
   componentDidMount: function() {
-    this.initMap();
+    var location = globalState.location;
+    console.log("LOCATION =============>", location);
+    initMap(location, this, this.searchMap);
   },
 
   getInitialState: function () {
     return globalState.createState || {}
   },
 
-  initMap: function () {
+  searchMap: function (map, position) {
 
     var context = this;
-
-    var position = new google.maps.LatLng({lat: globalState.location.latitude, lng: globalState.location.longitude});
-
-    var options = {
-      center: position,
-      mapTypeControl: false,
-      streetViewControl: false,
-      scrollwheel: true,
-      zoom: 13
-    };
-
-    var map = new google.maps.Map(document.getElementById('create-map'), options);
-
-    var style = [{
-        featureType: "road",
-        elementType: "all",
-        stylers: [{visibility: "on"}]
-    }];
-
-    var type = new google.maps.StyledMapType(style, {name: '/'});
-
-    map.mapTypes.set('/', type);
-
-    map.setMapTypeId('/');
-
-    this.setState({map: map});
 
     var input = (document.getElementById('address'));
     
@@ -204,7 +180,7 @@ var CreateView = React.createClass({
     return (
       <div>
         <div className="create-map-view-container">
-          <div id="create-map"></div>
+          <div id="map"></div>
         </div>
         <div className="reset-button-container">
           <a className="circle gps-found" onClick={this.getAddress}>
