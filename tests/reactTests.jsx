@@ -4,18 +4,14 @@ var TestUtils = require('react-addons-test-utils');
 
 // ======================================
 
-// DOM Mocking
+// Mock the DOM
 var jsdom = require('jsdom');
 var doc = jsdom.jsdom('<!doctype html><html><body></body></html>');
 var win = doc.defaultView;
 global.document = doc;
 global.window = win;
 
-// take all properties of the window object and also attach it to the 
-// mocha global object
-propagateToGlobal(win);
-
-// copy keys from window to global
+// Copy keys from window to global
 function propagateToGlobal (window) {
   for (var key in window) {
     if (!window.hasOwnProperty(key)) continue;
@@ -23,9 +19,11 @@ function propagateToGlobal (window) {
     global[key] = window[key];
   }
 }
+propagateToGlobal(win);
+
 // ======================================
 
-// Unmount after each test to clean up.
+// Unmount component after each test to clean up.
 afterEach(function(done) {
     React.unmountComponentAtNode(document.body);       
     setTimeout(done);
@@ -36,11 +34,13 @@ afterEach(function(done) {
 describe('MapView', function () {
 
   it('renders on the DOM', function () {
-    var MapView = require('../views/MapView.jsx');
+    var MapView = require('../client/dist/src/views/MapView.js');
+    console.log('MapView is: ', JSON.stringify(MapView));
     var MapViewDiv = TestUtils.renderIntoDocument(
       <MapView />
     );
-    var MapViewExists = TestUtils.findRenderedDOMComponentWithTag(MapView, '');
+    var MapViewExists = TestUtils.findRenderedDOMComponentWithTag(MapView, 'div');
+    // First arg is ReactComponent tree, whatever that is
   });
 
 
@@ -51,11 +51,11 @@ describe('MapView', function () {
 
 
 
-
+// ======================================
+//To write later...
   it('renders a div with a single class of map-view-container', function (done) {
     var makeMapView = React.createElement('MapView', {});
     var mapViewElement = TestUtils.renderIntoDocument(makeMapView);
-    console.log(document.body);
     expect(mapViewElement.children[0]).getElementsByClassName('map-view-container').length.to.be(1);
     done();
   });
