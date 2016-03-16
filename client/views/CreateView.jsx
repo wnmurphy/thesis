@@ -102,6 +102,7 @@ var CreateView = React.createClass({
         creator: context.state.creator,
         category: context.state.category,
         location: context.state.location,
+        address: context.state.address,
         description: context.state.description,
         start: context.state.start,
         end: context.state.end

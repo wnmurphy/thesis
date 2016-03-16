@@ -44,6 +44,7 @@ module.exports = {
                 "creator": spot.creator,
                 "category": spot.category,
                 "location": spot.location,
+                "address": spot.address,
                 "description": spot.description,
                 "start": spot.start,
                 "end": spot.end
