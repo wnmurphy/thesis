@@ -40,7 +40,7 @@ describe('MapView', function () {
   it('renders a div with a single class of map-view-container', function (done) {
     var makeMapView = React.createElement('MapView', {});
     var mapViewElement = TestUtils.renderIntoDocument(makeMapView);
-    console.log(document);
+    console.log(document.body);
     expect(mapViewElement.children[0]).getElementsByClassName('map-view-container').length.to.be(1);
     done();
   });
