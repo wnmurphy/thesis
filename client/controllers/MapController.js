@@ -3,7 +3,7 @@ var initMap = function (location, context, callback) {
   var position = new google.maps.LatLng(location.latitude, location.longitude);
 
   context.setState({position: position});
-  
+
   var style = [
     {
       "featureType": "administrative.neighborhood",
@@ -240,7 +240,7 @@ var initMap = function (location, context, callback) {
   context.setState({map: map});
 
   var icon = {
-    url: '/home.png'
+    url: '/you.png'
   }
 
   var marker = new google.maps.Marker({
