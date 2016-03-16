@@ -2,13 +2,14 @@
 
 var SpotView = React.createClass({
   getInitialState: function() {
-      return {
-          spot: {}
-      };
+    return {
+      spot: {}
+    };
   },
 
   componentDidMount: function() {
-      this.getSpot();
+    this.getSpot();
+    initMap(globalState.location, this);
   },
 
   getSpot: function() {
@@ -44,12 +45,12 @@ var SpotView = React.createClass({
     return (
       <div className="spot-container">
         <div className="create-map-view-container">
-          <div id="create-map">Map will be here</div>
+          <div id="map"></div>
         </div>
         <div className='spot-view-container'>
           <div className="spot-name-container">
             <div className='category-icon-container'>
-              <i className="fa fa-anchor"></i>
+              <i className={categories[this.state.spot.category]}></i>
             </div>
             <span className='spot-name'>{this.state.spot.name}</span>
           </div>

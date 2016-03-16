@@ -4,7 +4,7 @@ var CreateView = React.createClass({
 
   componentDidMount: function() {
     var location = globalState.location;
-    console.log("LOCATION =============>", location);
+
     initMap(location, this, this.searchMap);
   },
 

@@ -24,13 +24,21 @@ var initMap = function (location, context, callback) {
 
   context.setState({map: map});
 
-  var myMarker = new google.maps.Marker({
+  var icon = {
+    url: '/gps.svg',
+    scaledSize: new google.maps.Size(30, 30),
+    origin: new google.maps.Point(0, 0),
+    anchor: new google.maps.Point(0, 0)
+  }
+
+  var marker = new google.maps.Marker({
+    icon: icon,
     position: position,
     map: map,
     title: 'My Location'
   });
 
-  myMarker.setIcon('http://maps.google.com/mapfiles/arrow.png');
+  //marker.setIcon('http://maps.google.com/mapfiles/arrow.png');
 
   callback(map, position);
 }

@@ -9,6 +9,7 @@ var browserHistory = useRouterHistory(createHashHistory)({queryKey: false});
 var globalState = {};
 
 var categories = {
+  "Food Truck": "fa fa-anchor",
   General: "fa fa-anchor",
   Food: "fa fa-anchor",
   Entertainment: "fa fa-anchor",
