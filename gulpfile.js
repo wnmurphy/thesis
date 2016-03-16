@@ -31,6 +31,11 @@ var path = {
     '!client/dist/**/*.js',
     '!client/dist/**/*.jsx'
   ],
+
+  testjsx: [
+    'tests/*.jsx',
+  ],
+
   html: [
     'client/index.html'
   ],
@@ -44,6 +49,12 @@ gulp.task('transform', function() {
   gulp.src(path.js)
   .pipe(react())
   .pipe(gulp.dest(path.dest_src));
+});
+
+gulp.task('test', function() {
+  gulp.src(path.testjsx)
+  .pipe(react())
+  .pipe(gulp.dest('tests/'));
 });
 
 gulp.task('styles', function() {
