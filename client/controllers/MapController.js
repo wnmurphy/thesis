@@ -228,7 +228,8 @@ var initMap = function (location, context, callback) {
     streetViewControl: false,
     center: position,
     scrollwheel: true,
-    zoom: 14
+    zoom: 14,
+    zoomControl: false
   });
 
   var type = new google.maps.StyledMapType(style, {name: '/'});
@@ -236,6 +237,15 @@ var initMap = function (location, context, callback) {
   map.mapTypes.set('/', type);
 
   map.setMapTypeId('/');
+
+  google.maps.event.addDomListener(map, 'tilesloaded', function(){
+    if($('#map-controls').length === 0) {
+      $('div.gmnoprint').last().parent().wrap('<div id="map-controls" />');
+      map.setOptions({
+        zoomControl: true
+      });
+    }
+  });
 
   context.setState({map: map});
 
