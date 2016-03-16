@@ -263,5 +263,7 @@ var initMap = function (location, context, callback) {
     }
   });
 
+  context.setState({marker: marker});
+  
   callback(map, position, marker);
 }

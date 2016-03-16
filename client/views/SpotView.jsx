@@ -37,7 +37,9 @@ var SpotView = React.createClass({
         context.setState({spot: data});
         console.log("SUCCESS: ", context.state.spot);
         context.setState({loading: false});
-        initMap(data.location, context);
+        initMap(data.location, context, function(map, position, marker) {
+          marker.setIcon('/pin.png');
+        });
       },
       error: function (error) {
         console.log("ERROR: ", error);
@@ -61,7 +63,6 @@ var SpotView = React.createClass({
   },
 
   render: function() {
-    console.log("Rendering SpotView");
     return (
       <div className="spot-container">
         <div className="create-map-view-container">
