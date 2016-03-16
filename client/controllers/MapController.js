@@ -238,7 +238,7 @@ var initMap = function (location, context, callback) {
   context.setState({map: map});
 
   var icon = {
-    url: '/pin.png'
+    url: '/home.png'
   }
 
   var marker = new google.maps.Marker({

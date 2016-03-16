@@ -27,7 +27,8 @@ var CreateView = React.createClass({
   },
 
   searchMap: function (map, position, marker) {
-
+    marker.setIcon('/pin.png');
+    
     var context = this;
 
     var input = (document.getElementById('address'));
