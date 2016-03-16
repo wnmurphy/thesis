@@ -1,44 +1,33 @@
-# Project Name #
+# Hapn #
 
-<!-- 
-> This material was originally posted [here](http://www.quora.com/What-is-Amazons-approach-to-product-development-and-product-management). It is reproduced here for posterities sake.
-
-There is an approach called "working backwards" that is widely used at Amazon. They work backwards from the customer, rather than starting with an idea for a product and trying to bolt customers onto it. While working backwards can be applied to any specific product decision, using this approach is especially important when developing new products or features.
-
-For new initiatives a product manager typically starts by writing an internal press release announcing the finished product. The target audience for the press release is the new/updated product's customers, which can be retail customers or internal users of a tool or technology. Internal press releases are centered around the customer problem, how current solutions (internal or external) fail, and how the new product will blow away existing solutions.
-
-If the benefits listed don't sound very interesting or exciting to customers, then perhaps they're not (and shouldn't be built). Instead, the product manager should keep iterating on the press release until they've come up with benefits that actually sound like benefits. Iterating on a press release is a lot less expensive than iterating on the product itself (and quicker!).
-
-If the press release is more than a page and a half, it is probably too long. Keep it simple. 3-4 sentences for most paragraphs. Cut out the fat. Don't make it into a spec. You can accompany the press release with a FAQ that answers all of the other business or execution questions so the press release can stay focused on what the customer gets. My rule of thumb is that if the press release is hard to write, then the product is probably going to suck. Keep working at it until the outline for each paragraph flows. 
-
-Oh, and I also like to write press-releases in what I call "Oprah-speak" for mainstream consumer products. Imagine you're sitting on Oprah's couch and have just explained the product to her, and then you listen as she explains it to her audience. That's "Oprah-speak", not "Geek-speak".
-
-Once the project moves into development, the press release can be used as a touchstone; a guiding light. The product team can ask themselves, "Are we building what is in the press release?" If they find they're spending time building things that aren't in the press release (overbuilding), they need to ask themselves why. This keeps product development focused on achieving the customer benefits and not building extraneous stuff that takes longer to build, takes resources to maintain, and doesn't provide real customer benefit (at least not enough to warrant inclusion in the press release).
- -->
- 
-## Heading ##
-  > Name the product in a way the reader (i.e. your target customers) will understand.
-
-## Sub-Heading ##
-  > Describe who the market for the product is and what benefit they get. One sentence only underneath the title.
+## Create, share, and browse spots that are happening near you now! ##
 
 ## Summary ##
-  > Give a summary of the product and the benefit. Assume the reader will not read anything else so make this paragraph good.
+  Hapn encourages you to participate more in the world around you by providing a time-limited, ultra-local index of fun and novel events. At a glance, you can locate interesting things to see and do in your immediate environment.
 
-## Problem ##
-  > Describe the problem your product solves.
+## The Problem ##
+  Technology can encourage us to be passive, anonymous observers who become isolated from the world around us. Too often, we confine ourselves to a self-reinforcing information bubble by visiting the same websites and physical locations each day.
 
-## Solution ##
-  > Describe how your product elegantly solves the problem.
-
-## Quote from You ##
-  > A quote from a spokesperson in your company.
+## The Solution ##
+  Hapn provides a tool that encourages participation and immediacy by showing you what's happening now in your area. You can create spots for your own events, share them publicly or privately, and browse the spots around you to join in and have more interesting life experiences.
 
 ## How to Get Started ##
-  > Describe how easy it is to get started.
+  To see what's out there, just start browsing the map!
+  
+  You can filter by spot category (food, entertainment, etc.) right on the map. You can also search for a particular spot or user.
+  
+  To create and share a spot, click or tap the plus button in the upper-right corner of the screen.
+  
+  Choose a category and fill in the details. Then you can share the spot via Twitter, Facebook, Google+, email, or SMS message.
 
-## Customer Quote ##
-  > Provide a quote from a hypothetical customer that describes how they experienced the benefit.
+## From our users: ##
+  > "As a small business owner, I use Hapn every day to create a temporary listing with our daily specials." -Steve, Owner of Tiny Little Bakery
 
-## Closing and Call to Action ##
-  > Wrap it up and give pointers where the reader should go next.
+  > "Hapn is really useful for spreading the word about my public dance class in the park every Sunday. We see a lot of new faces that we otherwise wouldn't." -Janice, Dance Instructor
+
+  > "One of my favorite things to do with Hapn is to subscribe to my favorite food truck. I can see exactly where they'll be on any given day." -Marlin, Hapn User
+
+  > "Hapn lets me share my gigs to fans of local live music. I can create a spot for my gig tomorrow, and people looking for something to do get the notification on their feed. I've been getting a lot more subscribers lately, which is great because it encourages local musicians like me to keep gigging." -Bill, Jazz Guitarist
+
+## Get Started! ##
+  Hapn makes it easy to live more. [Try Hapn now](http://hapn.com) and see what's hapning!
