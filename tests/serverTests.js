@@ -304,7 +304,6 @@ describe("Server routes", function() {
           search: "test"
         }
       }, function(err, res, body) {
-        console.log("Results: ", body);
         if (err) {
           console.error("Error creating new spot ", err);
           done();
