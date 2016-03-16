@@ -2,7 +2,7 @@
 
 // This will be used as the min time (ms) to show
 // welcome-view-container
-
+var React = React || require('react');
 var welcomeScreenTimeout = 1000;
 
 var MapView = React.createClass({
