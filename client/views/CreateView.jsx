@@ -116,7 +116,7 @@ var CreateView = React.createClass({
       success: function (data) {
         globalState.createState = {};
         console.log("SUCCESS");
-        window.location = '/';
+        window.location = '/#/';
       },
       error: function (error) {
         console.log(error);
