@@ -27,16 +27,23 @@ var MapView = React.createClass({
       context.setState({showScreen: true})
       setTimeout(function() {
         context.getLocation(function(location) {
-        context.initMap(location);
+        initMap(location, context, function() {
+          context.setState({buttonClass: "circle"});
+          context.getSpots();
+        });
       });
       }, welcomeScreenTimeout);
     } else {
         context.setState({showScreen: false})
-        context.initMap(globalState.location);
+        initMap(globalState.location, context, function() {
+          context.setState({buttonClass: "circle"});
+          context.getSpots();
+        });
     }
   },
 
   getSpots: function () {
+    console.log("RUNNING");
     var context = this;
 
     this.setState({refreshButton: "refresh-button-container spin"});
@@ -51,6 +58,7 @@ var MapView = React.createClass({
         console.log("SUCCESS: ", context.state.spots);
         context.setState({refreshButton: "refresh-button-container"});
         context.initSpots();
+  
       },
       error: function (error) {
         console.log("ERROR: ", error);
@@ -73,49 +81,9 @@ var MapView = React.createClass({
     });
   },
 
-  initMap: function (location) {
-    var context = this;
-
-    var position = new google.maps.LatLng(location.latitude, location.longitude);
-
-    var style = [{
-        featureType: "road",
-        elementType: "all",
-        stylers: [{visibility: "on"}]
-    }];
-
-    var map = new google.maps.Map(document.getElementById('map'), {
-      mapTypeControl: false,
-      streetViewControl: false,
-      center: position,
-      scrollwheel: true,
-      zoom: 13
-    });
-
-    var type = new google.maps.StyledMapType(style, {name: '/'});
-
-    map.mapTypes.set('/', type);
-
-    map.setMapTypeId('/');
-
-    this.setState({map: map});
-
-    console.log("STATE MAP: ", this.state.map);
-
-    var myMarker = new google.maps.Marker({
-      position: position,
-      map: map,
-      title: 'My Location'
-    });
-
-    myMarker.setIcon('http://maps.google.com/mapfiles/arrow.png');
-
-    this.setState({buttonClass: "circle"});
-    this.getSpots();
-  },
-
   initSpots: function () {
     // need to make this wait to run until map loads
+    console.log("INITING SPOTS");
     var context = this;
     var start_am_pm = 'AM';
     var end_am_pm = 'AM'
