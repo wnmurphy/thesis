@@ -260,19 +260,21 @@ module.exports = {
     });
   },
 
-  getProfile: function(username, success, fail) {
+  getProfile: function(id, success, fail) {
+    console.log("id type", typeof id);
     var params = {
       TableName: "Users",
-      FilterExpression: "#username = (:userid)",
+      FilterExpression: "#userId = (:userId)",
       ExpressionAttributeNames:{
-        "#username": "username"
+        "#userId": "userId"
       },
       ExpressionAttributeValues: {
-        ":userid": username //<-- check to see if url sends username or userid
+        ":userId": (Number(id))
       }
     };
 
     dbSchema.scan(params, function(err, user) {
+      console.log("User: ", user.Items);
       if(err) {
         console.error('Error handling user sign in', err);
         fail(err);
