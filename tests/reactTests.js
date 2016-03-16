@@ -29,10 +29,18 @@ function propagateToGlobal (window) {
 }
 
 describe('MapView', function () {
-  it('works', function (done) {
-    var detachedComp = TestUtils.renderIntoDocument(React.createElement(MapView, {}));
-    var mapView = TestUtils.findRenderedDOMComponentWithTag(detachedComp, 'MapView');
-    var mapViewNode = React.findDOMNode(mapView);
-    should.exist(mapViewNode);
+  it('Renders on the DOM', function (done) {
+    // Render new component
+    var mapViewElement = TestUtils.renderIntoDocument(React.createElement('MapView', {}, React.createElement('div', {}) ));
+
+    // // Look for DOM elements with that tag
+    // var mapView = TestUtils.findRenderedDOMComponentWithTag(mapViewElement, 'div');
+
+    // // Find that node on the DOM.
+    // var mapViewNode = React.findDOMNode(mapView);
+
+    expect(mapViewElement).to.exist;
+
+    done();
   })
 })
