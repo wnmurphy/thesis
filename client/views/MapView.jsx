@@ -173,6 +173,10 @@ var MapView = React.createClass({
     }
   },
 
+  center: function() {
+    this.state.map.panTo(this.state.position);
+  },
+  
   render: function () {
     return (
       <div className="map-view-container">
@@ -187,6 +191,11 @@ var MapView = React.createClass({
         <div className={this.state.refreshButton}>
           <a onClick={this.getSpots} className={this.state.buttonClass}>
             <i className="material-icons">refresh</i>
+          </a>
+        </div>
+        <div className="center-button-container">
+          <a onClick={this.center} className={this.state.buttonClass}>
+            <i className="material-icons">gps_fixed</i>
           </a>
         </div>
       </div>

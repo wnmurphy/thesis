@@ -2,6 +2,8 @@ var initMap = function (location, context, callback) {
 
   var position = new google.maps.LatLng(location.latitude, location.longitude);
 
+  context.setState({position: position});
+  
   var style = [
     {
       "featureType": "administrative.neighborhood",

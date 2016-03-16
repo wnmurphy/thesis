@@ -196,8 +196,8 @@ body {
 }
 
 .center-button-container{
-  left: calc(#{$nav-height} * 0.5);
-  top: calc(100% - (#{$nav-height} * 0.5));
+  left: calc(100vw - (#{$nav-height} * 1.5));
+  top: calc(100vh - (#{$nav-height} * 4.5));
 }
 
 .reset-button-container {
