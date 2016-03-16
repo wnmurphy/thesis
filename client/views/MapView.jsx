@@ -68,20 +68,6 @@ var MapView = React.createClass({
     })
   },
 
-  // getLocation: function (callback) {
-  //   var currentLocation = {};
-  //   var context = this;
-  //   navigator.geolocation.getCurrentPosition(function(position){
-  //     currentLocation.latitude = position.coords.latitude;
-  //     currentLocation.longitude = position.coords.longitude;
-  //     callback(currentLocation);
-  //     globalState.location = currentLocation;
-  //     context.setState({location: currentLocation});
-  //   }, function(error){
-  //     console.log(error);
-  //   });
-  // },
-
   initSpots: function () {
     // need to make this wait to run until map loads
     var context = this;
