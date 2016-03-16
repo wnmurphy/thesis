@@ -261,7 +261,6 @@ module.exports = {
   },
 
   getProfile: function(id, success, fail) {
-    console.log("id type", typeof id);
     var params = {
       TableName: "Users",
       FilterExpression: "#userId = (:userId)",
@@ -274,7 +273,6 @@ module.exports = {
     };
 
     dbSchema.scan(params, function(err, user) {
-      console.log("User: ", user.Items);
       if(err) {
         console.error('Error handling user sign in', err);
         fail(err);
