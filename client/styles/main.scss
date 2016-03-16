@@ -251,7 +251,6 @@ form {
 
   .category-icon-container, .spot-name-container{
     display: flex;
-    align-items: center;
   }
 
   .spot-name-container {
@@ -260,10 +259,12 @@ form {
   }
 
   .category-icon-container {
+    align-items: center;
     width: auto;
     justify-content: center;
     width: 2em;
     font-size: 1.5em;
+    height: 2.2em;
   }
 
   .spot-name {
