@@ -5,7 +5,16 @@ var SpotView = React.createClass({
     var hash = window.location.hash.substr(1);
     return {
       spotHash: hash,
-      spot: {}
+      shareProps: {
+        contents: 'Check out this Spot! http://localhost:8080/#' + hash,
+        subject: 'Check out Spotter',
+        url: 'http://localhost:8080/#' + hash
+      },
+      spot: {},
+      shareClass: "share-card-container",
+      buttonIcon: "fa fa-share-alt",
+      sharing: false
+
     };
   },
 
@@ -37,8 +46,19 @@ var SpotView = React.createClass({
       }
     });
   },
-  initMap: function() {
 
+  toggleShare: function () {
+    var sharing = !this.state.sharing;
+    var newState = {sharing: sharing};
+    if (sharing) {
+      newState.buttonIcon = "fa fa-times",
+      newState.shareClass = "share-card-container show-share-card"
+    } else {
+      newState.buttonIcon = "fa fa-share-alt",
+      newState.shareClass = "share-card-container"
+    }
+
+    this.setState(newState);
   },
 
   render: function() {
@@ -58,6 +78,14 @@ var SpotView = React.createClass({
           <h3>@{this.state.spot.start}</h3>
           <h4>created by: {this.state.spot.creator}</h4>
           <p>description: {this.state.spot.description}</p>
+        </div>
+        <div className={this.state.shareClass}>
+          <ShareCard shareProps={this.state.shareProps} />
+        </div>
+        <div className="share-button-container">
+          <a onClick={this.toggleShare} className="circle">
+            <i className={this.state.buttonIcon}></i>
+          </a>
         </div>
       </div>
     );
