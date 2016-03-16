@@ -33,7 +33,7 @@ var path = {
   ],
 
   testjsx: [
-    'tests/*.jsx',
+    'tests/*.jsx'
   ],
 
   html: [
