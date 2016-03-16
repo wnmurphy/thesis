@@ -34,7 +34,7 @@ module.exports = {
             console.error('Error updating data item', err);
           }
           else {
-            console.log('Updated data item successfully', data);
+            console.log('Updated data item successfully');
             if(spot.name && spot.creator && spot.category && spot.location && spot.description && spot.start) {
               params = {
               TableName: 'Spots',
@@ -72,7 +72,6 @@ module.exports = {
     //search is a string
     //username, user email
     //name, creator, description 
-    console.log('search', search);
     var queriedArr = [];
     var params = {
       TableName: 'Users',
@@ -117,7 +116,6 @@ module.exports = {
             data.Items.forEach(function(item) {
               queriedArr.push(item);
             });
-            console.log('queriedArr', queriedArr);
             success(queriedArr);
           }
         });
@@ -149,7 +147,6 @@ module.exports = {
   },
 
   signup: function(info, success, fail) {
-    console.log('info', info);
     var params = {
       TableName: "Users",
       FilterExpression: "#username in (:userid)",
@@ -181,7 +178,6 @@ module.exports = {
             fail(err);
           } 
           else {
-            console.log('incrementing');
             info.userId = data.Item.lastId + 1;
 
             params = {
@@ -191,7 +187,6 @@ module.exports = {
                 lastId: info.userId
               }
             };
-            console.log('params', params);
             dbSchema.put(params, function(err, data) {
               if(err) {
                 console.error('Error updating data item', err);
@@ -225,14 +220,12 @@ module.exports = {
         });
       }
       else {
-        console.log('data', data);
         fail("user already exists");
       }
     });
   },
 
   signin: function(info, success, fail) {
-    console.log('info', info);
     var params = {
       TableName: "Users",
       FilterExpression: "#username = (:userid)",
