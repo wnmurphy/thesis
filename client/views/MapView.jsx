@@ -159,6 +159,7 @@ var MapView = React.createClass({
       });
 
       var infoWindow = new google.maps.InfoWindow({
+        maxWidth: 150,
         content: contentString
       })
 
