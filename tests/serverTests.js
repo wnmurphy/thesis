@@ -250,14 +250,6 @@ describe("Persistent Spot and User Server", function() {
     });
     it('should get a spot', function(done) {
       params = {
-        TableName: 'Spots'
-      };
-      dbSchema.scan(params, function(err, spots) {
-        if (err) {
-          console.error(err);
-        }
-      });
-      params = {
         TableName: 'Spots',
         FilterExpression: "#name = (:name)",
         ExpressionAttributeNames: {
@@ -372,6 +364,77 @@ describe("Server routes", function() {
       }
       expect(res.statusCode).to.equal(200);
       expect(body).to.be.empty;
+      done();
+    });
+  });
+  it('should return a 200 when user logs in successfully', function(done) {
+    request({
+      method: "POST",
+      uri: "http://localhost:8080/api/login",
+      json: {
+        username: "Johnny",
+        password:  "password",
+        email:  "test@gmail.com"
+      }
+    }, function(err, res, body) {
+      if (err) {
+        console.error("Error logging Johnny in ", err);
+        done();
+      }
+      expect(res.statusCode).to.equal(200);
+      expect(body).to.be.not.empty;
+      expect(body).to.equal("Johnny");
+      done();
+    });
+  });
+  it('should return a 404 when user has wrong password', function(done) {
+    request({
+      method: "POST",
+      uri: "http://localhost:8080/api/login",
+      json: {
+        username: "Johnny",
+        password:  "wrong",
+        email:  "test@gmail.com"
+      }
+    }, function(err, res, body) {
+      if (err) {
+        console.error("Error logging Johnny in ", err);
+        done();
+      }
+      expect(res.statusCode).to.equal(404);
+      expect(body).to.be.not.empty;
+      done();
+    });
+  });
+  it('should return a 200 when getting a user\'s profile', function(done) {
+    request({
+      method: "GET",
+      uri: "http://localhost:8080/api/profile/999999999999"
+    }, function (err, res, body){
+      if (err) {
+        console.error("Error getting Johnny's profile ", err);
+        done();
+      }
+      body = JSON.parse(body);
+      expect(res.statusCode).to.equal(200);
+      expect(body.userId).to.equal(999999999999);
+      expect(body.username).to.equal('Johnny');
+      done();
+    });
+  });
+  it('should return a 200 when getting a spot', function(done) {
+    request({
+      method: "GET",
+      uri: "http://localhost:8080/api/spot/999999999999"
+    }, function (err, res, body){
+      if (err) {
+        console.error("Error getting Johnny's spot ", err);
+        done();
+      }
+      body = JSON.parse(body);
+      expect(res.statusCode).to.equal(200);
+      expect(body.spotId).to.equal(999999999999);
+      expect(body.creator).to.equal('Johnny');
       done();
     });
   });
