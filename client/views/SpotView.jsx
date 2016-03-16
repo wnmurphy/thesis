@@ -29,7 +29,7 @@ var SpotView = React.createClass({
         context.setState({spot: data});
         console.log("SUCCESS: ", context.state.spot);
         context.setState({loading: false});
-        context.initMap();
+        initMap(data.location, context);
       },
       error: function (error) {
         console.log("ERROR: ", error);
