@@ -100,20 +100,51 @@ var MapView = React.createClass({
       if(spot.start) {
         start = Number(spot.start.split(":")[0]);
         startMinutes = spot.start.split(":")[1];
-        console.log('wtf?', start > 12);
-        if(start > 12) {
-          start -= 12;
+        if(start < 12) {
+          start_am_pm = 'AM';
+        }
+        if(start === 12) {
           start_am_pm = 'PM';
         }
+        if(start === 0) {
+          start = 12;
+          start_am_pm = 'AM';
+        }
+        if(start > 12) {
+          if(start === 12) {
+            start_am_pm = 'PM';
+          }
+          else {
+            start -= 12;
+            start_am_pm = 'PM';
+          }
+        }
+        
       }
 
       if(spot.end) {
         end = Number(spot.end.split(":")[0]);
         endMinutes = spot.end.split(":")[1];
-        if(end > 12) {
-          end -= 12;
+        if(end < 12) {
+          end_am_pm = 'AM';
+        }
+        if(end === 12) {
           end_am_pm = 'PM';
         }
+        if(end === 0) {
+          end = 12;
+          end_am_pm = 'AM';
+        }
+        if(end > 12) {
+          if(end === 12) {
+            end_am_pm = 'PM';
+          }
+          else {
+            end -= 12;
+            end_am_pm = 'PM';
+          }
+        }
+        
       }
 
       var contentString = '<div>Name: ' + spot.name + '</div>' +
