@@ -12,7 +12,7 @@ var CreateView = React.createClass({
     return globalState.createState || {}
   },
 
-  searchMap: function (map, position) {
+  searchMap: function (map, position, marker) {
 
     var context = this;
 
@@ -27,14 +27,6 @@ var CreateView = React.createClass({
     });
 
     this.setState({infowindow: infowindow});
-
-    var marker = new google.maps.Marker({
-      map: map,
-      position: position,
-      getPosition: function() {
-        return this.position;
-      }
-    });
 
     this.setState({marker: marker}, function() {
       google.maps.event.addListener(context.state.marker, 'click', function() {
