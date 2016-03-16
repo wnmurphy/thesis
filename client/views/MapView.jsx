@@ -151,7 +151,8 @@ var MapView = React.createClass({
                           '<div>Category: ' + spot.category + '</div>' +
                           '<div>Description: ' + spot.description + '</div>' +
                           '<div>Start Time: ' + start + ':' + startMinutes + ' ' + start_am_pm + '</div>' +
-                          '<div>End Time: ' + end + ':' + endMinutes + ' ' + end_am_pm + '</div>';
+                          '<div>End Time: ' + end + ':' + endMinutes + ' ' + end_am_pm + '</div>' +
+                          '<div><a href="#/spot/' + spot.spotId +'">More Details</a></div>';
 
       var icon = {
         url: '/pin.png'
