@@ -9,16 +9,16 @@ var browserHistory = useRouterHistory(createHashHistory)({queryKey: false});
 var globalState = {};
 
 var categories = {
-  "Food Truck": "fa fa-anchor",
-  General: "fa fa-anchor",
-  Food: "fa fa-anchor",
-  Entertainment: "fa fa-anchor",
-  "Health & Fitness": "fa fa-anchor",
-  "Arts & Culture": "fa fa-anchor",
-  "Parties & Nightlife": "fa fa-anchor",
-  "Nature & Outdoors": "fa fa-anchor",
-  Politics: "fa fa-anchor",
-  Education: "fa fa-anchor"
+  "Food Truck": "fa fa-truck",
+  General: "fa fa-asterisk",
+  Food: "fa fa-cutlery",
+  Entertainment: "fa fa-ticket",
+  "Health & Fitness": "fa fa-heartbeat",
+  "Arts & Culture": "fa fa-paint-brush",
+  "Parties & Nightlife": "fa fa-glass",
+  "Nature & Outdoors": "fa fa-tree",
+  Politics: "fa fa-hand-peace-o",
+  Education: "fa fa-graduation-cap"
 }
 
 var routes = (
