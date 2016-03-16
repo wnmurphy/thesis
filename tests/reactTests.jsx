@@ -1,25 +1,3 @@
-var React = require('react');
-var expect = require('chai').expect;
-var TestUtils = require('react-addons-test-utils'); 
-
-// ======================================
-
-// Mock the DOM
-var jsdom = require('jsdom');
-var doc = jsdom.jsdom('<!doctype html><html><body></body></html>');
-var win = doc.defaultView;
-global.document = doc;
-global.window = win;
-
-// Copy keys from window to global
-function propagateToGlobal (window) {
-  for (var key in window) {
-    if (!window.hasOwnProperty(key)) continue;
-    if (key in global) continue;
-    global[key] = window[key];
-  }
-}
-propagateToGlobal(win);
 
 // ======================================
 
@@ -31,15 +9,25 @@ afterEach(function(done) {
 
 // ======================================
 
+describe('App', function () {
+
+  it('should exist', function () {
+    expect(categories).to.exist;
+  });
+});
+
 describe('MapView', function () {
 
+  it('should exist', function () {
+    expect(MapView).to.exist;
+  });
+
   it('renders on the DOM', function () {
-    var MapView = require('../client/dist/src/views/MapView.js');
     console.log('MapView is: ', JSON.stringify(MapView));
-    var MapViewDiv = TestUtils.renderIntoDocument(
+    var MapViewDiv = React.addons.TestUtils.renderIntoDocument(
       <MapView />
     );
-    var MapViewExists = TestUtils.findRenderedDOMComponentWithTag(MapView, 'div');
+    var MapViewExists = React.addons.TestUtils.findRenderedDOMComponentWithTag(MapView, 'div');
     // First arg is ReactComponent tree, whatever that is
   });
 

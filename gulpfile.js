@@ -29,7 +29,8 @@ var path = {
     '!client/dist/*.js',
     '!client/dist/*.jsx',
     '!client/dist/**/*.js',
-    '!client/dist/**/*.jsx'
+    '!client/dist/**/*.jsx',
+    '!client/lib/**/*.js'
   ],
 
   testjsx: [

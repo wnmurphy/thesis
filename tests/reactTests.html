@@ -4,8 +4,15 @@
     <title>Mocha Spec Runner</title>
     <link rel="stylesheet" href="../client/lib/mocha/mocha.css">
     <script src="../client/lib/jquery/dist/jquery.js"></script>
+    <script src="../client/lib/react/react.js"></script>
     <script src="../client/lib/react/react-dom.js"></script>
     <script src="../client/lib/react/react-with-addons.js"></script>
+    <script src="https://npmcdn.com/react-router/umd/ReactRouter.min.js"></script>
+
+    <script src="https://npmcdn.com/history/umd/History.min.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?libraries=places"></script>
+    <script src="https://cdn.socket.io/socket.io-1.4.5.js"></script>
+
     <script src="../client/lib/mocha/mocha.js"></script>
     <script src="../client/lib/chai/chai.js"></script>
     <script>
@@ -19,11 +26,26 @@
     <!-- Spec files -->
     <script src="reactTests.js"></script>
 
-    <!-- Source files -->
-    <script src="../client/dist/src/views/MapView.js"></script>
-
   </head>
   <body>
+    <!-- Source files -->
+    <script src="../client/controllers/MapController.js"></script>
+    <script src="../client/controllers/LocationController.js"></script>
+    <script src="../client/dist/src/views/SpotView.js"></script>
+    <script src="../client/dist/src/views/MapView.js"></script>
+    <script src="../client/dist/src/views/FeedView.js"></script>
+    <script src="../client/dist/src/views/ProfileView.js"></script>
+    <script src="../client/dist/src/views/SearchView.js"></script>
+    <script src="../client/dist/src/views/CreateView.js"></script>
+    <script src="../client/dist/src/views/LoginView.js"></script>
+    <script src="../client/dist/src/views/SignupView.js"></script>
+    <script src="../client/dist/src/components/NavBar.js"></script>
+    <script src="../client/dist/src/components/ShareCard.js"></script>
+    <script src="../client/dist/src/app.js"></script>
+
     <div id="mocha"></div>
   </body>
 </html>
+
+
+    
