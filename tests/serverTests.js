@@ -9,18 +9,18 @@ var request = require('request');
 var db = new aws.DynamoDB();
 var dbSchema = new aws.DynamoDB.DocumentClient();
 
-describe("Persistent Spot and User Server", function() {
-  
-  beforeEach(function(done) {
-    aws.config.update({
+aws.config.update({
       accessKeyId: "fakeAccessKey",
       secretAccessKey: "fakeSecretAccessKey",
       region: "fakeRegion",
       endpoint: new aws.Endpoint('http://localhost:8000')
     });
 
+describe("Persistent Spot and User Server", function() {
+  
+  beforeEach(function(done) {
     
-    //delete previous testing spot(s)
+    //delete previous testing spot(s) and seed a test spot
     var params = {
       TableName: 'Spots',
       FilterExpression: "#name = (:name)",
@@ -32,75 +32,113 @@ describe("Persistent Spot and User Server", function() {
       }
     };
     dbSchema.scan(params, function(err, data) {
-      data.Items.forEach(function(spot) {
-        var id = spot.spotId;
-        params = {
-          TableName: 'Spots',
-          Key: {
-            spotId: id
-          }
-        };
-        dbSchema.delete(params, function(err, data) {
-          if (err) {console.error("Error deleting Johnny's spot ", err);}
-          //create a new spot "test1" for testing
+      //if any spots were found with name of 'test1', delete each of them
+      if (data.Count > 0) {
+        data.Items.forEach(function(spot) {
+          var id = spot.spotId;
           params = {
             TableName: 'Spots',
-            Item: {
-              name: "test1", 
-              creator: 'Johnny', 
-              category: 'entertainment',
-              location: 'Arizona',
-              description: 'test createSpot',
-              start: '10'
-            }
-          };
-          dbSchema.put(params, function(err, data) {
-            if (err) {console.error("Error creating Johnny's spot ", err);}
-          });
-        });
-      });
-    });
-    //delete previously signed up test user
-    params = {
-      TableName: 'Users',
-      FilterExpression: "#email = (:email)",
-      ExpressionAttributeNames:{
-          "#email": "email"
-      },
-      ExpressionAttributeValues: {
-          ":email": 'test@gmail.com'
-      }
-    };
-    dbSchema.scan(params, function(err, data) {
-      if (data.Count > 0) {
-        data.Items.forEach(function(user) {
-          var id = user.userId;
-          params = {
-            TableName: 'Users',
             Key: {
-              userId: id
+              spotId: id
             }
           };
           dbSchema.delete(params, function(err, data) {
-            if (err) {console.error("Error deleting test users ", err);}
-            //create a new user "Johnny for testing"
+            if (err) {console.error("Error deleting Johnny's spot ", err);}
+            //create a new spot "test1" for testing
             params = {
-              TableName: 'Users',
+              TableName: 'Spots',
               Item: {
-                username: 'Johnny',
-                password: 'password',
-                email: 'test@gmail.com'
+                spotId: 999999999999,
+                name: "test1", 
+                creator: 'Johnny', 
+                category: 'entertainment',
+                location: 'Arizona',
+                description: 'test createSpot',
+                start: '10'
               }
             };
             dbSchema.put(params, function(err, data) {
-              if (err) {console.error("Error creating Johnny ", err);}
+              if (err) {console.error("Error creating Johnny's spot", err);}
             });
           });
         });
+      } else {
+        //if none were found, just add the test spot
+        params = {
+          TableName: 'Spots',
+          Item: {
+            spotId: 999999999999,
+            name: "test1", 
+            creator: 'Johnny', 
+            category: 'entertainment',
+            location: 'Arizona',
+            description: 'test createSpot',
+            start: '10'
+          }
+        };
+        dbSchema.put(params, function(err, data) {
+          if (err) {console.error("Error creating Johnny's spot", err);}
+        });
       }
     });
+    //delete previously signed up test user and seed a test user
+    var seedUser = function() {
+      params = {
+        TableName: 'Users',
+        FilterExpression: "#email = (:email)",
+        ExpressionAttributeNames:{
+            "#email": "email"
+        },
+        ExpressionAttributeValues: {
+            ":email": 'test@gmail.com'
+        }
+      };
+      dbSchema.scan(params, function(err, data) {
+        if (data.Count > 0) {
+          data.Items.forEach(function(user) {
+            var id = user.userId;
+            params = {
+              TableName: 'Users',
+              Key: {
+                userId: id
+              }
+            };
+            dbSchema.delete(params, function(err, data) {
+              if (err) {console.error("Error deleting test users ", err);}
+              //create a new user "Johnny for testing"
+              params = {
+                TableName: 'Users',
+                Item: {
+                  userId: 999999999999,
+                  username: 'Johnny',
+                  password: 'password',
+                  email: 'test@gmail.com'
+                }
+              };
+              dbSchema.put(params, function(err, data) {
+                if (err) {console.error("Error creating Johnny", err);}
+                done();
+              });
+            });
+          });
+        } else {
+          params = {
+            TableName: 'Users',
+            Item: {
+              userId: 999999999999,
+              username: 'Johnny',
+              password: 'password',
+              email: 'test@gmail.com'
+            }
+          };
+          dbSchema.put(params, function(err, data) {
+            if (err) {console.error("Error creating Johnny", err);}
+            done();
+          });
+        }
+      });
+    };
     
-    done();
   });
   describe("Helper Functions", function() {
     it("should create spots and be able to search for spots", function(done){
@@ -183,7 +221,6 @@ describe("Persistent Spot and User Server", function() {
         username: 'Johnny',
         password: 'password',
       }, function(user){
-        //expects
         expect(user.Items[0].password).to.equal('password');
         expect(user.Items[0].username).to.equal('Johnny');
         done();
@@ -194,7 +231,7 @@ describe("Persistent Spot and User Server", function() {
     });
     it('should get user\' profile', function(done) {
       helpers.getProfile('Johnny', function(profile){
-        expect(profile.userId).to.exist();
+        expect(profile.userId).to.exist;
         expect(profile.username).to.equal('Johnny');
         expect(profile.email).to.equal('test@gmail.com');
         done();
@@ -204,6 +241,15 @@ describe("Persistent Spot and User Server", function() {
       });
     });
     it('should get a spot', function(done) {
+      params = {
+        TableName: 'Spots'
+      };
+      dbSchema.scan(params, function(err, spots) {
+        if (err) {
+          console.error(err);
+        }
+        console.log("All spots: ", spots.Items);
+      });
       params = {
         TableName: 'Spots',
         FilterExpression: "#name = (:name)",
@@ -215,13 +261,15 @@ describe("Persistent Spot and User Server", function() {
         }
       };
       dbSchema.scan(params, function(err, spots) {
-        console.log('spots: ', spots);
+        console.log("spots: ", spots.Items);
         if (err) {
           console.error("error creating Johnny's spot", err);
           done();
         }
         var spot = spots.Items[0];
         helpers.getSpot(spot.spotId, function(found){
+                  console.log("in here");
+
           expect(found.spotId).to.equal(spot.spotId);
           expect(found.name).to.equal('test1');
           expect(found.category).to.equal('entertainment');
