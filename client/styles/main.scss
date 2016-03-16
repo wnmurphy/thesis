@@ -30,6 +30,7 @@ body {
   height: $nav-height;
   width: $nav-height;
   text-decoration: none;
+  z-index: 1000;
 }
 
 .hide {
@@ -91,7 +92,7 @@ body {
   width: 100vw;
   justify-content: center;
   align-items: center;
-  background-color: #fff;
+  background-color: rgba(0,0,0,.75);
 
   a {
     display: inline-flex;
@@ -101,7 +102,7 @@ body {
     width: $nav-height;
     color: #fff;
     text-decoration: none;
-    border: 2px solid #fff;
+    margin: 4px;
 
     &.sms {
       background-color: #6fe490;
@@ -170,6 +171,7 @@ body {
 
 .create-button-container, .refresh-button-container, .center-button-container, .reset-button-container, .share-button-container {
   position: absolute;
+  z-index: 1000;
   top: calc(#{$nav-height} * 0.5);
 
   a {
@@ -279,14 +281,17 @@ form {
 
 .share-card-container {
   position: fixed;
-  top: 100%;
+  top: 0px;
   height: 100%;
   width: 100%;
-  -webkit-transition: all 1s;
-          transition: all 1s;
+  z-index: -1;
+  opacity: 0;
+  -webkit-transition: all 0.5s;
+          transition: all 0.5s;
 }
 
 .show-share-card {
-  top: 0px;
+  z-index: 1;
+  opacity: 100;
 
 }
