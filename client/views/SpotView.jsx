@@ -80,8 +80,8 @@ var SpotView = React.createClass({
           <p>description: {this.state.spot.description}</p>
           <p>address: {this.state.spot.address}</p>
         </div>
-        <div className={this.state.shareClass}>
-          <ShareCard shareProps={this.state.shareProps} />
+        <div className={this.state.shareClass} onClick={this.toggleShare}>
+          <ShareCard shareProps={this.state.shareProps}/>
         </div>
         <div className="share-button-container">
           <a onClick={this.toggleShare} className="circle">
