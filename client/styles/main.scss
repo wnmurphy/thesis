@@ -207,6 +207,13 @@ body {
 // Everything from here down can likely be removed when Material-UI is implimented
 form {
   padding: 20px;
+  
+  select {
+    padding: 5px;
+    margin: 5px;
+    font-size: 1.5em;
+    width: calc(100% - 5px);
+  }
 
   input {
     padding: 5px;
@@ -225,6 +232,10 @@ form {
       background-color: $color-light;
     }
   }
+}
+
+.time-input {
+  margin-left: 5px;
 }
 
 .create-map-view-container {

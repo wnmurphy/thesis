@@ -206,9 +206,9 @@ var CreateView = React.createClass({
               {this.state.categoryOptions}
             </select>
             <input type="text" id="description" placeholder="Description" defaultValue={this.state.description || ''} required />
-            <span>Start Time</span>
+            <span className="time-input">Start Time</span>
             <input type="time" id="start" placeholder="Start" defaultValue={this.state.start || ''} required />
-            <span>End Time</span>
+            <span className="time-input">End Time</span>
             <input type="time" id="end" placeholder="End" defaultValue={this.state.end || ''} />
             <input type="submit" value="submit" />
           </form>
