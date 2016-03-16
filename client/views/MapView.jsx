@@ -56,7 +56,7 @@ var MapView = React.createClass({
       success: function (data) {
         globalState.spots = data;
         context.setState({spots: data});
-        console.log("SUCCESS: ", context.state.spots);
+        //console.log("SUCCESS: ", context.state.spots);
         context.setState({refreshButton: "refresh-button-container"});
         context.initSpots();
 
@@ -168,7 +168,7 @@ var MapView = React.createClass({
         infoWindow.open(context.state.map, this);
         context.setState({selected: this.getId()});
         context.state.map.panTo(this.getPosition());
-        console.log(context.state.selected);
+        //console.log(context.state.selected);
       })
     }
   },
