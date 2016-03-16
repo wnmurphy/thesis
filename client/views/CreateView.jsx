@@ -9,7 +9,15 @@ var CreateView = React.createClass({
   },
 
   getInitialState: function () {
-    return globalState.createState || {}
+    var categoryOptions = [];
+    for (var category in categories) {
+      categoryOptions.push(
+        <option id="category" value={category}>
+          <i className={categories[category]}></i>
+          {category}
+        </option>);
+    }
+    return globalState.createState || {categoryOptions: categoryOptions};
   },
 
   searchMap: function (map, position) {
@@ -17,7 +25,7 @@ var CreateView = React.createClass({
     var context = this;
 
     var input = (document.getElementById('address'));
-    
+
     var autocomplete = new google.maps.places.Autocomplete(input);
 
     autocomplete.bindTo('bounds', map);
@@ -45,7 +53,7 @@ var CreateView = React.createClass({
       google.maps.event.addListener(autocomplete, 'place_changed', function() {
 
         infowindow.close();
-        
+
         var place = autocomplete.getPlace();
 
         context.setState({location: {latitude: place.geometry.location.lat(), longitude: place.geometry.location.lng() } });
@@ -70,7 +78,7 @@ var CreateView = React.createClass({
         }));
 
         context.state.marker.setVisible(true);
-        
+
         var parts = place.formatted_address.split(',');
         var street = parts[0];
         var locality = parts[1] + ', ' + parts[2];
@@ -177,6 +185,7 @@ var CreateView = React.createClass({
       value: this.state.category,
       requestChange: this.selectChange
     };
+    console.log(this.state.categoryOptions);
     return (
       <div>
         <div className="create-map-view-container">
@@ -194,14 +203,7 @@ var CreateView = React.createClass({
             <input type="text" id="creator" placeholder="User" defaultValue={this.state.creator || ''} />
             <select valueLink={valueLink}>
               <option id="category">Select Category</option>
-              <option id="category" value="Food">Food</option>
-              <option id="category" value="Entertainment">Entertainment</option>
-              <option id="category" value="Health & Fitness">Health & Fitness</option>
-              <option id="category" value="Arts & Culture">Arts & Culture</option>
-              <option id="category" value="Parties & Nightlife">Parties & Nightlife</option>
-              <option id="category" value="Nature & Outdoors">Nature & Outdoors</option>
-              <option id="category" value="Politics">Politics</option>
-              <option id="category" value="Education">Education</option>
+              {this.state.categoryOptions}
             </select>
             <input type="text" id="description" placeholder="Description" defaultValue={this.state.description || ''} />
             <input type="time" id="start" placeholder="Start Time" defaultValue={this.state.start || ''} />
