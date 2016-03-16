@@ -1,47 +1,34 @@
-// var React = require('react');
-// var expect = require('chai').expect;
-// var TestUtils = require('react-addons-test-utils'); 
 
-// // ======================================
+// ======================================
 
-// // Mock the DOM
-// var jsdom = require('jsdom');
-// var doc = jsdom.jsdom('<!doctype html><html><body></body></html>');
-// var win = doc.defaultView;
-// global.document = doc;
-// global.window = win;
+// Unmount component after each test to clean up.
+afterEach(function(done) {
+    React.unmountComponentAtNode(document.body);       
+    setTimeout(done);
+})
 
-// // Copy keys from window to global
-// function propagateToGlobal (window) {
-//   for (var key in window) {
-//     if (!window.hasOwnProperty(key)) continue;
-//     if (key in global) continue;
-//     global[key] = window[key];
-//   }
-// }
-// propagateToGlobal(win);
+// ======================================
 
-// // ======================================
+describe('App', function () {
 
-// // Unmount component after each test to clean up.
-// afterEach(function(done) {
-//     React.unmountComponentAtNode(document.body);       
-//     setTimeout(done);
-// })
-
-// // ======================================
+  it('should exist', function () {
+    expect(globalState).to.exist;
+  });
+});
 
 describe('MapView', function () {
 
+  it('should exist', function () {
+    expect(MapView).to.exist;
+  });
+
   it('renders on the DOM', function () {
-    // var MapView = require('../client/dist/src/views/MapView.js');
     console.log('MapView is: ', JSON.stringify(MapView));
-    var MapViewDiv = TestUtils.renderIntoDocument(
+    var MapViewDiv = React.addons.TestUtils.renderIntoDocument(
       React.createElement(MapView, null)
     );
-    var MapViewExists = TestUtils.findRenderedDOMComponentWithTag(MapView, 'div');
+    var MapViewExists = React.addons.TestUtils.findRenderedDOMComponentWithTag(MapView, 'div');
     // First arg is ReactComponent tree, whatever that is
-    // 
   });
 
 
