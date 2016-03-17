@@ -87,75 +87,49 @@ var MapView = React.createClass({
   initSpots: function () {
     // need to make this wait to run until map loads
     var context = this;
-    var start_am_pm = 'AM';
-    var end_am_pm = 'AM'
+
     for(var i = 0; i < this.state.spots.length; i++) {
 
       var spot = this.state.spots[i];
-      var start, end, startMinutes, endMinutes;
-
 
       if(spot.lastId) {
         continue;
       }
 
-      if(spot.start) {
-        start = Number(spot.start.split(":")[0]);
-        startMinutes = spot.start.split(":")[1];
+      var start = Number(spot.start.split(':').join(''));
+      var end = Number(spot.start.split(':').join(''));
+      var current = getTime();
 
-        if(start > 12) {
-          start -= 12;
-          start_am_pm = 'PM';
+      var time;
+
+      if (start > current) {
+        var starting = start - current;
+        var string = String(starting);
+        if (string.length < 4) {
+          string = '0' + string;
         }
-        if(start === 0) {
-          start = 12;
-          start_am_pm = 'AM';
+        var hours = string.substr(0, 2);
+        var minutes = string.substr(1, 2);
+        if (string.charAt(2) === '0') {
+          minutes = string.charAt(3);
         }
-        if(start > 12) {
-          if(start === 12) {
-            start_am_pm = 'PM';
-          }
-          else {
-            start -= 12;
-            start_am_pm = 'PM';
-          }
+        if (string.charAt(0) === '0') {
+          hours = string.charAt(1);
         }
 
+        time = "in " + hours + " hours and " + minutes + " minutes";
       }
 
-      if(spot.end) {
-        end = Number(spot.end.split(":")[0]);
-        endMinutes = spot.end.split(":")[1];
-        if(end < 12) {
-          end_am_pm = 'AM';
-        }
-        if(end === 12) {
-          end_am_pm = 'PM';
-        }
-        if(end === 0) {
-          end = 12;
-          end_am_pm = 'AM';
-        }
-        if(end > 12) {
-          if(end === 12) {
-            end_am_pm = 'PM';
-          }
-          else {
-            end -= 12;
-            end_am_pm = 'PM';
-          }
-        }
-
-      }
+      console.log(time);
 
       var contentString = '<div><strong>' + spot.name + '</strong></div>' +
                           '<div>' + spot.creator + '</div>' +
                           '<div><small>' + spot.category + '</small></div>' +
-                          '<div><small>Start: ' + start + ':' + startMinutes + ' ' + start_am_pm + '</small></div>';
+                          '<div><small>' + time + '</small></div>';
 
-      if (end) {
-        contentString += '<div><small>End: ' + end + ':' + endMinutes + ' ' + end_am_pm + '</small></div>';
-      }
+      // if (end) {
+      //   contentString += '<div><small>End: ' + end + ':' + endMinutes + ' ' + end_am_pm + '</small></div>';
+      // }
 
       contentString += '<div><a href="#/spot/' + spot.spotId +'">More Details</a></div>';
 

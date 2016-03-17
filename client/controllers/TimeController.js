@@ -1,7 +1,6 @@
 var getTime = function() {
-  var time = {};
   var date = new Date();
-  time.hours = date.getHours();
-  time.minutes = date.getMinutes();
-  return time;
+  var hours = date.getHours();
+  var minutes = date.getMinutes();
+  return Number(hours.toString() + minutes.toString());
 };
