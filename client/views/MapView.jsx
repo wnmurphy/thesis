@@ -13,7 +13,9 @@ var MapView = React.createClass({
       selected: {},
       location: globalState.location,
       refreshButton: "refresh-button-container",
-      buttonClass: "hide"
+      buttonClass: "hide",
+      filterSearch: "",
+      markers: []
     };
   },
 
@@ -150,11 +152,15 @@ var MapView = React.createClass({
         map: context.state.map,
         id: spot.spotId,
         info: contentString,
+        fields: spot.name + " " + spot.description + " " + spot.category,
         getId: function() {
           return this.id;
         },
         getPosition: function() {
           return this.position;
+        },
+        getFields: function() {
+          return this.fields;
         }
       });
 
@@ -162,6 +168,11 @@ var MapView = React.createClass({
         maxWidth: 150,
         content: contentString
       })
+
+      var array = this.state.markers;
+      array.push(spot);
+
+      this.setState({markers: array});
 
       google.maps.event.addListener(spot, 'click', function () {
         infoWindow.setContent(this.info);
@@ -198,6 +209,9 @@ var MapView = React.createClass({
             <i className="material-icons">gps_fixed</i>
           </a>
         </div>
+        <div className="filter-search">
+          <FilterSearch filterSearch={this.state.filterSearch} context={this} markers={this.state.markers} />
+        </div>
       </div>
     );
   }
@@ -216,3 +230,36 @@ var LoadScreen = React.createClass({
     )
   }
 })
+
+var FilterSearch = React.createClass({
+  getInitialState: function () {
+    return {
+      filter: ''
+    }
+  },
+  handleChange: function (event) {
+    console.log('markers', this.props.markers);
+    var search = new RegExp(event.target.value, 'gi');
+
+    this.props.markers.forEach(function(marker) {
+      var fields = marker.getFields();
+      if(fields.match(search)) {
+        console.log('MATCHHHH', event.target.value);
+        marker.setVisible(true);
+      }
+      else {
+        marker.setVisible(false);
+      }
+    });
+    
+  },
+  render: function () {
+    return (
+      <div>   
+        <form onChange={this.handleChange}>
+          <input type="text" id="filter-search" placeholder="Filter your Search" defaultValue={this.state.filter || ''} />
+        </form>
+      </div>
+    )
+  }
+});
