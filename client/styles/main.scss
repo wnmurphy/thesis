@@ -260,15 +260,6 @@ form {
 @-webkit-keyframes spin { 100% { -webkit-transform: rotate(360deg); } }
 @keyframes spin { 100% { -webkit-transform: rotate(360deg); transform:rotate(360deg); } }
 
-
-.gmnoprint a, .gmnoprint span {
-  display:none;
-}
-
-.gmnoprint div {
-  background:none !important;
-}
-
 .spot-view-container {
   padding: 0 3em;
 
@@ -316,7 +307,20 @@ form {
   display: none!important; 
 }
 
-// #map-controls {
+.gmnoprint a, .gmnoprint span {
+  display: none;
+}
+
+.gm-style-cc div{
+  background: none !important;
+}
+
+.gmnoprint div[title='Zoom in'] {
+  background: initial;
+  background-color: rgb(255, 255, 255);
+}
+
+// .gmnoprint div {
 //   position: absolute;
 //   left: calc(100vw - 21.25px);
 //   top: calc(100vh - 52.5px);
