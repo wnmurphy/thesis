@@ -1,4 +1,4 @@
-
+var utils = React.addons.TestUtils;
 // ======================================
 
 // Unmount component after each test to clean up.
@@ -11,9 +11,14 @@ afterEach(function(done) {
 
 describe('App', function () {
 
-  it('should exist', function () {
+  it('categories object in App should exist', function () {
     expect(categories).to.exist;
   });
+
+  it('should be an object', function () {
+    expect(categories).to.be.an('object');
+  });
+
 });
 
 describe('MapView', function () {
@@ -22,17 +27,17 @@ describe('MapView', function () {
     expect(MapView).to.exist;
   });
 
-  it('renders on the DOM', function () {
-    console.log('MapView is: ', JSON.stringify(MapView));
-    var MapViewDiv = React.addons.TestUtils.renderIntoDocument(
-      <MapView />
-    );
-    var MapViewExists = React.addons.TestUtils.findRenderedDOMComponentWithTag(MapView, 'div');
-    // First arg is ReactComponent tree, whatever that is
+  it('should be an function', function () {
+    expect(MapView).to.be.an('function');
   });
 
-
-
+  it('renders on the DOM', function () {
+    var renderer = utils.createRenderer();
+    renderer.render(<MapView />);
+    var result = renderer.getRenderOutput();
+    console.log(result);
+    expect(result.type).to.equal('div'); 
+  });
 
 
 

@@ -68,7 +68,11 @@ gulp.task('watch', function() {
   gulp.watch(path.all, ['transform', 'styles']);
 });
 
-gulp.task('default', ['watch']);
+gulp.task('watchtests', function() {
+  gulp.watch(path.testjsx, ['test']);
+});
+
+gulp.task('default', ['watch', 'watchtests']);
 
 gulp.task('build', function() {
   gulp.src(path.js)
