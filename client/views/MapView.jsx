@@ -7,14 +7,24 @@ var welcomeScreenTimeout = 1000;
 
 var MapView = React.createClass({
 
+  getDefaultProps: function () {
+    return {
+      collapseButtonContainer: "collapse-button-container",
+      filterSearchClass: "filter-search",
+      refreshButtonContainer: "refresh-button-container",
+      centerButtonContainer: "center-button-container"
+    }
+  },
+
   getInitialState: function () {
     return {
       spots: globalState.spots,
       selected: {},
       location: globalState.location,
-      refreshButton: "refresh-button-container",
+      refreshingClass: "",
       buttonClass: "hide",
       filterClass: "hide",
+      showButtonClass: "",
       markers: []
     };
   },
@@ -51,7 +61,7 @@ var MapView = React.createClass({
 
     var context = this;
 
-    this.setState({refreshButton: "refresh-button-container spin"});
+    this.setState({refreshingClass: " spin"});
 
     $.ajax({
       method: 'GET',
@@ -61,13 +71,13 @@ var MapView = React.createClass({
         globalState.spots = data;
         context.setState({spots: data});
         //console.log("SUCCESS: ", context.state.spots);
-        context.setState({refreshButton: "refresh-button-container"});
+        context.setState({refreshingClass: ""});
         context.initSpots();
 
       },
       error: function (error) {
         console.log("ERROR: ", error);
-        context.setState({refreshButton: "refresh-button-container"});
+        context.setState({refreshingClass: ""});
       }
     })
   },
@@ -189,6 +199,17 @@ var MapView = React.createClass({
     this.state.map.panTo(this.state.position);
   },
 
+  collapseClick: function () {
+    console.log('collapse button clicked!')
+    var newState = {};
+    if (this.state.showButtonClass === "") {
+      newState.showButtonClass = "-show";
+    } else {
+      newState.showButtonClass = "";
+    }
+    this.setState(newState);
+  },
+
   render: function () {
     return (
       <div className="map-view-container">
@@ -200,17 +221,22 @@ var MapView = React.createClass({
             <i className="material-icons">add</i>
           </a>
         </div>
-        <div className={this.state.refreshButton}>
+        <div className={this.props.collapseButtonContainer + " " + this.props.collapseButtonContainer + this.state.showButtonClass} onClick={this.collapseClick}>
+          <a className={this.state.buttonClass}>
+            <i className="fa fa-caret-square-o-right"></i>
+          </a>
+        </div>
+        <div className={this.props.refreshButtonContainer + " " + this.props.refreshButtonContainer + this.state.showButtonClass + this.state.refreshingClass}>
           <a onClick={this.getSpots} className={this.state.buttonClass}>
             <i className="material-icons">refresh</i>
           </a>
         </div>
-        <div className="center-button-container">
+        <div className={this.props.centerButtonContainer + " " + this.props.centerButtonContainer + this.state.showButtonClass}>
           <a onClick={this.center} className={this.state.buttonClass}>
             <i className="material-icons">gps_fixed</i>
           </a>
         </div>
-        <div className="filter-search">
+        <div className={this.props.filterSearchClass + " " + this.props.filterSearchClass + this.state.showButtonClass}>
           <FilterSearch filterClass={this.state.filterClass} markers={this.state.markers} />
         </div>
       </div>
@@ -249,11 +275,11 @@ var FilterSearch = React.createClass({
         marker.setVisible(false);
       }
     });
-    
+
   },
   render: function () {
     return (
-      <div style={{width: 'calc(100vw / 2)', opacity: '0.75'}}>   
+      <div style={{width: 'calc(100vw / 2)', opacity: '0.75'}}>
         <form className={this.props.filterClass} style={{padding: '0px'}} onChange={this.handleChange}>
           <input type="text" id="filter-search" placeholder="Filter Spots" defaultValue={this.state.filter || ''} />
         </form>

@@ -170,9 +170,15 @@ body {
   }
 }
 
-.create-button-container, .refresh-button-container, .center-button-container, .reset-button-container, .share-button-container, .filter-search {
+// ******************** MapView Button Stuff *************************** //
+.create-button-container, .collapse-button-container, .refresh-button-container,
+.center-button-container, .reset-button-container, .share-button-container,
+.filter-search {
+  -webkit-transition: all 1s;
+          transition: all 1s;
+
   position: absolute;
-  z-index: 1000;
+  z-index: 900;
   top: calc(#{$nav-height} * 0.5);
 
   a {
@@ -191,13 +197,39 @@ body {
   left: calc(100vw - (#{$nav-height} * 1.5));
 }
 
-.refresh-button-container {
+.collapse-button-container,
+.refresh-button-container,
+.center-button-container {
   left: calc(#{$nav-height} * 0.5);
 }
 
-.center-button-container{
-  left: calc(#{$nav-height} * 0.5);
-  top: calc(100vh - (#{$nav-height} * 2.50));
+.refresh-button-container,
+.center-button-container {
+  opacity: 0;
+  z-index: -1;
+}
+
+.refresh-button-container-show {
+  z-index: 900;
+  opacity: 100;
+  top: calc(#{$nav-height} * 1.7);
+}
+
+.center-button-container-show {
+  z-index: 900;
+  opacity: 100;
+  top: calc(#{$nav-height} * 2.9);
+}
+
+.collapse-button-container {
+  z-index: 1000;
+  -webkit-transform: rotate(0deg);
+          transform: rotate(0deg);
+}
+
+.collapse-button-container-show {
+  -webkit-transform: rotate(90deg);
+          transform: rotate(90deg);
 }
 
 .reset-button-container {
@@ -207,6 +239,13 @@ body {
 .filter-search {
   top: calc(#{$nav-height} * .45);
   left: calc(100vw / 4);
+  opacity: 0;
+  z-index: -1;
+}
+
+.filter-search-show {
+  z-index: 1000;
+  opacity: 100;
 }
 
 // Everything from here down can likely be removed when Material-UI is implimented
@@ -303,8 +342,8 @@ form {
   opacity: 100;
 }
 
-.gm-style a[title='Click to see this area on Google Maps'] { 
-  display: none!important; 
+.gm-style a[title='Click to see this area on Google Maps'] {
+  display: none!important;
 }
 
 .gmnoprint a, .gmnoprint span {
