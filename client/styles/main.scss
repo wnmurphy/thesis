@@ -166,7 +166,7 @@ body {
   }
 
   h1{
-    font-size: 60px
+    font-size: 6em;
   }
 }
 
@@ -207,7 +207,7 @@ body {
 // Everything from here down can likely be removed when Material-UI is implimented
 form {
   padding: 20px;
-  
+
   select {
     padding: 5px;
     margin: 5px;

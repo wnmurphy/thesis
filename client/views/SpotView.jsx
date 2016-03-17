@@ -6,9 +6,9 @@ var SpotView = React.createClass({
     return {
       spotHash: hash,
       shareProps: {
-        contents: 'Check out this Spot! http://localhost:8080/#' + hash,
-        subject: 'Check out Spotter',
-        url: 'http://localhost:8080/#' + hash
+        contents: 'Check out this Spot! www.irl.com/#' + hash,
+        subject: 'Check out irl',
+        url: 'www.irl.com/#' + hash
       },
       spot: {},
       shareClass: "share-card-container",
