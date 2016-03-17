@@ -40,7 +40,8 @@ var MapView = React.createClass({
       context.setState({showScreen: true})
       setTimeout(function() {
         getLocation(function(location) {
-        initMap(location, context, function() {
+        initMap(location, context, function(map) {
+          map.setOptions({zoomControl: true});
           context.setState({buttonClass: "circle"});
           context.setState({filterClass: ""});
           context.getSpots();
@@ -49,9 +50,10 @@ var MapView = React.createClass({
       }, welcomeScreenTimeout);
     } else {
         context.setState({showScreen: false})
-        initMap(globalState.location, context, function() {
+        initMap(globalState.location, context, function(map) {
+          map.setOptions({zoomControl: true});
           context.setState({buttonClass: "circle"});
-          context.setState({filterClass: "input"});
+          context.setState({filterClass: ""});
           context.getSpots();
         });
     }

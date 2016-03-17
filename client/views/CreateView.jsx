@@ -27,6 +27,9 @@ var CreateView = React.createClass({
   },
 
   searchMap: function (map, position, marker) {
+
+    map.setOptions({disableDefaultUI: true});
+
     marker.setIcon('/pin.png');
     
     var context = this;

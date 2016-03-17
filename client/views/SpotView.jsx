@@ -38,6 +38,7 @@ var SpotView = React.createClass({
         console.log("SUCCESS: ", context.state.spot);
         context.setState({loading: false});
         initMap(data.location, context, function(map, position, marker) {
+          map.setOptions({zoomControl: false});
           marker.setIcon('/pin.png');
         });
       },
