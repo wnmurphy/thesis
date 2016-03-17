@@ -142,10 +142,6 @@ var MapView = React.createClass({
                           '<div><small>' + spot.category + '</small></div>' +
                           '<div><small>' + time + '</small></div>';
 
-      // if (end) {
-      //   contentString += '<div><small>End: ' + end + ':' + endMinutes + ' ' + end_am_pm + '</small></div>';
-      // }
-
       contentString += '<div><a href="#/spot/' + spot.spotId +'">More Details</a></div>';
 
       var icon = {
@@ -186,7 +182,6 @@ var MapView = React.createClass({
         infoWindow.open(context.state.map, this);
         context.setState({selected: this.getId()});
         context.state.map.panTo(this.getPosition());
-        //console.log(context.state.selected);
       })
     }
   },
