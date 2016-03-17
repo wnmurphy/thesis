@@ -1,4 +1,4 @@
-# Hapn
+# irl
 
 > Ultra-local, time-limited event sharing. Find immediate experiences nearby. Create experiences for the people around you. Live more of your life.
 
