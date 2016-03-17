@@ -97,11 +97,10 @@ var MapView = React.createClass({
       }
 
       var start = Number(spot.start.split(':').join(''));
-      var end = Number(spot.start.split(':').join(''));
+      var end = Number(spot.end.split(':').join(''));
       var current = getTime();
 
       var time;
-
       if (start > current) {
         var starting = start - current;
         var string = String(starting);
@@ -118,6 +117,22 @@ var MapView = React.createClass({
         }
 
         time = "in " + hours + " hours and " + minutes + " minutes";
+      } else {
+        var ending = end - current;
+        var string = String(ending);
+        if (string.length < 4) {
+          string = '0' + string;
+        }
+        var hours = string.substr(0, 2);
+        var minutes = string.substr(1, 2);
+        if (string.charAt(2) === '0') {
+          minutes = string.charAt(3);
+        }
+        if (string.charAt(0) === '0') {
+          hours = string.charAt(1);
+        }
+
+        time = hours + " hours and " + minutes + " minutes left";
       }
 
       console.log(time);
