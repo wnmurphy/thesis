@@ -160,7 +160,7 @@ var MapView = React.createClass({
       contentString += '<div><a href="#/spot/' + spot.spotId +'">More Details</a></div>';
 
       var icon = {
-        url: '/pin.png'
+        url: '/test.png'
       }
 
       var spot = new google.maps.Marker({
@@ -169,6 +169,7 @@ var MapView = React.createClass({
         map: context.state.map,
         id: spot.spotId,
         info: contentString,
+        animation: google.maps.Animation.DROP,
         fields: spot.name + " " + spot.description + " " + spot.category,
         getId: function() {
           return this.id;
