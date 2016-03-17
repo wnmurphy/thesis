@@ -205,7 +205,8 @@ body {
 }
 
 .filter-search {
-  left: calc(#{$nav-height} * 1.5);
+  top: calc(#{$nav-height} * .45);
+  left: calc(100vw / 4);
 }
 
 // Everything from here down can likely be removed when Material-UI is implimented

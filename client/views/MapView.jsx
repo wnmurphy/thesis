@@ -14,6 +14,7 @@ var MapView = React.createClass({
       location: globalState.location,
       refreshButton: "refresh-button-container",
       buttonClass: "hide",
+      filterClass: "hide",
       filterSearch: "",
       markers: []
     };
@@ -32,6 +33,7 @@ var MapView = React.createClass({
         getLocation(function(location) {
         initMap(location, context, function() {
           context.setState({buttonClass: "circle"});
+          context.setState({filterClass: ""});
           context.getSpots();
         });
       }, context);
@@ -40,6 +42,7 @@ var MapView = React.createClass({
         context.setState({showScreen: false})
         initMap(globalState.location, context, function() {
           context.setState({buttonClass: "circle"});
+          context.setState({filterClass: "input"});
           context.getSpots();
         });
     }
@@ -134,12 +137,11 @@ var MapView = React.createClass({
 
       }
 
-      var contentString = '<div>Name: ' + spot.name + '</div>' +
-                          '<div>Host: ' + spot.creator + '</div>' +
-                          '<div>Category: ' + spot.category + '</div>' +
-                          '<div>Description: ' + spot.description + '</div>' +
-                          '<div>Start Time: ' + start + ':' + startMinutes + ' ' + start_am_pm + '</div>' +
-                          '<div>End Time: ' + end + ':' + endMinutes + ' ' + end_am_pm + '</div>' +
+      var contentString = '<div><strong>' + spot.name + '</strong></div>' +
+                          '<div>' + spot.creator + '</div>' +
+                          '<div><small>' + spot.category + '</small></div>' +
+                          '<div><small>Start: ' + start + ':' + startMinutes + ' ' + start_am_pm + '</small></div>' +
+                          '<div><small>End: ' + end + ':' + endMinutes + ' ' + end_am_pm + '</small></div>' +
                           '<div><a href="#/spot/' + spot.spotId +'">More Details</a></div>';
 
       var icon = {
@@ -210,7 +212,7 @@ var MapView = React.createClass({
           </a>
         </div>
         <div className="filter-search">
-          <FilterSearch filterSearch={this.state.filterSearch} context={this} markers={this.state.markers} />
+          <FilterSearch filterClass={this.state.filterClass} filterSearch={this.state.filterSearch} context={this} markers={this.state.markers} />
         </div>
       </div>
     );
@@ -240,14 +242,11 @@ var FilterSearch = React.createClass({
   handleChange: function (event) {
     console.log('markers', this.props.markers);
     var search = new RegExp(event.target.value, 'gi');
-
     this.props.markers.forEach(function(marker) {
       var fields = marker.getFields();
       if(fields.match(search)) {
-        console.log('MATCHHHH', event.target.value);
         marker.setVisible(true);
-      }
-      else {
+      } else {
         marker.setVisible(false);
       }
     });
@@ -255,9 +254,9 @@ var FilterSearch = React.createClass({
   },
   render: function () {
     return (
-      <div>   
-        <form onChange={this.handleChange}>
-          <input type="text" id="filter-search" placeholder="Filter your Search" defaultValue={this.state.filter || ''} />
+      <div style={{width: 'calc(100vw / 2)', opacity: '0.75'}}>   
+        <form className={this.props.filterClass} style={{padding: '0px'}} onChange={this.handleChange}>
+          <input type="text" id="filter-search" placeholder="Filter Spots" defaultValue={this.state.filter || ''} />
         </form>
       </div>
     )
