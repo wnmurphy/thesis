@@ -15,7 +15,6 @@ var MapView = React.createClass({
       refreshButton: "refresh-button-container",
       buttonClass: "hide",
       filterClass: "hide",
-      filterSearch: "",
       markers: []
     };
   },
@@ -212,7 +211,7 @@ var MapView = React.createClass({
           </a>
         </div>
         <div className="filter-search">
-          <FilterSearch filterClass={this.state.filterClass} filterSearch={this.state.filterSearch} context={this} markers={this.state.markers} />
+          <FilterSearch filterClass={this.state.filterClass} markers={this.state.markers} />
         </div>
       </div>
     );
