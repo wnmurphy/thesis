@@ -5,11 +5,11 @@
   display: none;
 }
 
-$primary-color: #FF5244;
+$primary-color: lighten(#64C498, 2);
 $color-dark: darken($primary-color, 10);
 $color-light: lighten($primary-color, 10);
-$secondary-color: lighten($primary-color, 2);
-$secondary-light: lighten($secondary-color, 10);
+$secondary-color: lighten($primary-color, 0);
+$secondary-light: lighten($secondary-color, 0);
 $nav-height: 45px;
 $app-view-height: calc(100% - #{$nav-height});
 
