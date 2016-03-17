@@ -5,9 +5,11 @@
   display: none;
 }
 
-$primary-color: #275187;
+$primary-color: #FF5244;
 $color-dark: darken($primary-color, 10);
 $color-light: lighten($primary-color, 10);
+$secondary-color: lighten($primary-color, 2);
+$secondary-light: lighten($secondary-color, 10);
 $nav-height: 45px;
 $app-view-height: calc(100% - #{$nav-height});
 
@@ -71,6 +73,8 @@ body {
     color: #fff;
     text-decoration: none;
     border-right: 1px solid $color-light;
+    -webkit-transition: all 0.3s;
+            transition: all 0.3s;
 
     &:last-child {
       border: 0px;
@@ -153,6 +157,11 @@ body {
   width: 100vw;
 }
 
+// #map {
+//   -webkit-filter: grayscale(100%); /* Chrome, Safari, Opera */
+//           filter: grayscale(100%);
+// }
+
 .welcome-container {
   display: flex;
   height: 100%;
@@ -183,12 +192,14 @@ body {
 
   a {
     // this color will obviously be changed
-    color: #000;
-    background-color: #7de264;
+    color: #fff;
+    background-color: $secondary-color;
     box-shadow: 0px 0px 5px #888888;
+    -webkit-transition: all 0.3s;
+            transition: all 0.3s;
 
     &:hover {
-      background-color: lighten(#1B508C, 10);
+      background-color: $secondary-light;
     }
   }
 }
