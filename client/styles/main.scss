@@ -170,7 +170,7 @@ body {
   }
 }
 
-.create-button-container, .refresh-button-container, .center-button-container, .reset-button-container, .share-button-container {
+.create-button-container, .refresh-button-container, .center-button-container, .reset-button-container, .share-button-container, .filter-search {
   position: absolute;
   z-index: 1000;
   top: calc(#{$nav-height} * 0.5);
@@ -202,6 +202,10 @@ body {
 
 .reset-button-container {
   left: calc(100vw - (#{$nav-height} * 1.5));
+}
+
+.filter-search {
+  left: calc(#{$nav-height} * 1.5);
 }
 
 // Everything from here down can likely be removed when Material-UI is implimented
