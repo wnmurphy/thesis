@@ -223,7 +223,7 @@ var MapView = React.createClass({
         </div>
         <div className={this.props.collapseButtonContainer + " " + this.props.collapseButtonContainer + this.state.showButtonClass} onClick={this.collapseClick}>
           <a className={this.state.buttonClass}>
-            <i className="fa fa-caret-square-o-right"></i>
+            <i className="fa fa-ellipsis-h"></i>
           </a>
         </div>
         <div className={this.props.refreshButtonContainer + " " + this.props.refreshButtonContainer + this.state.showButtonClass + this.state.refreshingClass}>
