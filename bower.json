@@ -18,6 +18,9 @@
   ],
   "dependencies": {
     "react": "^0.14.7",
-    "babel-browser": "*"
+    "babel-browser": "*",
+    "mocha": "^2.4.5",
+    "chai": "^3.5.0",
+    "jquery": "^2.2.2"
   }
 }
