@@ -14,28 +14,26 @@ var userTableParams = {
   TableName: "Users",
   KeySchema: [
     {AttributeName: "userId", KeyType: "HASH"},
-    {AttributeName: "username", KeyType: "RANGE"} 
   ],
   AttributeDefinitions: [
     {AttributeName: "userId", AttributeType: "N"},
-    {AttributeName: "username", AttributeType: "S"} 
   ],
   ProvisionedThroughput: {
-    ReadCapacityUnits: 2, 
-    WriteCapacityUnits: 2
+    ReadCapacityUnits: 1,
+    WriteCapacityUnits: 1
   }
 };
 
 var spotTableParams = {
   TableName: "Spots",
   KeySchema: [
-    {AttributeName: "spotId", KeyType: "HASH"} 
+    {AttributeName: "spotId", KeyType: "HASH"}
   ],
   AttributeDefinitions: [
     {AttributeName: "spotId", AttributeType: "N"}
   ],
   ProvisionedThroughput: {
-    ReadCapacityUnits: 2, 
+    ReadCapacityUnits: 2,
     WriteCapacityUnits: 2
   }
 };
@@ -67,11 +65,11 @@ db.createTable(spotTableParams, function (err, data) {
 
   dbSchema.put(params, function(err, data) {
     if (err) {
-      console.error('on item put', err);
-    }  
+      console.error('Users: on item put', err);
+    }
     else {
       console.log('data', data);
-    } 
+    }
   });
 
 
@@ -87,10 +85,10 @@ db.createTable(spotTableParams, function (err, data) {
   dbSchema.put(params, function(err, data) {
     if (err) {
       console.error('on item put', err);
-    }  
+    }
     else {
       console.log('data', data);
-    } 
+    }
   });
 
 
@@ -99,7 +97,3 @@ db.listTables(function(err, data) {
 });
 
 module.exports.db = db;
-
-
-
-

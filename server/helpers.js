@@ -54,10 +54,10 @@ module.exports = {
                 if (err) {
                   console.error('error on item put', err);
                   fail(err);
-                }  
+                }
                 else {
                   success(data);
-                } 
+                }
               });
             }
             else {
@@ -72,7 +72,7 @@ module.exports = {
   search: function(search, success, fail) {
     //search is a string
     //username, user email
-    //name, creator, description 
+    //name, creator, description
     var queriedArr = [];
     var params = {
       TableName: 'Users',
@@ -123,8 +123,8 @@ module.exports = {
       }
     });
 
-    
-    
+
+
   },
 
   getSpots: function(location, success, fail) {
@@ -136,7 +136,7 @@ module.exports = {
 
     //  Include logic to return only points within 3 miles of center of screen?
 
-    //find all spots 
+    //find all spots
     dbSchema.scan(params, function(err, data) {
       if (err) {
         console.error("Unable to query get spots. Error:", JSON.stringify(err, null, 2));
@@ -158,26 +158,24 @@ module.exports = {
           ":userid": info.username
       }
     };
-
     dbSchema.scan(params, function(err, data) {
-      
+
       if(err) {
         console.error('Error signing up user', err);
         fail(err);
       }
       //if user does not exist, increment user lastId
       else if(data.Count === 0) {
-        console.log('err', err);
         var params = {
           TableName : "Users",
           Key: {userId: 0}
         };
-       
+
         dbSchema.get(params, function(err, data) {
           if (err) {
             console.error("Unable to query. Error:", JSON.stringify(err, null, 2));
             fail(err);
-          } 
+          }
           else {
             info.userId = data.Item.lastId + 1;
 
@@ -237,7 +235,7 @@ module.exports = {
          ":userid": info.username
       }
     };
-    
+
     dbSchema.scan(params, function(err, user) {
       if(err) {
         console.error('Error handling user sign in', err);
@@ -294,7 +292,7 @@ module.exports = {
   },
 
   getSpot: function(id, success, fail) {
-    
+
     var params = {
       TableName: "Spots",
       FilterExpression: "#spotname = (:id)",
@@ -330,7 +328,7 @@ module.exports = {
       Number.prototype.toRad = function() {
         return this * Math.PI / 180;
       }
-    } 
+    }
 
     // Earth's radius in meters.
     var R = 6371000;
@@ -348,13 +346,13 @@ module.exports = {
     var radDeltaLng = (lng2-lng1).toRad();
 
     // Find area.
-    var a = Math.sin(radDeltaLat/2) * Math.sin(radDeltaLat/2) + 
+    var a = Math.sin(radDeltaLat/2) * Math.sin(radDeltaLat/2) +
             Math.cos(radLat1) * Math.cos(radLat2) *
             Math.sin(radDeltaLng/2) * Math.sin(radDeltaLng/2);
 
     // Find circumference.
     var c = 2 * Math.atan2( Math.sqrt(a), Math.sqrt(1-a) );
-    
+
     var distance = R * c;
 
     // Convert distance (m) to distance (mi).
