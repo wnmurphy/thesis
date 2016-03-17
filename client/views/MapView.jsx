@@ -176,7 +176,7 @@ var MapView = React.createClass({
   center: function() {
     this.state.map.panTo(this.state.position);
   },
-  
+
   render: function () {
     return (
       <div className="map-view-container">
@@ -208,7 +208,7 @@ var LoadScreen = React.createClass({
     return (
       <div className="welcome-container">
         <div>
-          <h1>hapn</h1>
+          <h1>irl</h1>
           <h2>welcome!</h2>
           <p>your map is loading...</p>
         </div>
