@@ -2,6 +2,8 @@ var aws = require('aws-sdk');
 
 var db = require('../db/db.js');
 
+var bcrypt = require('bcrypt-nodejs');
+
 var dbSchema = new aws.DynamoDB.DocumentClient();
 
 
@@ -54,10 +56,10 @@ module.exports = {
                 if (err) {
                   console.error('error on item put', err);
                   fail(err);
-                }  
+                }
                 else {
                   success(data);
-                } 
+                }
               });
             }
             else {
@@ -72,7 +74,7 @@ module.exports = {
   search: function(search, success, fail) {
     //search is a string
     //username, user email
-    //name, creator, description 
+    //name, creator, description
     var queriedArr = [];
     var params = {
       TableName: 'Users',
@@ -123,8 +125,8 @@ module.exports = {
       }
     });
 
-    
-    
+
+
   },
 
   getSpots: function(location, success, fail) {
@@ -136,7 +138,7 @@ module.exports = {
 
     //  Include logic to return only points within 3 miles of center of screen?
 
-    //find all spots 
+    //find all spots
     dbSchema.scan(params, function(err, data) {
       if (err) {
         console.error("Unable to query get spots. Error:", JSON.stringify(err, null, 2));
@@ -158,26 +160,24 @@ module.exports = {
           ":userid": info.username
       }
     };
-
     dbSchema.scan(params, function(err, data) {
-      
+
       if(err) {
         console.error('Error signing up user', err);
         fail(err);
       }
       //if user does not exist, increment user lastId
       else if(data.Count === 0) {
-        console.log('err', err);
         var params = {
           TableName : "Users",
           Key: {userId: 0}
         };
-       
+
         dbSchema.get(params, function(err, data) {
           if (err) {
             console.error("Unable to query. Error:", JSON.stringify(err, null, 2));
             fail(err);
-          } 
+          }
           else {
             info.userId = data.Item.lastId + 1;
 
@@ -198,24 +198,26 @@ module.exports = {
               }
             });
 
-            params = {
-              TableName: "Users",
-              Item: {
-                userId: info.userId,
-                username: info.username,
-                password: info.password, //<-- need to hash/salt
-                email: info.email
-              }
-            };
+            hash(info.password, function (err, hash) {
+              params = {
+                TableName: "Users",
+                Item: {
+                  userId: info.userId,
+                  username: info.username,
+                  password: hash,
+                  email: info.email
+                }
+              };
 
-            dbSchema.put(params, function(err, data) {
-              if(err) {
-                console.error("Error creating new user", err);
-                fail(err);
-              }
-              else {
-                success(data);
-              }
+              dbSchema.put(params, function(err, data) {
+                if(err) {
+                  console.error("Error creating new user", err);
+                  fail(err);
+                }
+                else {
+                  success(data);
+                }
+              });
             });
           }
         });
@@ -237,7 +239,7 @@ module.exports = {
          ":userid": info.username
       }
     };
-    
+
     dbSchema.scan(params, function(err, user) {
       if(err) {
         console.error('Error handling user sign in', err);
@@ -247,15 +249,24 @@ module.exports = {
         fail('user does not exist');
       }
       else if(user.Count === 1) {
-        if(user.Items[0].password === info.password) {
-          success(user);
-        }
-        else {
-          fail('user input wrong password');
-        }
+        compare(info.password, user.Items[0].password, function (err, correct) {
+          if(err) {
+            fail('encryption error')
+          } else {
+            if(correct) {
+              success({
+                userId: user.Items[0].userId
+              });
+            }
+            else {
+              fail('incorrect password');
+            }
+          }
+        })
+
       }
       else {
-        fail('same user exists');
+        fail('multiple users with username');
       }
     });
   },
@@ -294,7 +305,7 @@ module.exports = {
   },
 
   getSpot: function(id, success, fail) {
-    
+
     var params = {
       TableName: "Spots",
       FilterExpression: "#spotname = (:id)",
@@ -330,7 +341,7 @@ module.exports = {
       Number.prototype.toRad = function() {
         return this * Math.PI / 180;
       }
-    } 
+    }
 
     // Earth's radius in meters.
     var R = 6371000;
@@ -348,13 +359,13 @@ module.exports = {
     var radDeltaLng = (lng2-lng1).toRad();
 
     // Find area.
-    var a = Math.sin(radDeltaLat/2) * Math.sin(radDeltaLat/2) + 
+    var a = Math.sin(radDeltaLat/2) * Math.sin(radDeltaLat/2) +
             Math.cos(radLat1) * Math.cos(radLat2) *
             Math.sin(radDeltaLng/2) * Math.sin(radDeltaLng/2);
 
     // Find circumference.
     var c = 2 * Math.atan2( Math.sqrt(a), Math.sqrt(1-a) );
-    
+
     var distance = R * c;
 
     // Convert distance (m) to distance (mi).
@@ -362,4 +373,13 @@ module.exports = {
 
     return distance;
   }
+
 };
+
+var hash = function (password, callback) {
+  bcrypt.genSalt(10, function (err, salt) {
+    bcrypt.hash(password, salt, null, callback);
+  });
+};
+
+var compare = bcrypt.compare;
