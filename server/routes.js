@@ -30,12 +30,12 @@ module.exports = function(app, express, io) {
     }, function(err) {
       res.send(404);
     });
-  });  
+  });
 
 
   // GET to request all spots for either MapView or FeedView.
   app.get('/api/map', function(req, res) {
-    // var location = req.params.location; 
+    // var location = req.params.location;
     helpers.getSpots(null, function(results) { //null was location
       res.json(results);
     }, function(err) {
@@ -48,8 +48,8 @@ module.exports = function(app, express, io) {
   // POST to create a new user from SignupView.
   app.post('/api/signup', function(req, res) {
     var user_info = {
-      username: req.body.username, 
-      password: req.body.password, 
+      username: req.body.username,
+      password: req.body.password,
       email: req.body.email
     };
 
@@ -65,17 +65,17 @@ module.exports = function(app, express, io) {
   // POST to submit user credentials from LoginView.
   app.post('/api/login', function(req, res) {
     var user_info = {
-      username: req.body.username, 
+      username: req.body.username,
       password: req.body.password
     };
 
     helpers.signin(user_info, function(result) {
-      res.json(result.Items[0].username);
+      res.json(result);
       //res.direct('/#/mainpage', result)
     }, function(err) {
       res.send(404);
     });
-  });  
+  });
 
 
   // GET to retrieve a user's profile by userId.
@@ -107,7 +107,7 @@ module.exports = function(app, express, io) {
 
     /* Spot socket */
 
-    // Listen for whenever a new spot is created, and 
+    // Listen for whenever a new spot is created, and
     // broadcast spotAdded event to trigger client-side map refresh.
     io.on('addSpot', function(){
       io.emit('spotAdded');

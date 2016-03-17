@@ -2,6 +2,8 @@ var aws = require('aws-sdk');
 
 var db = require('../db/db.js');
 
+var bcrypt = require('bcrypt-nodejs');
+
 var dbSchema = new aws.DynamoDB.DocumentClient();
 
 
@@ -196,24 +198,26 @@ module.exports = {
               }
             });
 
-            params = {
-              TableName: "Users",
-              Item: {
-                userId: info.userId,
-                username: info.username,
-                password: info.password, //<-- need to hash/salt
-                email: info.email
-              }
-            };
+            hash(info.password, function (err, hash) {
+              params = {
+                TableName: "Users",
+                Item: {
+                  userId: info.userId,
+                  username: info.username,
+                  password: hash,
+                  email: info.email
+                }
+              };
 
-            dbSchema.put(params, function(err, data) {
-              if(err) {
-                console.error("Error creating new user", err);
-                fail(err);
-              }
-              else {
-                success(data);
-              }
+              dbSchema.put(params, function(err, data) {
+                if(err) {
+                  console.error("Error creating new user", err);
+                  fail(err);
+                }
+                else {
+                  success(data);
+                }
+              });
             });
           }
         });
@@ -245,15 +249,24 @@ module.exports = {
         fail('user does not exist');
       }
       else if(user.Count === 1) {
-        if(user.Items[0].password === info.password) {
-          success(user);
-        }
-        else {
-          fail('user input wrong password');
-        }
+        compare(info.password, user.Items[0].password, function (err, correct) {
+          if(err) {
+            fail('encryption error')
+          } else {
+            if(correct) {
+              success({
+                userId: user.Items[0].userId
+              });
+            }
+            else {
+              fail('incorrect password');
+            }
+          }
+        })
+
       }
       else {
-        fail('same user exists');
+        fail('multiple users with username');
       }
     });
   },
@@ -360,4 +373,13 @@ module.exports = {
 
     return distance;
   }
+
 };
+
+var hash = function (password, callback) {
+  bcrypt.genSalt(10, function (err, salt) {
+    bcrypt.hash(password, salt, null, callback);
+  });
+};
+
+var compare = bcrypt.compare;
