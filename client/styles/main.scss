@@ -5,10 +5,10 @@
   display: none;
 }
 
-$primary-color: #F26B34;
+$primary-color: #FF5244;
 $color-dark: darken($primary-color, 10);
 $color-light: lighten($primary-color, 10);
-$secondary-color: #FF5244;
+$secondary-color: lighten($primary-color, 2);
 $secondary-light: lighten($secondary-color, 10);
 $nav-height: 45px;
 $app-view-height: calc(100% - #{$nav-height});
@@ -157,10 +157,10 @@ body {
   width: 100vw;
 }
 
-#map {
-  -webkit-filter: grayscale(100%); /* Chrome, Safari, Opera */
-          filter: grayscale(100%);
-}
+// #map {
+//   -webkit-filter: grayscale(100%); /* Chrome, Safari, Opera */
+//           filter: grayscale(100%);
+// }
 
 .welcome-container {
   display: flex;
