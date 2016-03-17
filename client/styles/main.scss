@@ -5,9 +5,10 @@
   display: none;
 }
 
-$primary-color: #275187;
+$primary-color: #F26B34;
 $color-dark: darken($primary-color, 10);
 $color-light: lighten($primary-color, 10);
+$secondary-color: #FF5244;
 $nav-height: 45px;
 $app-view-height: calc(100% - #{$nav-height});
 
@@ -153,6 +154,11 @@ body {
   width: 100vw;
 }
 
+#map {
+  -webkit-filter: grayscale(100%); /* Chrome, Safari, Opera */
+          filter: grayscale(100%);
+}
+
 .welcome-container {
   display: flex;
   height: 100%;
@@ -183,8 +189,8 @@ body {
 
   a {
     // this color will obviously be changed
-    color: #000;
-    background-color: #7de264;
+    color: #fff;
+    background-color: $secondary-color;
     box-shadow: 0px 0px 5px #888888;
 
     &:hover {
