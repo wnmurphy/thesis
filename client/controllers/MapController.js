@@ -265,7 +265,7 @@ var initMap = function (location, context, callback) {
   context.setState({map: map});
 
   var icon = {
-    url: '/you.png'
+    url: '/you_test.png'
   }
 
   var marker = new google.maps.Marker({
