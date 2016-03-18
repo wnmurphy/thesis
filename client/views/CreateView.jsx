@@ -109,7 +109,6 @@ var CreateView = React.createClass({
       dataType: 'json',
       data: {
         name: context.state.name,
-        creator: context.state.creator,
         category: context.state.category,
         location: context.state.location,
         address: context.state.address,
@@ -203,7 +202,6 @@ var CreateView = React.createClass({
           <form id="createSpotForm" onChange={this.handleChange} onSubmit={this.sendSpot}>
             <input type="text" id="address" placeholder="Location" onChange={this.changeAddress} value={this.state.address || ''} required />
             <input type="text" id="name" placeholder="Title" defaultValue={this.state.name || ''} required />
-            <input type="text" id="creator" placeholder="User" defaultValue={this.state.creator || ''} required />
             <select valueLink={valueLink}>
               <option id="category">Select Category</option>
               {this.state.categoryOptions}
