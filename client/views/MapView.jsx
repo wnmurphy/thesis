@@ -139,6 +139,11 @@ var MapView = React.createClass({
         time = hours + "and " + minutes + " left";
       }
 
+      //Temporarily skips marking expired spots until we get server handling and cleanup
+      if(time.indexOf('-') > -1 ) {
+        continue;
+      }
+
       var contentString = '<div><strong>' + spot.name + '</strong></div>' +
                           '<div>' + spot.creator + '</div>' +
                           '<div><small>' + spot.category + '</small></div>' +
