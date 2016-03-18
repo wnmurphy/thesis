@@ -88,4 +88,6 @@ gulp.task('replacehtml', function() {
   .pipe(gulp.dest(path.dest));
 });
 
+gulp.task('buildTest', ['transform', 'test']);
+
 gulp.task('production', ['replacehtml', 'build']);
