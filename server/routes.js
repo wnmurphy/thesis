@@ -82,16 +82,27 @@ module.exports = function(app, express, io) {
     });
   });
 
-
   // GET to retrieve a user's profile by userId.
   app.get('/api/profile/:id', function(req, res) {
     var id = req.params.id;
-    helpers.getProfile(id, function(result) {
-      res.json(result);
-    }, function(err) {
-      res.send(404);
+    helpers.checkToken(JSON.parse(req.headers.token), function (decoded) {
+      var currentUserId = decoded.userId.toString();
+      helpers.getProfile(id, function(result) {
+        res.json({result: result, currentUser: (id === currentUserId)});
+      }, function(err) {
+        res.send(404);
+      });
+    }, function (err) {
+      if (id) {
+        helpers.getProfile(id, function(result) {
+          res.json(result);
+        }, function(err) {
+          res.send(404);
+        });
+      } else {
+        res.send(404, err);
+      }
     });
-
   });
 
 
