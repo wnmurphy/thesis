@@ -295,7 +295,7 @@ describe("Server routes", function() {
       done();
     });
   });
-  it('should return a 200 when creating a new spot', function(done) {
+  xit('should return a 200 when creating a new spot', function(done) {
     request({
       method: "POST",
       uri: "http://localhost:8080/api/create",
