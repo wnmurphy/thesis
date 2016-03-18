@@ -102,7 +102,7 @@ var MapView = React.createClass({
       var start = spot.start.split(':').join('');
       var end = spot.end.split(':').join('');
       var current = getTime();
-      var time, hours, minutes;
+      var time, prefix, suffix, hours, minutes;
 
       var stringify = function(time) {
 
@@ -118,13 +118,17 @@ var MapView = React.createClass({
 
         hours = (total - minutes) / 60;
 
-        if (hours === 1) {
+        if (hours === 0) {
+          hours = null;
+        } else if (hours === 1) {
           hours = hours + " hour ";
         } else {
           hours = hours + " hours ";
         }
 
-        if (minutes === 1) {
+        if (minutes === 0) {
+          minutes = null;
+        } else if (minutes === 1) {
           minutes = minutes + " minute"
         } else {
           minutes = minutes + " minutes"
@@ -133,12 +137,40 @@ var MapView = React.createClass({
 
       if (start > current) {
         stringify(start);
-        time = "in " + hours + "and " + minutes;
+        if (hours === null) {
+          prefix = "";
+        } else {
+          prefix = "in " + hours;
+        }
+        if (minutes === null) {
+          suffix = "";
+        } else {
+          if (hours === null) {
+            suffix = "in " + minutes;
+          } else {
+            suffix = " and " + minutes;
+          }
+        }
       } else {
         stringify(end);
-        time = hours + "and " + minutes + " left";
+        if (hours === null) {
+          prefix = "";
+        } else {
+          prefix = hours;
+        }
+        if (minutes === null) {
+          suffix = "";
+        } else {
+          if (hours === null) {
+            suffix = minutes + " left";
+          } else {
+            suffix = " and " + minutes + " left";
+          }
+        }
       }
 
+      time = prefix + suffix;
+      
       //Temporarily skips marking expired spots until we get server handling and cleanup
       if(time.indexOf('-') > -1 ) {
         continue;
