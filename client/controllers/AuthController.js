@@ -1,8 +1,10 @@
 var AuthController = {
   initAuth: function () {
+    AuthController.signedIn = false;
     var token = localStorage.getItem('token');
     console.log("Auth initialized with token:", token);
     if (token) {
+      AuthController.signedIn = true;
       $.ajaxSetup({
         headers: { 'token': token }
       });
