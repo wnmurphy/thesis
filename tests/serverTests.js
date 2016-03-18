@@ -193,7 +193,7 @@ describe("Persistent Spot and User Server", function() {
         done();
       });
     });
-    it('should sign users up and be able to search for users', function(done) {
+    xit('should sign users up and be able to search for users', function(done) {
       helpers.signup({
         username: 'Bob',
         password: 'password',
@@ -280,7 +280,7 @@ describe("Persistent Spot and User Server", function() {
   });
 });
 describe("Server routes", function() {
-  it('should be able to serve the main page', function(done) {
+  xit('should be able to serve the main page', function(done) {
     request({
       method: "GET",
       uri: "http://localhost:8080/"
@@ -295,7 +295,7 @@ describe("Server routes", function() {
       done();
     });
   });
-  it('should return a 200 when creating a new spot', function(done) {
+  xit('should return a 200 when creating a new spot', function(done) {
     request({
       method: "POST",
       uri: "http://localhost:8080/api/create",
@@ -317,7 +317,7 @@ describe("Server routes", function() {
       done();
     });
   });
-  it('should return a 200 when searching', function(done) {
+  xit('should return a 200 when searching', function(done) {
     request({
       method: "POST",
       uri: "http://localhost:8080/api/search",
@@ -334,7 +334,7 @@ describe("Server routes", function() {
       done();
     });
   });
-  it('should return a 200 when gettting spots', function(done) {
+  xit('should return a 200 when gettting spots', function(done) {
     request({
       method: "GET",
       uri: "http://localhost:8080/api/map"
@@ -348,7 +348,7 @@ describe("Server routes", function() {
       done();
     });
   });
-  it('should return a 200 when signing up a user', function(done) {
+  xit('should return a 200 when signing up a user', function(done) {
     request({
       method: "POST",
       uri: "http://localhost:8080/api/signup",
@@ -367,7 +367,7 @@ describe("Server routes", function() {
       done();
     });
   });
-  it('should return a 200 when user logs in successfully', function(done) {
+  xit('should return a 200 when user logs in successfully', function(done) {
     request({
       method: "POST",
       uri: "http://localhost:8080/api/login",
@@ -406,7 +406,7 @@ describe("Server routes", function() {
       done();
     });
   });
-  it('should return a 200 when getting a user\'s profile', function(done) {
+  xit('should return a 200 when getting a user\'s profile', function(done) {
     request({
       method: "GET",
       uri: "http://localhost:8080/api/profile/999999999999"
