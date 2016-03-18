@@ -36,5 +36,7 @@ var routes = (
   </Router>
 );
 
+AuthController.initAuth();
+
 ReactDOM.render(routes, document.getElementById('app-container'));
 ReactDOM.render(<NavBar />, document.getElementById('nav-container'));
