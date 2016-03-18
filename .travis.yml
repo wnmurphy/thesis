@@ -9,7 +9,7 @@ before_script:
   - sleep 2
   - node db/db.js
   - npm install -g nodemon
-  - npm start
+  - npm start &
 script: npm test
 env:
   - .env
