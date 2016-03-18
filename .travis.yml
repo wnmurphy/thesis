@@ -9,3 +9,6 @@ before_script:
   - sleep 2
   - node db/db.js
 script: npm test
+addons:
+  hosts:
+    - dynamodb-local
