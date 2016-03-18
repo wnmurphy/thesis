@@ -256,7 +256,10 @@ module.exports = {
             if(correct) {
               success({
                 userId: user.Items[0].userId,
-                token: tokenizer(user.Items[0])
+                token: tokenizer({
+                          userId: user.Items[0].userId,
+                          username: user.Items[0].username
+                        })
               });
             }
             else {
@@ -373,6 +376,17 @@ module.exports = {
     distance = distance * 0.000621371;
 
     return distance;
+  },
+
+  checkToken: function (token, success, fail) {
+    jwt.verify(token, process.env.secret, function(err, decoded) {
+      if (err) {
+        fail("invalid token");
+      } else {
+        console.log("checkToken decoded:", decoded);
+        success(decoded);
+      };
+    });
   }
 
 };
