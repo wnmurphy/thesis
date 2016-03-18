@@ -105,7 +105,6 @@ var MapView = React.createClass({
       var time, hours, minutes;
 
       var stringify = function(time) {
-        var military = parseInt(time.substring(0, 2),10);
 
         hours = Number(time.substring(0, 2)) - Number(current.substr(0, 2));
         
