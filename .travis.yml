@@ -11,10 +11,6 @@ before_script:
   - npm install -g nodemon
   - npm start &
 script: npm test
-env:
-  - .env
-after_script: 
-  - killall -KILL node
 addons:
   hosts:
     - dynamodb-local
