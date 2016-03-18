@@ -98,47 +98,47 @@ var MapView = React.createClass({
 
       /* Comparator for current time with start or end time; 
          parsing into a formatted string for info window display */
-         
-      var start = Number(spot.start.split(':').join(''));
-      var end = Number(spot.end.split(':').join(''));
+
+      var start = spot.start.split(':').join('');
+      var end = spot.end.split(':').join('');
       var current = getTime();
+      var time, hours, minutes;
 
-      var time;
-      if (start > current) {
-        var starting = start - current;
-        var string = String(starting);
-        if (string.length < 4) {
-          string = '0' + string;
-        }
-        var hours = string.substr(0, 2);
-        var minutes = string.substr(1, 2);
-        if (string.charAt(2) === '0') {
-          minutes = string.charAt(3);
-        }
-        if (string.charAt(0) === '0') {
-          hours = string.charAt(1);
-        }
+      var stringify = function(time) {
+        var military = parseInt(time.substring(0, 2),10);
 
-        time = "in " + hours + " hours and " + minutes + " minutes";
-      } else {
-        var ending = end - current;
-        var string = String(ending);
-        if (string.length < 4) {
-          string = '0' + string;
-        }
-        var hours = string.substr(0, 2);
-        var minutes = string.substr(1, 2);
-        if (string.charAt(2) === '0') {
-          minutes = string.charAt(3);
-        }
-        if (string.charAt(0) === '0') {
-          hours = string.charAt(1);
+        hours = Number(time.substring(0, 2)) - Number(current.substr(0, 2));
+        
+        hours = hours * 60;
+
+        minutes = Number(time.substring(2)) - Number(current.substr(2));
+
+        var total = hours + minutes;
+
+        minutes = total % 60;
+
+        hours = (total - minutes) / 60;
+
+        if (hours === 1) {
+          hours = hours + " hour ";
+        } else {
+          hours = hours + " hours ";
         }
 
-        time = hours + " hours and " + minutes + " minutes left";
+        if (minutes === 1) {
+          minutes = minutes + " minute"
+        } else {
+          minutes = minutes + " minutes"
+        }
       }
 
-      console.log(time);
+      if (start > current) {
+        stringify(start);
+        time = "in " + hours + "and " + minutes;
+      } else {
+        stringify(end);
+        time = hours + "and " + minutes + " left";
+      }
 
       var contentString = '<div><strong>' + spot.name + '</strong></div>' +
                           '<div>' + spot.creator + '</div>' +
