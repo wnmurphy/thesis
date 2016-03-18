@@ -11,6 +11,8 @@ before_script:
   - npm install -g nodemon
   - npm start
 script: npm test
+env:
+  - secret="sadflskdafjsadfsdasdfjksghadbmnaddbrjksdhafklsdjaflsaflkhsdfsdf"
 after_script: 
   - killall -KILL node
 addons:
