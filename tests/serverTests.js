@@ -193,7 +193,7 @@ describe("Persistent Spot and User Server", function() {
         done();
       });
     });
-    it('should sign users up and be able to search for users', function(done) {
+    xit('should sign users up and be able to search for users', function(done) {
       helpers.signup({
         username: 'Bob',
         password: 'password',
@@ -348,7 +348,7 @@ describe("Server routes", function() {
       done();
     });
   });
-  it('should return a 200 when signing up a user', function(done) {
+  xit('should return a 200 when signing up a user', function(done) {
     request({
       method: "POST",
       uri: "http://localhost:8080/api/signup",
@@ -367,7 +367,7 @@ describe("Server routes", function() {
       done();
     });
   });
-  it('should return a 200 when user logs in successfully', function(done) {
+  xit('should return a 200 when user logs in successfully', function(done) {
     request({
       method: "POST",
       uri: "http://localhost:8080/api/login",
