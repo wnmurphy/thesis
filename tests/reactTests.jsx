@@ -9,7 +9,7 @@ afterEach(function(done) {
     React.unmountComponentAtNode(document.body);       
     result = undefined;
     renderer = undefined;
-    setTimeout(done);
+    done();
 });
 
 // ======================================
@@ -32,7 +32,7 @@ describe('MapView', function () {
     renderer = utils.createRenderer();
     renderer.render(<MapView />);
     result = renderer.getRenderOutput();
-    setTimeout(done);
+    done();
   });
 
   it('should exist', function () {
@@ -96,7 +96,7 @@ describe('CreateView', function () {
     renderer = utils.createRenderer();
     renderer.render(<CreateView />);
     result = renderer.getRenderOutput();
-    setTimeout(done);
+    done();
   });
 
   it('should exist', function () {
@@ -137,12 +137,11 @@ describe('SpotView', function () {
     renderer = utils.createRenderer();
     renderer.render(<SpotView />);
     result = renderer.getRenderOutput();
-    setTimeout(done);
+    done();
   });
 
   it('should exist', function () {
     expect(SpotView).to.exist;
-    console.log("SpotView: ", result);
   });
 
   it('should be an function', function () {
@@ -189,7 +188,7 @@ describe('FeedView', function () {
     renderer = utils.createRenderer();
     renderer.render(<FeedView />);
     result = renderer.getRenderOutput();
-    setTimeout(done);
+    done();
   });
 
   it('should exist', function () {
@@ -212,7 +211,7 @@ describe('LoginView', function () {
     renderer = utils.createRenderer();
     renderer.render(<LoginView />);
     result = renderer.getRenderOutput();
-    setTimeout(done);
+    done();
   });
 
   it('should exist', function () {
@@ -235,7 +234,7 @@ describe('SignupView', function () {
     renderer = utils.createRenderer();
     renderer.render(<SignupView />);
     result = renderer.getRenderOutput();
-    setTimeout(done);
+    done();
   });
 
   it('should exist', function () {
@@ -258,7 +257,7 @@ describe('SearchView', function () {
     renderer = utils.createRenderer();
     renderer.render(<SearchView />);
     result = renderer.getRenderOutput();
-    setTimeout(done);
+    done();
   });
 
   it('should exist', function () {
@@ -281,7 +280,7 @@ describe('ProfileView', function () {
     renderer = utils.createRenderer();
     renderer.render(<ProfileView />);
     result = renderer.getRenderOutput();
-    setTimeout(done);
+    done();
   });
 
   it('should exist', function () {
