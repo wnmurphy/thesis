@@ -1,8 +1,8 @@
 var aws = require('aws-sdk');
-
 var db = require('../db/db.js');
-
 var bcrypt = require('bcrypt-nodejs');
+var jwt = require('jsonwebtoken');
+
 
 var dbSchema = new aws.DynamoDB.DocumentClient();
 
@@ -215,7 +215,7 @@ module.exports = {
                   fail(err);
                 }
                 else {
-                  success(data);
+                  module.exports.signin(info, success, fail);
                 }
               });
             });
@@ -255,7 +255,8 @@ module.exports = {
           } else {
             if(correct) {
               success({
-                userId: user.Items[0].userId
+                userId: user.Items[0].userId,
+                token: tokenizer(user.Items[0])
               });
             }
             else {
@@ -383,3 +384,7 @@ var hash = function (password, callback) {
 };
 
 var compare = bcrypt.compare;
+
+var tokenizer = function (user) {
+  return jwt.sign(user, process.env.secret, { expiresInMinutes: 1440 });
+};
