@@ -182,8 +182,8 @@ var MapView = React.createClass({
       }
 
       var contentString = '<div style="font-size: 12px"><strong>' + spot.name + '</strong></div>' +
-                          '<img style="float: right; padding-top: 2px" src="/silhouette.png">' +
-                          '<div style="font-size: 11px; float: right; clear: right; padding-right: .5px"><small>by ' + spot.creator + '</small></div>' +
+                          '<img style="float: right; padding-top: 15px" src="/silhouette.png">' +
+                          '<div style="font-size: 11px; float: right; clear: right; padding-right: .5px"><small>' + spot.creator + '</small></div>' +
                           '<div style="font-size: 11px; padding-top: 2px">' + spot.category + '</div>' +
                           '<div><small><small>' + time + '</small></small></div>';
 
@@ -213,7 +213,7 @@ var MapView = React.createClass({
       });
 
       var infoWindow = new google.maps.InfoWindow({
-        maxWidth: 150,
+        maxWidth: 250,
         content: contentString
       })
 
@@ -226,17 +226,16 @@ var MapView = React.createClass({
         infoWindow.setContent(this.info);
         infoWindow.open(context.state.map, this);
         context.setState({selected: this.getId()});
-        context.state.map.panTo(this.getPosition());
+        context.state.map.offsetPan(this.getPosition(), 0, -55);
       })
     }
   },
 
   center: function() {
-    this.state.map.panTo(this.state.position);
+    this.state.map.offsetPan(this.state.position, 0, -50);
   },
 
   collapseClick: function () {
-    console.log('collapse button clicked!')
     var newState = {};
     if (this.state.showButtonClass === "") {
       newState.showButtonClass = "-show";
@@ -301,7 +300,6 @@ var FilterSearch = React.createClass({
     }
   },
   handleChange: function (event) {
-    console.log('markers', this.props.markers);
     var search = new RegExp(event.target.value, 'gi');
     this.props.markers.forEach(function(marker) {
       var fields = marker.getFields();
