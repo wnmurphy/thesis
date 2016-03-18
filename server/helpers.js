@@ -246,7 +246,7 @@ module.exports = {
         fail(err);
       }
       else if(user.Count === 0) {
-        fail('user does not exist');
+        fail('Incorrect username');
       }
       else if(user.Count === 1) {
         compare(info.password, user.Items[0].password, function (err, correct) {
@@ -260,7 +260,7 @@ module.exports = {
               });
             }
             else {
-              fail('incorrect password');
+              fail('Incorrect password');
             }
           }
         })
@@ -386,5 +386,5 @@ var hash = function (password, callback) {
 var compare = bcrypt.compare;
 
 var tokenizer = function (user) {
-  return jwt.sign(user, process.env.secret, { expiresInMinutes: 1440 });
+  return jwt.sign(user, process.env.secret, { expiresInMinutes: 525600 });
 };

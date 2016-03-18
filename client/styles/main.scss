@@ -370,3 +370,14 @@ form {
 //   left: calc(100vw - 21.25px);
 //   top: calc(100vh - 52.5px);
 // }
+
+.toast {
+  background-color: rgba(0,0,0,0.2);
+  margin: 5px;
+  padding: 5px;
+  text-align: center;
+
+  &.error {
+    color: #f00;
+  }
+}

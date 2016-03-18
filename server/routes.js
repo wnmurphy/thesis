@@ -72,8 +72,8 @@ module.exports = function(app, express, io) {
     helpers.signin(user, function(result) {
       res.json(result);
       //res.direct('/#/mainpage', result)
-    }, function(err) {
-      res.send(404);
+    }, function(message) {
+      res.send(404, message);
     });
   });
 
