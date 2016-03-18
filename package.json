@@ -4,7 +4,7 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "test": "gulp buildTest && ./node_modules/mocha-phantomjs/bin/mocha-phantomjs ./tests/reactTests.html && exit 1",
+    "test": "gulp buildTest && ./node_modules/mocha-phantomjs/bin/mocha-phantomjs ./tests/reactTests.html",
     "start": "nodemon server/server.js"
   },
   "pre-commit": ["test"],
