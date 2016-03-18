@@ -101,18 +101,20 @@ var MapView = React.createClass({
         continue;
       }
 
-      /* Comparator for current time with start or end time; 
+      /* Comparator for current time with start or end time;
          parsing into a formatted string for info window display */
 
       var start = spot.start.split(':').join('');
-      var end = spot.end.split(':').join('');
+      if (spot.end) {
+        var end = spot.end.split(':').join('');
+      }
       var current = getTime();
       var time, prefix, suffix, hours, minutes;
 
       var stringify = function(time) {
 
         hours = Number(time.substring(0, 2)) - Number(current.substr(0, 2));
-        
+
         hours = hours * 60;
 
         minutes = Number(time.substring(2)) - Number(current.substr(2));
@@ -157,20 +159,25 @@ var MapView = React.createClass({
           }
         }
       } else {
-        stringify(end);
-        if (hours === null) {
-          prefix = "";
-        } else {
-          prefix = hours;
-        }
-        if (minutes === null) {
-          suffix = "";
-        } else {
+        if (end) {
+          stringify(end);
           if (hours === null) {
-            suffix = minutes + " left";
+            prefix = "";
           } else {
-            suffix = " and " + minutes + " left";
+            prefix = hours;
           }
+          if (minutes === null) {
+            suffix = "";
+          } else {
+            if (hours === null) {
+              suffix = minutes + " left";
+            } else {
+              suffix = " and " + minutes + " left";
+            }
+          }
+        } else {
+          prefix = "happening now";
+          suffix = "";
         }
       }
 

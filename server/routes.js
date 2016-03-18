@@ -12,12 +12,17 @@ module.exports = function(app, express, io) {
   // POST to create a new spot from CreateView.
   app.post('/api/create', function(req, res) {
     var spot = req.body;
-
-    helpers.createSpot(spot, function(spot_id) {
-      res.json(spot_id);
-      io.emit('addSpot');
-    }, function(err) {
-      res.send(err);
+    helpers.checkToken(JSON.parse(req.headers.token), function (decoded) {
+      spot.creatorId = decoded.userId;
+      spot.creator = decoded.username;
+      helpers.createSpot(spot, function(spot_id) {
+        res.json(spot_id);
+        io.emit('addSpot');
+      }, function(err) {
+        res.send(err);
+      });
+    }, function (message) {
+      res.send(404, message);
     });
   });
 
