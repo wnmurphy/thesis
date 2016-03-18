@@ -1,3 +1,4 @@
+
 var utils = React.addons.TestUtils;
 var result;
 var renderer;
@@ -13,17 +14,17 @@ afterEach(function(done) {
 
 // ======================================
 
-describe('App', function () {
+// describe('App', function () {
 
-  it('categories object in App should exist', function () {
-    expect(categories).to.exist;
-  });
+//   it('categories object in App should exist', function () {
+//     expect(categories).to.exist;
+//   });
 
-  it('should be an object', function () {
-    expect(categories).to.be.an('object');
-  });
+//   it('should be an object', function () {
+//     expect(categories).to.be.an('object');
+//   });
 
-});
+// });
 
 describe('MapView', function () {
   
