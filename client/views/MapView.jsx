@@ -96,6 +96,9 @@ var MapView = React.createClass({
         continue;
       }
 
+      /* Comparator for current time with start or end time; 
+         parsing into a formatted string for info window display */
+         
       var start = Number(spot.start.split(':').join(''));
       var end = Number(spot.end.split(':').join(''));
       var current = getTime();
