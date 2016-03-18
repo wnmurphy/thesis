@@ -62,7 +62,12 @@ var MapView = React.createClass({
   getSpots: function () {
 
     var context = this;
+    this.state.markers.forEach(function(marker) {
+      marker.setVisible(false);
+    })
 
+    this.setState({markers: []});
+    
     this.setState({refreshingClass: " spin"});
 
     $.ajax({
@@ -170,7 +175,7 @@ var MapView = React.createClass({
       }
 
       time = prefix + suffix;
-      
+
       //Temporarily skips marking expired spots until we get server handling and cleanup
       if(time.indexOf('-') > -1 ) {
         continue;
