@@ -3,8 +3,10 @@ var morgan = require('morgan');
 var parser = require('body-parser');
 var routes = require('./routes.js');
 var env = require('node-env-file');
-
-env(__dirname + '../../.env');
+console.log('TRAVISSSSSSSSSSS', process.env.TRAVIS);
+if(!process.env.TRAVIS) {
+  env(__dirname + '../../.env');
+}
 
 var app = express();
 var port = process.env.PORT || 8080;
