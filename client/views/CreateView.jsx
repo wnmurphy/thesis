@@ -2,12 +2,6 @@
 
 var CreateView = React.createClass({
 
-  componentWillMount: function() {
-    if (!AuthController.signedIn) {
-      window.location.hash = '/';
-    }
-  },
-
   componentDidMount: function() {
     var context = this;
     var setLocation = globalState.location;
@@ -21,15 +15,26 @@ var CreateView = React.createClass({
   },
 
   getInitialState: function () {
-    var categoryOptions = [];
-    for (var category in categories) {
-      categoryOptions.push(
-        <option id="category" value={category}>
-          <i className={categories[category]}></i>
-          {category}
-        </option>);
+    var state = {};
+    if (globalState.createState) {
+      state = globalState.createState;
+    } else {
+      var categoryOptions = [];
+      for (var category in categories) {
+        categoryOptions.push(
+          <option id="category" value={category}>
+            <i className={categories[category]}></i>
+            {category}
+          </option>);
+      }
+      state.categoryOptions = categoryOptions;
     }
-    return globalState.createState || {categoryOptions: categoryOptions};
+    if (AuthController.signedIn) {
+      state.cardContainerClass = 'createView-card-container hide';
+    } else {
+      state.cardContainerClass = 'createView-card-container';
+    }
+    return state;
   },
 
   searchMap: function (map, position, marker) {
@@ -123,7 +128,7 @@ var CreateView = React.createClass({
         end: context.state.end
       },
       success: function (data) {
-        globalState.createState = {};
+        globalState.createState = undefined;
         console.log("SUCCESS");
         window.location = '/#/';
       },
@@ -169,7 +174,7 @@ var CreateView = React.createClass({
       error: function (error) {
         console.log("ERROR: ", error);
       }
-    })
+    });
   },
 
   selectChange: function(category) {
@@ -219,6 +224,9 @@ var CreateView = React.createClass({
             <input type="time" id="end" placeholder="End" defaultValue={this.state.end || ''} />
             <input type="submit" value="submit" />
           </form>
+        </div>
+        <div className={this.state.cardContainerClass}>
+          <LoginCard />
         </div>
       </div>
     );

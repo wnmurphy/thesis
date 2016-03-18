@@ -1,7 +1,6 @@
 /** @jsx React.DOM */
 
-
-var LoginView = React.createClass({
+var LoginCard = React.createClass({
   getInitialState: function () {
     return {response: ''};
   },
@@ -26,7 +25,7 @@ var LoginView = React.createClass({
   render: function() {
     console.log("Rendering LoginView");
     return (
-      <div>
+      <div className='login-card'>
         <form onSubmit={this.handleSubmit} onChange={this.handleChange}>
           <input name="username" type="text" placeholder="Username" required />
           <input name="password" type="password" placeholder="Password" required />

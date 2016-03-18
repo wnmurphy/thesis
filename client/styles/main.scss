@@ -337,15 +337,39 @@ form {
   }
 }
 
-.share-card-container {
+.share-card-container, .createView-card-container {
   position: fixed;
   top: 0px;
   height: 100%;
   width: 100%;
-  z-index: -1;
-  opacity: 0;
   -webkit-transition: all 0.5s;
           transition: all 0.5s;
+}
+
+.share-card-container {
+  opacity: 0;
+  z-index: -1;
+}
+
+.createView-card-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(0,0,0,0.3);
+  opacity: 100;
+  z-index: 900;
+
+  &.hide {
+    opacity: 0;
+    z-index: -1;
+  }
+}
+
+.login-card {
+  display: block;
+  background-color: white;
+  max-width: 500px;
+
 }
 
 .show-share-card {
@@ -381,3 +405,5 @@ form {
     color: #f00;
   }
 }
+
+
