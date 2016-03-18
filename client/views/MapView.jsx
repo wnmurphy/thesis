@@ -87,75 +87,99 @@ var MapView = React.createClass({
   initSpots: function () {
     // need to make this wait to run until map loads
     var context = this;
-    var start_am_pm = 'AM';
-    var end_am_pm = 'AM'
+
     for(var i = 0; i < this.state.spots.length; i++) {
 
       var spot = this.state.spots[i];
-      var start, end, startMinutes, endMinutes;
-
 
       if(spot.lastId) {
         continue;
       }
 
-      if(spot.start) {
-        start = Number(spot.start.split(":")[0]);
-        startMinutes = spot.start.split(":")[1];
+      /* Comparator for current time with start or end time; 
+         parsing into a formatted string for info window display */
 
-        if(start > 12) {
-          start -= 12;
-          start_am_pm = 'PM';
-        }
-        if(start === 0) {
-          start = 12;
-          start_am_pm = 'AM';
-        }
-        if(start > 12) {
-          if(start === 12) {
-            start_am_pm = 'PM';
-          }
-          else {
-            start -= 12;
-            start_am_pm = 'PM';
-          }
+      var start = spot.start.split(':').join('');
+      var end = spot.end.split(':').join('');
+      var current = getTime();
+      var time, prefix, suffix, hours, minutes;
+
+      var stringify = function(time) {
+
+        hours = Number(time.substring(0, 2)) - Number(current.substr(0, 2));
+        
+        hours = hours * 60;
+
+        minutes = Number(time.substring(2)) - Number(current.substr(2));
+
+        var total = hours + minutes;
+
+        minutes = total % 60;
+
+        hours = (total - minutes) / 60;
+
+        if (hours === 0) {
+          hours = null;
+        } else if (hours === 1) {
+          hours = hours + " hour ";
+        } else {
+          hours = hours + " hours ";
         }
 
+        if (minutes === 0) {
+          minutes = null;
+        } else if (minutes === 1) {
+          minutes = minutes + " minute"
+        } else {
+          minutes = minutes + " minutes"
+        }
       }
 
-      if(spot.end) {
-        end = Number(spot.end.split(":")[0]);
-        endMinutes = spot.end.split(":")[1];
-        if(end < 12) {
-          end_am_pm = 'AM';
+      if (start > current) {
+        stringify(start);
+        if (hours === null) {
+          prefix = "";
+        } else {
+          prefix = "in " + hours;
         }
-        if(end === 12) {
-          end_am_pm = 'PM';
-        }
-        if(end === 0) {
-          end = 12;
-          end_am_pm = 'AM';
-        }
-        if(end > 12) {
-          if(end === 12) {
-            end_am_pm = 'PM';
-          }
-          else {
-            end -= 12;
-            end_am_pm = 'PM';
+        if (minutes === null) {
+          suffix = "";
+        } else {
+          if (hours === null) {
+            suffix = "in " + minutes;
+          } else {
+            suffix = " and " + minutes;
           }
         }
+      } else {
+        stringify(end);
+        if (hours === null) {
+          prefix = "";
+        } else {
+          prefix = hours;
+        }
+        if (minutes === null) {
+          suffix = "";
+        } else {
+          if (hours === null) {
+            suffix = minutes + " left";
+          } else {
+            suffix = " and " + minutes + " left";
+          }
+        }
+      }
 
+      time = prefix + suffix;
+      
+      //Temporarily skips marking expired spots until we get server handling and cleanup
+      if(time.indexOf('-') > -1 ) {
+        continue;
       }
 
       var contentString = '<div><strong>' + spot.name + '</strong></div>' +
                           '<div>' + spot.creator + '</div>' +
                           '<div><small>' + spot.category + '</small></div>' +
-                          '<div><small>Start: ' + start + ':' + startMinutes + ' ' + start_am_pm + '</small></div>';
-
-      if (end) {
-        contentString += '<div><small>End: ' + end + ':' + endMinutes + ' ' + end_am_pm + '</small></div>';
-      }
+                          '<div><small>' + time + '</small></div>';
 
       contentString += '<div><a href="#/spot/' + spot.spotId +'">More Details</a></div>';
 
@@ -197,7 +221,6 @@ var MapView = React.createClass({
         infoWindow.open(context.state.map, this);
         context.setState({selected: this.getId()});
         context.state.map.panTo(this.getPosition());
-        //console.log(context.state.selected);
       })
     }
   },

@@ -1,25 +1,12 @@
 var getTime = function() {
-  var time;
   var date = new Date();
-  var hours = date.getHours();
-  var minutes = date.getMinutes();
-  var meridian;
-
-  if (hours < 12) {
-    meridian = 'am';
-  } else {
-    meridian = 'pm';
+  var hours = date.getHours().toString();
+  var minutes = date.getMinutes().toString();
+  if (hours.length < 2) {
+    hours = '0' + hours;
   }
-
-  if (hours > 12) {
-    hours -= 12;
-  } else if (hours === 0) {
-    hours = 12;
-  }
-
-  if (minutes < 10) {
+  if (minutes.length < 2) {
     minutes = '0' + minutes;
   }
-
-  time = hours + ':' + minutes + meridian;
+  return hours + minutes;
 };
