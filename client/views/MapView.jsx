@@ -67,7 +67,7 @@ var MapView = React.createClass({
     })
 
     this.setState({markers: []});
-    
+
     this.setState({refreshingClass: " spin"});
 
     $.ajax({
@@ -181,12 +181,13 @@ var MapView = React.createClass({
         continue;
       }
 
-      var contentString = '<div><strong>' + spot.name + '</strong></div>' +
-                          '<div>' + spot.creator + '</div>' +
-                          '<div><small>' + spot.category + '</small></div>' +
-                          '<div><small>' + time + '</small></div>';
+      var contentString = '<div style="font-size: 12px"><strong>' + spot.name + '</strong></div>' +
+                          // '<img src="/silhouette.png">' +
+                          '<div style="font-size: 11px; padding-top: 2px">' + spot.category + '</div>' +
+                          '<div style="font-size: 11px"><small>posted by ' + spot.creator + '</small></div>' +
+                          '<div><small><small>' + time + '</small></small></div>';
 
-      contentString += '<div><a href="#/spot/' + spot.spotId +'">More Details</a></div>';
+      contentString += '<div><small><small><a href="#/spot/' + spot.spotId +'">More Details</a></small></small></div>';
 
       var icon = {
         url: '/pin_test.png'
