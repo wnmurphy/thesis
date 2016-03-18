@@ -47,13 +47,13 @@ module.exports = function(app, express, io) {
 
   // POST to create a new user from SignupView.
   app.post('/api/signup', function(req, res) {
-    var user_info = {
+    var user = {
       username: req.body.username,
       password: req.body.password,
       email: req.body.email
     };
 
-    helpers.signup(user_info, function(result) {
+    helpers.signup(user, function(result) {
       //redirect to main page?
       res.json(result);
     }, function(err) {
@@ -64,12 +64,12 @@ module.exports = function(app, express, io) {
 
   // POST to submit user credentials from LoginView.
   app.post('/api/login', function(req, res) {
-    var user_info = {
+    var user = {
       username: req.body.username,
       password: req.body.password
     };
 
-    helpers.signin(user_info, function(result) {
+    helpers.signin(user, function(result) {
       res.json(result);
       //res.direct('/#/mainpage', result)
     }, function(err) {
