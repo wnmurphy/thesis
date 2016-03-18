@@ -2,6 +2,12 @@
 
 var CreateView = React.createClass({
 
+  componentWillMount: function() {
+    if (!AuthController.signedIn) {
+      window.location.hash = '/';
+    }
+  },
+
   componentDidMount: function() {
     var context = this;
     var setLocation = globalState.location;
