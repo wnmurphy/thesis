@@ -182,9 +182,9 @@ var MapView = React.createClass({
       }
 
       var contentString = '<div style="font-size: 12px"><strong>' + spot.name + '</strong></div>' +
-                          // '<img src="/silhouette.png">' +
+                          '<img style="float: right; padding-top: 2px" src="/silhouette.png">' +
+                          '<div style="font-size: 11px; float: right; clear: right; padding-right: .5px"><small>by ' + spot.creator + '</small></div>' +
                           '<div style="font-size: 11px; padding-top: 2px">' + spot.category + '</div>' +
-                          '<div style="font-size: 11px"><small>posted by ' + spot.creator + '</small></div>' +
                           '<div><small><small>' + time + '</small></small></div>';
 
       contentString += '<div><small><small><a href="#/spot/' + spot.spotId +'">More Details</a></small></small></div>';

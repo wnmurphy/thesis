@@ -1,27 +1,39 @@
+
 var utils = React.addons.TestUtils;
+var result;
+var renderer;
 // ======================================
 
 // Unmount component after each test to clean up.
 afterEach(function(done) {
     React.unmountComponentAtNode(document.body);       
-    setTimeout(done);
-})
+    result = undefined;
+    renderer = undefined;
+    done();
+});
 
 // ======================================
 
-describe('App', function () {
+// describe('App', function () {
 
-  it('categories object in App should exist', function () {
-    expect(categories).to.exist;
-  });
+//   it('categories object in App should exist', function () {
+//     expect(categories).to.exist;
+//   });
 
-  it('should be an object', function () {
-    expect(categories).to.be.an('object');
-  });
+//   it('should be an object', function () {
+//     expect(categories).to.be.an('object');
+//   });
 
-});
+// });
 
 describe('MapView', function () {
+  
+  beforeEach(function(done){
+    renderer = utils.createRenderer();
+    renderer.render(React.createElement(MapView, null));
+    result = renderer.getRenderOutput();
+    done();
+  });
 
   it('should exist', function () {
     expect(MapView).to.exist;
@@ -32,51 +44,254 @@ describe('MapView', function () {
   });
 
   it('renders on the DOM', function () {
-    var renderer = utils.createRenderer();
-    renderer.render(React.createElement(MapView, null));
-    var result = renderer.getRenderOutput();
-    console.log(result);
     expect(result.type).to.equal('div'); 
   });
 
+  describe('MapView divs', function(){
+
+    it('contains a div with a class of map-view-container', function () {
+      expect(result.props.className).to.equal('map-view-container');
+    });
+
+    it('contains other children divs', function () {
+      expect(result.props.children.length).to.be.above(0);
+    });
+
+    it('contains a div with a id of map', function () {
+      expect(result.props.children[0].type).to.equal('div');
+      expect(result.props.children[0].props.id).to.equal('map');
+    });
+
+    it('contains a div with a className of create-button-container', function () {
+      expect(result.props.children[1].type).to.equal('div');
+      expect(result.props.children[1].props.className).to.contain('create-button-container');
+    });
+
+    it('contains a div with a className of collapse-button-container', function () {
+      expect(result.props.children[2].type).to.equal('div');
+      expect(result.props.children[2].props.className).to.contain('collapse-button-container');
+    });
+
+    it('contains a div with a className of refresh-button-container', function () {
+      expect(result.props.children[3].type).to.equal('div');
+      expect(result.props.children[3].props.className).to.contain('refresh-button-container');
+    });
+
+    it('contains a div with a className of center-button-container', function () {
+      expect(result.props.children[4].type).to.equal('div');
+      expect(result.props.children[4].props.className).to.contain('center-button-container');
+    });
+
+    it('contains a div with a className of filter-search', function () {
+      expect(result.props.children[5].type).to.equal('div');
+      expect(result.props.children[5].props.className).to.contain('filter-search');
+    });
+  });
+});
 
 
+describe('CreateView', function () {
 
-
-
-// ======================================
-//To write later...
-  it('renders a div with a single class of map-view-container', function (done) {
-    var makeMapView = React.createElement('MapView', {});
-    var mapViewElement = TestUtils.renderIntoDocument(makeMapView);
-    expect(mapViewElement.children[0]).getElementsByClassName('map-view-container').length.to.be(1);
+  beforeEach(function(done){
+    renderer = utils.createRenderer();
+    renderer.render(React.createElement(CreateView, null));
+    result = renderer.getRenderOutput();
     done();
   });
 
-
-  it('renders a div with a single class of map', function(){
-    var rootElement = this.renderedDOM();
-    expect(rootElement.tagName).toEqual('div');
-    expect(rootElement.classList.length).toEqual(1);
-    expect(rootElement.classList[0]).toEqual('map');
-
+  it('should exist', function () {
+    expect(CreateView).to.exist;
   });
 
-  it('renders a div with a class of create-button-container', function(){
-    var rootElement = this.renderedDOM();
-    expect(rootElement.tagName).toEqual('div');
-    expect(rootElement.classList.length).toEqual(1);
-    expect(rootElement.classList[0]).toEqual('create-button-container');
-
+  it('should be an function', function () {
+    expect(CreateView).to.be.an('function');
   });
 
-  it('renders a div with a class of refresh-button-container', function(){
-    var rootElement = this.renderedDOM();
-    expect(rootElement.tagName).toEqual('div');
-    expect(rootElement.classList.length).toEqual(1);
-    expect(rootElement.classList[0]).toEqual('refresh-button-container');
-
+  it('renders on the DOM', function () {
+    expect(result.type).to.equal('div'); 
   });
 
+  describe('CreateView divs', function(){
 
+    it('contains a div with a className of create-map-view-container', function () {
+      expect(result.props.children[0].type).to.equal('div');
+      expect(result.props.children[0].props.className).to.equal('create-map-view-container');
+    });
+
+    it('contains a div with a className of reset-button-container', function () {
+      expect(result.props.children[1].type).to.equal('div');
+      expect(result.props.children[1].props.className).to.contain('reset-button-container');
+    });
+
+    it('renders a div that contains a form', function () {
+      expect(result.props.children[2].type).to.equal('div');
+      expect(result.props.children[2].props.children.type).to.equal('form');
+    });
+  });
+});
+
+
+describe('SpotView', function () {
+
+  beforeEach(function(done){
+    renderer = utils.createRenderer();
+    renderer.render(React.createElement(SpotView, null));
+    result = renderer.getRenderOutput();
+    done();
+  });
+
+  it('should exist', function () {
+    expect(SpotView).to.exist;
+  });
+
+  it('should be an function', function () {
+    expect(SpotView).to.be.an('function');
+  });
+
+  it('renders on the DOM', function () {
+    expect(result.type).to.equal('div'); 
+  });
+
+  describe('SpotView divs', function(){
+
+    it('contains a div with a className of spot-container', function () {
+      expect(result.type).to.equal('div');
+      expect(result.props.className).to.equal('spot-container');
+    });
+
+    it('contains a div with a className of create-map-view-container', function () {
+      expect(result.props.children[0].type).to.equal('div');
+      expect(result.props.children[0].props.className).to.equal('create-map-view-container');
+    });
+
+    it('contains a div with a className of spot-view-container', function () {
+      expect(result.props.children[1].type).to.equal('div');
+      expect(result.props.children[1].props.className).to.equal('spot-view-container');
+    });
+
+    it('contains a div with a className of share-card-container', function () {
+      expect(result.props.children[2].type).to.equal('div');
+      expect(result.props.children[2].props.className).to.equal('share-card-container');
+    });
+
+    it('contains a div with a className of share-button-container', function () {
+      expect(result.props.children[3].type).to.equal('div');
+      expect(result.props.children[3].props.className).to.equal('share-button-container');
+    });
+  });
+});
+
+
+describe('FeedView', function () {
+
+  beforeEach(function(done){
+    renderer = utils.createRenderer();
+    renderer.render(React.createElement(FeedView, null));
+    result = renderer.getRenderOutput();
+    done();
+  });
+
+  it('should exist', function () {
+    expect(FeedView).to.exist;
+  });
+
+  it('should be an function', function () {
+    expect(FeedView).to.be.an('function');
+  });
+
+  it('renders on the DOM', function () {
+    expect(result.type).to.equal('div'); 
+  });
+});
+
+
+describe('LoginView', function () {
+
+  beforeEach(function(done){
+    renderer = utils.createRenderer();
+    renderer.render(React.createElement(LoginView, null));
+    result = renderer.getRenderOutput();
+    done();
+  });
+
+  it('should exist', function () {
+    expect(LoginView).to.exist;
+  });
+
+  it('should be an function', function () {
+    expect(LoginView).to.be.an('function');
+  });
+
+  it('renders on the DOM', function () {
+    expect(result.type).to.equal('div'); 
+  });
+});
+
+
+describe('SignupView', function () {
+
+  beforeEach(function(done){
+    renderer = utils.createRenderer();
+    renderer.render(React.createElement(SignupView, null));
+    result = renderer.getRenderOutput();
+    done();
+  });
+
+  it('should exist', function () {
+    expect(SignupView).to.exist;
+  });
+
+  it('should be an function', function () {
+    expect(SignupView).to.be.an('function');
+  });
+
+  it('renders on the DOM', function () {
+    expect(result.type).to.equal('div'); 
+  });
+});
+
+
+describe('SearchView', function () {
+
+  beforeEach(function(done){
+    renderer = utils.createRenderer();
+    renderer.render(React.createElement(SearchView, null));
+    result = renderer.getRenderOutput();
+    done();
+  });
+
+  it('should exist', function () {
+    expect(SearchView).to.exist;
+  });
+
+  it('should be an function', function () {
+    expect(SearchView).to.be.an('function');
+  });
+
+  it('renders on the DOM', function () {
+    expect(result.type).to.equal('div'); 
+  });
+});
+
+
+describe('ProfileView', function () {
+
+  beforeEach(function(done){
+    renderer = utils.createRenderer();
+    renderer.render(React.createElement(ProfileView, null));
+    result = renderer.getRenderOutput();
+    done();
+  });
+
+  it('should exist', function () {
+    expect(ProfileView).to.exist;
+  });
+
+  it('should be an function', function () {
+    expect(ProfileView).to.be.an('function');
+  });
+
+  it('renders on the DOM', function () {
+    expect(result.type).to.equal('div'); 
+  });
 });
