@@ -62,7 +62,7 @@ module.exports = function(app, express, io) {
       //redirect to main page?
       res.json(result);
     }, function(err) {
-      res.send(404);
+      res.send(404, message);
     });
   });
 

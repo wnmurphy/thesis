@@ -172,7 +172,7 @@ module.exports = {
 
       if(err) {
         console.error('Error signing up user', err);
-        fail(err);
+        fail("Internal server error. Please try again.");
       }
       //if user does not exist, increment user lastId
       else if(data.Count === 0) {
@@ -184,7 +184,7 @@ module.exports = {
         dbSchema.get(params, function(err, data) {
           if (err) {
             console.error("Unable to query. Error:", JSON.stringify(err, null, 2));
-            fail(err);
+            fail("Internal server error. Please try again.");
           }
           else {
             info.userId = data.Item.lastId + 1;
@@ -220,7 +220,7 @@ module.exports = {
               dbSchema.put(params, function(err, data) {
                 if(err) {
                   console.error("Error creating new user", err);
-                  fail(err);
+                  fail("Internal server error. Please try again.");
                 }
                 else {
                   module.exports.signin(info, success, fail);
@@ -357,7 +357,7 @@ module.exports = {
 
     // Earth's radius in meters.
     var R = 6371000;
-    
+
     // Make names shorter.
     var lat1 = Number(point1.latitude);
     var lng1 = Number(point1.longitude);
