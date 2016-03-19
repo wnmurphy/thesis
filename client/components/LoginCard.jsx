@@ -1,5 +1,28 @@
 /** @jsx React.DOM */
 
+var LoginRequired = React.createClass({
+  getInitialState: function () {
+    if (AuthController.signedIn) {
+      return {cardContainerClass: 'createView-card-container hide'};
+    } else {
+      return {cardContainerClass: 'createView-card-container'};
+    }
+  },
+
+  handleLogin: function () {
+    console.log("handling login");
+    this.setState({cardContainerClass: 'createView-card-container hide'});
+  },
+
+  render: function () {
+    return (
+      <div className={this.state.cardContainerClass}>
+        <LoginCard parent={this} />
+      </div>
+    );
+  }
+});
+
 var LoginCard = React.createClass({
   getInitialState: function () {
     return {response: ''};
