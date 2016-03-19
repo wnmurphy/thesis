@@ -345,63 +345,46 @@ module.exports = {
       }
     });
   },
-  distanceBetween: function(point1, point2) {
-    var R = 3961;
-    var lat1 = deg2rad(point1.latitude);
-    var lng1 = deg2rad(point1.longitude);
-    var lat2 = deg2rad(point2.latitude);
-    var lng2 = deg2rad(point2.longitude);
 
-    var dlng = lng2 - lng1;
-    var dlat = lat2 - lat1;
+  distanceBetween: function(point1, point2){
 
-    var a = Math.pow(Math.sin(dlat/2), 2) + Math.cos(lat1) * Math.cos(lat2) * Math.pow(Math.sin(dlng/2), 2); 
-  
-    // var c = 2 * atan2( sqrt(a), sqrt(1-a) ); 
-    var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
-    var d = R * c;
-    console.log('distance between', d);
-    return d;
+    // Polyfill radian conversion if not present.
+    if (typeof(Number.prototype.toRad) === "undefined") {
+      Number.prototype.toRad = function() {
+        return this * Math.PI / 180;
+      };
+    }
+
+    // Earth's radius in meters.
+    var R = 6371000;
+    
+    // Make names shorter.
+    var lat1 = Number(point1.latitude);
+    var lng1 = Number(point1.longitude);
+    var lat2 = Number(point2.latitude);
+    var lng2 = Number(point2.longitude);
+
+    // Do maths. Convert degrees to radians.
+    var radLat1 = lat1.toRad();
+    var radLat2 = lat2.toRad();
+    var radDeltaLat = (lat2-lat1).toRad();
+    var radDeltaLng = (lng2-lng1).toRad();
+
+    // Find area.
+    var a = Math.sin(radDeltaLat/2) * Math.sin(radDeltaLat/2) +
+            Math.cos(radLat1) * Math.cos(radLat2) *
+            Math.sin(radDeltaLng/2) * Math.sin(radDeltaLng/2);
+
+    // Find circumference.
+    var c = 2 * Math.atan2( Math.sqrt(a), Math.sqrt(1-a) );
+
+    var distance = R * c;
+
+    // Convert distance (m) to distance (mi).
+    distance = distance * 0.000621371;
+    console.log('distance between', distance);
+    return distance;
   },
-  // distanceBetween: function(point1, point2){
-
-  //   // Polyfill radian conversion if not present.
-  //   if (typeof(Number.prototype.toRad) === "undefined") {
-  //     Number.prototype.toRad = function() {
-  //       return this * Math.PI / 180;
-  //     };
-  //   }
-
-  //   // Earth's radius in meters.
-  //   var R = 6371000;
-
-  //   // Make names shorter.
-  //   var lat1 = point1.latitude;
-  //   var lng1 = point1.longitude;
-  //   var lat2 = point2.latitude;
-  //   var lng2 = point2.longitude;
-
-  //   // Do maths. Convert degrees to radians.
-  //   var radLat1 = lat1.toRad();
-  //   var radLat2 = lat2.toRad();
-  //   var radDeltaLat = (lat2-lat1).toRad();
-  //   var radDeltaLng = (lng2-lng1).toRad();
-
-  //   // Find area.
-  //   var a = Math.sin(radDeltaLat/2) * Math.sin(radDeltaLat/2) +
-  //           Math.cos(radLat1) * Math.cos(radLat2) *
-  //           Math.sin(radDeltaLng/2) * Math.sin(radDeltaLng/2);
-
-  //   // Find circumference.
-  //   var c = 2 * Math.atan2( Math.sqrt(a), Math.sqrt(1-a) );
-
-  //   var distance = R * c;
-
-  //   // Convert distance (m) to distance (mi).
-  //   distance = distance * 0.000621371;
-
-  //   return distance;
-  // },
 
   checkToken: function (token, success, fail) {
     jwt.verify(token, process.env.secret, function(err, decoded) {
