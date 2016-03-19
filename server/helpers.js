@@ -378,12 +378,6 @@ module.exports = {
         return data;
       } 
     });
-
-    // retrieve spot
-    // copy spot's messages array to local variable
-    // push message to local copy of messages array
-    // update spot in db with updated copy of messages array
-
   },
 
   getMessagesFromDatabase: function(spotId){

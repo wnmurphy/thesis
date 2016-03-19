@@ -5,11 +5,16 @@ var Link = window.ReactRouter.Link;
 var useRouterHistory = window.ReactRouter.useRouterHistory;
 var createHashHistory = window.History.createHashHistory;
 var browserHistory = useRouterHistory(createHashHistory)({queryKey: false});
+var socket = io.connect();
+
+socket.on('connect', function(){
+  console.log('client-side socket connection created');
+  socket.emit('hello');
+});
 
 var globalState = {};
 
 var categories = {
-  "Food Truck": "fa fa-truck",
   General: "fa fa-asterisk",
   Food: "fa fa-cutlery",
   Entertainment: "fa fa-ticket",

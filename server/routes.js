@@ -130,6 +130,10 @@ module.exports = function(app, express, io) {
 
     /* Chat socket */
 
+    socket.on('hello', function(){
+      console.log('socket sez what up biotch');
+    });    
+
     // Listen for whenever a chat message is sent.
     socket.on('messageHeard', function(spotId, user, message){
       //add message to database
