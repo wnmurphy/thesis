@@ -2,11 +2,16 @@
 
 var LoginRequired = React.createClass({
   getInitialState: function () {
+    var state = {
+      signup: false
+    };
+
     if (AuthController.signedIn) {
-      return {cardContainerClass: 'createView-card-container hide'};
+      state.cardContainerClass = 'createView-card-container hide';
     } else {
-      return {cardContainerClass: 'createView-card-container'};
+      state.cardContainerClass = 'createView-card-container';
     }
+    return state;
   },
 
   handleLogin: function () {
@@ -14,10 +19,22 @@ var LoginRequired = React.createClass({
     this.setState({cardContainerClass: 'createView-card-container hide'});
   },
 
+  toggleCard: function () {
+    this.setState({
+      signup: !this.state.signup
+    })
+  },
+
   render: function () {
+    if (this.state.signup) {
+      var card = <SignupCard parent={this} />;
+    } else {
+      var card = <LoginCard parent={this} />;
+    }
+
     return (
       <div className={this.state.cardContainerClass}>
-        <LoginCard parent={this} />
+        {card}
       </div>
     );
   }
@@ -33,6 +50,10 @@ var LoginCard = React.createClass({
     console.log("handleChange:", this.state);
     newState[e.target.name] = e.target.value;
     this.setState(newState);
+  },
+
+  toggleCard: function () {
+    this.props.parent.toggleCard();
   },
 
   handleSubmit: function (e) {
@@ -57,6 +78,54 @@ var LoginCard = React.createClass({
           <input name="username" type="text" placeholder="Username" required />
           <input name="password" type="password" placeholder="Password" required />
           <input type="submit" value="Log In"/>
+          <input type="button" onClick={this.toggleCard} value="Create Account"></input>
+        </form>
+        <Toast message={this.state.response} />
+      </div>
+    );
+  }
+});
+
+var SignupCard = React.createClass({
+  getInitialState: function () {
+    return {response: ''};
+  },
+
+  handleChange: function (e) {
+    var newState = {};
+    console.log("handleChange:", this.state);
+    newState[e.target.name] = e.target.value;
+    this.setState(newState);
+  },
+
+  toggleCard: function () {
+    this.props.parent.toggleCard();
+  },
+
+  handleSubmit: function (e) {
+    e.preventDefault();
+    var context = this;
+    console.log("handleSubmit:", this.state);
+    // AuthController.js
+    AuthController.sendSignup(this.state, function() {
+      console.log("Handling signup in LoginCard");
+      console.log('context: ', context);
+      context.props.parent.handleLogin();
+    }, function(message) {
+      context.setState({response: message});
+    });
+  },
+
+  render: function() {
+    console.log("Rendering LoginView");
+    return (
+      <div className='login-card'>
+        <form onSubmit={this.handleSubmit} onChange={this.handleChange}>
+          <input name="username" type="text" placeholder="Username" required />
+          <input name="email" type="email" placeholder="Email" required />
+          <input name="password" type="password" placeholder="Password" required />
+          <input type="submit" value="Signup"/>
+          <input type="button" onClick={this.toggleCard} value="Existing Account"></input>
         </form>
         <Toast message={this.state.response} />
       </div>
