@@ -1,7 +1,6 @@
 /** @jsx React.DOM */
 
-
-var LoginView = React.createClass({
+var LoginCard = React.createClass({
   getInitialState: function () {
     return {response: ''};
   },
@@ -19,7 +18,9 @@ var LoginView = React.createClass({
     console.log("handleSubmit:", this.state);
     // AuthController.js
     AuthController.sendLogin(this.state, function() {
-      window.location.hash = '/';
+      console.log("Handling login in LoginCard");
+      console.log('context: ', context);
+      context.props.parent.handleLogin();
     }, function(message) {
       context.setState({response: message});
     });
@@ -28,7 +29,7 @@ var LoginView = React.createClass({
   render: function() {
     console.log("Rendering LoginView");
     return (
-      <div>
+      <div className='login-card'>
         <form onSubmit={this.handleSubmit} onChange={this.handleChange}>
           <input name="username" type="text" placeholder="Username" required />
           <input name="password" type="password" placeholder="Password" required />

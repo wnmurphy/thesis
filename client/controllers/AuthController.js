@@ -16,7 +16,7 @@ var AuthController = {
     AuthController.initAuth();
   },
 
-  sendLogin: function (login, fail) {
+  sendLogin: function (login, success, fail) {
     $.ajax({
       method: 'POST',
       url: '/api/login',
@@ -26,12 +26,12 @@ var AuthController = {
         console.log("SUCCESS", data);
         localStorage.setItem('token', JSON.stringify(data.token));
         AuthController.initAuth();
-        window.location.hash = '';
+        success();
       },
       error: function (error) {
         AuthController.signOut();
         fail(error.responseText);
       }
-    })
+    });
   }
-}
+};
