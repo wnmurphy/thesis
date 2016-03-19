@@ -17,7 +17,6 @@ module.exports = function(app, express, io) {
       spot.creator = decoded.username;
       helpers.createSpot(spot, function(spot_id) {
         res.json(spot_id);
-        io.emit('addSpot');
       }, function(err) {
         res.send(err);
       });
@@ -125,16 +124,17 @@ module.exports = function(app, express, io) {
 
     // Listen for whenever a new spot is created, and
     // broadcast spotAdded event to trigger client-side map refresh.
-    io.on('addSpot', function(){
+    socket.on('addSpot', function(){
       io.emit('spotAdded');
     });
-
 
     /* Chat socket */
 
     // Listen for whenever a chat message is sent.
-    io.on('chatMessage', function(spotId, user, message){
-      io.emit('chatMessage', spotId, user, message);
+    socket.on('messageHeard', function(spotId, user, message){
+      //add message to database
+      helpers.postMessageToDatabase(spotId, user, message);
+      io.emit('messageAdded', spotId, user, message);
     });
 
   });
