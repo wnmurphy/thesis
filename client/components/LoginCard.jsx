@@ -20,7 +20,7 @@ var LoginCard = React.createClass({
     AuthController.sendLogin(this.state, function() {
       console.log("Handling login in LoginCard");
       console.log('context: ', context);
-      context.$parent.handleLogin();
+      context.props.parent.handleLogin();
     }, function(message) {
       context.setState({response: message});
     });

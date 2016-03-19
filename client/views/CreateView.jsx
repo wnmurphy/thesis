@@ -231,7 +231,7 @@ var CreateView = React.createClass({
           </form>
         </div>
         <div className={this.state.cardContainerClass}>
-          <LoginCard />
+          <LoginCard parent={this} />
         </div>
       </div>
     );
