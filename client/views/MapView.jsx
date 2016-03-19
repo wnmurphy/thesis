@@ -56,7 +56,10 @@ var MapView = React.createClass({
           map.setOptions({zoomControl: true});
           context.setState({buttonClass: "circle"});
           context.setState({filterClass: ""});
-          context.getSpots();
+          console.log('globalState location', globalState.location);
+          context.setState({center: globalState.location}, function() {
+            context.getSpots();
+          }); 
         });
     }
   },
