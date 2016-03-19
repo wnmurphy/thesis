@@ -44,10 +44,9 @@ var MapView = React.createClass({
           map.setOptions({zoomControl: true});
           context.setState({buttonClass: "circle"});
           context.setState({filterClass: ""});
-          context.setState({location: location}, function() {
-            context.getSpots();
-          });
-          
+          context.setState({location: location});
+          context.getSpots();
+
         });
       }, context);
       }, welcomeScreenTimeout);
@@ -65,6 +64,7 @@ var MapView = React.createClass({
   getSpots: function () {
 
     var context = this;
+
     this.state.markers.forEach(function(marker) {
       marker.setVisible(false);
     })
