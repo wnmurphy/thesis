@@ -267,6 +267,14 @@ var initMap = function (location, context, callback) {
     overlay.setMap(this); 
   };
 
+  google.maps.event.addListener(map, 'dragend', function(event) {
+    var center = {
+      latitude: this.center.lat(),
+      longitude: this.center.lng()
+    }
+    context.setState({center: center});
+    context.getSpots();
+  })
   context.setState({map: map});
 
   var icon = {
