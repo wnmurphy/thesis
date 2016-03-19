@@ -44,7 +44,10 @@ var MapView = React.createClass({
           map.setOptions({zoomControl: true});
           context.setState({buttonClass: "circle"});
           context.setState({filterClass: ""});
-          context.getSpots();
+          context.setState({location: location}, function() {
+            context.getSpots();
+          });
+          
         });
       }, context);
       }, welcomeScreenTimeout);
@@ -69,11 +72,11 @@ var MapView = React.createClass({
     this.setState({markers: []});
 
     this.setState({refreshingClass: " spin"});
-
     $.ajax({
       method: 'GET',
       url: '/api/map',
       dataType: 'json',
+      data: {"location": context.state.location},
       success: function (data) {
         globalState.spots = data;
         context.setState({spots: data});

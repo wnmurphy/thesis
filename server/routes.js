@@ -40,8 +40,8 @@ module.exports = function(app, express, io) {
 
   // GET to request all spots for either MapView or FeedView.
   app.get('/api/map', function(req, res) {
-    // var location = req.params.location;
-    helpers.getSpots(null, function(results) { //null was location
+    var location = req.query.location;
+    helpers.getSpots(location, function(results) { //null was location
       res.json(results);
     }, function(err) {
       res.send(404);
