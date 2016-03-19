@@ -49,7 +49,8 @@ module.exports = {
                 "address": spot.address,
                 "description": spot.description,
                 "start": spot.start,
-                "end": spot.end
+                "end": spot.end,
+                "messages": []
                 },
               };
               dbSchema.put(params, function(err, data) {
@@ -346,6 +347,75 @@ module.exports = {
     });
   },
 
+  postMessageToDatabase: function(spotId, user, message){
+    // Writes message to spots.spotId.messages
+    // Called by socket event
+
+    // Identify the correct spot in database.
+    var params = {
+      TableName: "Spots",
+      
+      Key: {
+        spotId: {
+          N: spotId
+        }
+      },
+      
+      UpdateExpression: "SET messages = list_append (messages, :text)",
+      
+      ExpressionAttributeValues: {
+        ":text": [user, message]
+      }
+    };
+
+    // Push a new message to the messages array for that spot.
+    dbSchema.updateItem(params, function(err, data) {
+      if(err) {
+        return console.error('Error writing message to spot', err);
+      }
+      else {
+        console.log(data);
+        return data;
+      } 
+    });
+
+    // retrieve spot
+    // copy spot's messages array to local variable
+    // push message to local copy of messages array
+    // update spot in db with updated copy of messages array
+
+  },
+
+  getMessagesFromDatabase: function(spotId){
+    // Retrieves all messages in spots.spotId
+    // Called by AJAX call to server
+    
+    // Identify the correct spot in database.
+    var params = {
+      TableName: "Spots",
+      FilterExpression: "#spotname = (:id)",
+      ExpressionAttributeNames:{
+        "#spotname": "spotId"
+      },
+      ExpressionAttributeValues: {
+        ":id": spotId
+      }
+    };
+
+    // Retrieve and return all messages for that spot.
+    dbSchema.scan(params, function(err, spot) {
+      if(err) {
+        return console.error('Error getting messages for spot', err);
+      } else if(spot.Count === 0) {
+        return console.error('spot does not exist', err);
+      } else if(spot.Count === 1) {
+        return Items[0].messages;
+      } else {
+        return console.error('Multiple spots for same id', err);
+      }
+    });
+  },
+
   distanceBetween: function(point1, point2){
 
     // Polyfill radian conversion if not present.
@@ -397,11 +467,6 @@ module.exports = {
     });
   }
 
-};
-
-var deg2rad = function(deg) {
-  rad = deg * Math.PI/180; // radians = degrees * pi/180
-  return rad;
 };
 
 var hash = function (password, callback) {

@@ -34,5 +34,7 @@ client/dist
 client/lib
 tests/*.js
 
+tests/*.js
+
 .floo
 .flooignore
