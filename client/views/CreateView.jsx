@@ -192,6 +192,11 @@ var CreateView = React.createClass({
     this.setState({address: event.target.value});
   },
 
+  handleLogin: function () {
+    console.log("handling login");
+    this.setState({cardContainerClass: 'createView-card-container hide'});
+  },
+
   render: function () {
     globalState.createState = this.state;
     var valueLink = {

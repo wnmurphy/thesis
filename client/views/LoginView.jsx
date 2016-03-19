@@ -18,7 +18,9 @@ var LoginView = React.createClass({
     var context = this;
     console.log("handleSubmit:", this.state);
     // AuthController.js
-    AuthController.sendLogin(this.state, function(message) {
+    AuthController.sendLogin(this.state, function() {
+      window.location.hash = '/';
+    }, function(message) {
       context.setState({response: message});
     });
   },
