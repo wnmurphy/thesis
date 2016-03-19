@@ -9,6 +9,8 @@ var request = require('request');
 var db = new aws.DynamoDB();
 var dbSchema = new aws.DynamoDB.DocumentClient();
 
+var serverURI = 'http://localhost:' + (process.env.PORT || 8080);
+
 aws.config.update({
       accessKeyId: "fakeAccessKey",
       secretAccessKey: "fakeSecretAccessKey",
@@ -425,12 +427,13 @@ describe("Server routes", function() {
   it('should return a 200 when getting a spot', function(done) {
     request({
       method: "GET",
-      uri: "http://localhost:8080/api/spot/999999999999"
+      uri: serverURI + "/api/spot/999999999999"
     }, function (err, res, body){
       if (err) {
         console.error("Error getting Johnny's spot ", err);
         done();
       }
+      console.log(body);
       body = JSON.parse(body);
       expect(res.statusCode).to.equal(200);
       expect(body.spotId).to.equal(999999999999);
