@@ -277,7 +277,7 @@ form {
     width: calc(100% - 20px);
   }
 
-  input[type=submit] {
+  input[type=submit], input[type=button]{
     margin: 10px;
     background-color: $primary-color;
     border: 0px;
@@ -369,7 +369,8 @@ form {
   display: block;
   background-color: white;
   max-width: 500px;
-
+  -webkit-transition: all 0.5s;
+          transition: all 0.5s;
 }
 
 .show-share-card {
@@ -405,5 +406,3 @@ form {
     color: #f00;
   }
 }
-
-

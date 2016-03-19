@@ -33,5 +33,23 @@ var AuthController = {
         fail(error.responseText);
       }
     });
+  },
+
+  sendSignup: function (user, success, fail) {
+    $.ajax({
+      method: 'POST',
+      url: '/api/signup',
+      dataType: 'json',
+      data: user,
+      success: function (data) {
+        console.log("SUCCESS", data);
+        localStorage.setItem('token', JSON.stringify(data.token));
+        AuthController.initAuth();
+        success();
+      },
+      error: function (error) {
+        fail(error.responseText);
+      }
+    });
   }
 };
