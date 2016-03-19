@@ -148,7 +148,7 @@ describe("Persistent Spot and User Server", function() {
     };
     
   });
-  describe("Helper Functions", function() {
+  xdescribe("Helper Functions", function() {
     it("should create spots and be able to search for spots", function(done){
       helpers.createSpot({
         name: "test1", 
@@ -214,7 +214,7 @@ describe("Persistent Spot and User Server", function() {
         done();
       });
     });
-    it('should be able to get spots', function(done) {
+    xit('should be able to get spots', function(done) {
       helpers.getSpots(null, function(array){
         expect(array).to.be.an('array');
         expect(array.length).to.be.above(0);
