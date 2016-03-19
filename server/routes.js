@@ -61,7 +61,7 @@ module.exports = function(app, express, io) {
     helpers.signup(user, function(result) {
       //redirect to main page?
       res.json(result);
-    }, function(err) {
+    }, function(message) {
       res.send(404, message);
     });
   });

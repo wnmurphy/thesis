@@ -231,7 +231,7 @@ module.exports = {
         });
       }
       else {
-        fail("user already exists");
+        fail("Username taken");
       }
     });
   },
