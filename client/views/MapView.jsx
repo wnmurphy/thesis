@@ -45,8 +45,8 @@ var MapView = React.createClass({
           context.setState({buttonClass: "circle"});
           context.setState({filterClass: ""});
           context.setState({location: location});
+          context.setState({center: location});
           context.getSpots();
-
         });
       }, context);
       }, welcomeScreenTimeout);
@@ -76,7 +76,7 @@ var MapView = React.createClass({
       method: 'GET',
       url: '/api/map',
       dataType: 'json',
-      data: {"location": context.state.location},
+      data: {"location": context.state.center},
       success: function (data) {
         globalState.spots = data;
         context.setState({spots: data});
