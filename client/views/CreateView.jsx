@@ -29,11 +29,6 @@ var CreateView = React.createClass({
       }
       state.categoryOptions = categoryOptions;
     }
-    if (AuthController.signedIn) {
-      state.cardContainerClass = 'createView-card-container hide';
-    } else {
-      state.cardContainerClass = 'createView-card-container';
-    }
     return state;
   },
 
@@ -42,7 +37,7 @@ var CreateView = React.createClass({
     map.setOptions({disableDefaultUI: true});
 
     marker.setIcon('/pin_test.png');
-    
+
     var context = this;
 
     var input = (document.getElementById('address'));
@@ -192,11 +187,6 @@ var CreateView = React.createClass({
     this.setState({address: event.target.value});
   },
 
-  handleLogin: function () {
-    console.log("handling login");
-    this.setState({cardContainerClass: 'createView-card-container hide'});
-  },
-
   render: function () {
     globalState.createState = this.state;
     var valueLink = {
@@ -230,9 +220,7 @@ var CreateView = React.createClass({
             <input type="submit" value="submit" />
           </form>
         </div>
-        <div className={this.state.cardContainerClass}>
-          <LoginCard parent={this} />
-        </div>
+        <LoginRequired />
       </div>
     );
   }
