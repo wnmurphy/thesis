@@ -1,13 +1,20 @@
 /** @jsx React.DOM */
 
 var LoginRequired = React.createClass({
+  getDefaultProps: function () {
+    // post runs when user is already signed in or after successful signin
+    return {
+      parent: {post: function () {}}
+    };
+  },
+
   getInitialState: function () {
     var state = {
       signup: false
     };
-
     if (AuthController.signedIn) {
       state.cardContainerClass = 'createView-card-container hide';
+      this.props.parent.post();
     } else {
       state.cardContainerClass = 'createView-card-container';
     }
@@ -17,6 +24,7 @@ var LoginRequired = React.createClass({
   handleLogin: function () {
     console.log("handling login");
     this.setState({cardContainerClass: 'createView-card-container hide'});
+    this.props.parent.post();
   },
 
   toggleCard: function () {
