@@ -19,9 +19,6 @@ var server = app.listen(port, function() {
   console.log('listening on port', port);
 });
 
-// var http = require('http').Server(app);
-// var io = require('socket.io')(http);
-
 var io = require('socket.io')({
  transports: ["xhr-polling"],
  'polling duration': 10
