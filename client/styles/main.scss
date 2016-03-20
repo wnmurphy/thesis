@@ -337,7 +337,7 @@ form {
   }
 }
 
-.share-card-container, .createView-card-container {
+.share-card-container, .createView-card-container, .chat-card-container{
   position: fixed;
   top: 0px;
   height: 100%;
@@ -371,6 +371,29 @@ form {
   max-width: 500px;
   -webkit-transition: all 0.5s;
           transition: all 0.5s;
+}
+
+.chat-card {
+  display: block;
+  position: absolute;
+  background-color: white;
+  width: 100%;
+  height: 100%;
+  -webkit-transition: all 0.5s;
+          transition: all 0.5s;
+  top: 100%;
+}
+
+.chat-card-container {
+  opacity: 100;
+  z-index: -1;
+  
+  &.show {
+    z-index: 500;
+    .chat-card {
+      top: 0;
+    }
+  }
 }
 
 .show-share-card {

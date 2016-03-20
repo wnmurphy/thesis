@@ -13,8 +13,8 @@ var SpotView = React.createClass({
       spot: {},
       shareClass: "share-card-container",
       buttonIcon: "fa fa-share-alt",
-      sharing: false
-
+      sharing: false,
+      showChat: ""
     };
   },
 
@@ -52,18 +52,35 @@ var SpotView = React.createClass({
   toggleShare: function () {
     var sharing = !this.state.sharing;
     var newState = {sharing: sharing};
-    if (sharing) {
+    if (this.state.buttonIcon === "fa fa-share-alt") {
       newState.buttonIcon = "fa fa-times",
       newState.shareClass = "share-card-container show-share-card"
     } else {
       newState.buttonIcon = "fa fa-share-alt",
-      newState.shareClass = "share-card-container"
+      newState.shareClass = "share-card-container",
+      newState.showChat = ""
     }
-
     this.setState(newState);
   },
 
+  toggleChat: function (){
+    if(this.state.showChat === ""){
+      this.setState({
+        showChat: " show",
+        buttonIcon: "fa fa-times"
+      });
+    } else {
+      this.setState({
+        showChat: "",
+        buttonIcon: "fa fa-share-alt"
+     });
+    }
+  },
+
   render: function() {
+    
+    var chatContainerClass = "chat-card-container";
+
     return (
       <div className="spot-container">
         <div className="create-map-view-container">
@@ -80,6 +97,7 @@ var SpotView = React.createClass({
           <h4>created by: {this.state.spot.creator}</h4>
           <p>description: {this.state.spot.description}</p>
           <p>address: {this.state.spot.address}</p>
+          <input type="button" value="show chat" onClick={this.toggleChat} />
         </div>
         <div className={this.state.shareClass} onClick={this.toggleShare}>
           <ShareCard shareProps={this.state.shareProps}/>
@@ -89,6 +107,11 @@ var SpotView = React.createClass({
             <i className={this.state.buttonIcon}></i>
           </a>
         </div>
+
+        <div className={chatContainerClass + this.state.showChat}>
+          <Chat />
+        </div>
+
       </div>
     );
   }
