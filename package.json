@@ -5,7 +5,7 @@
   "main": "server.js",
   "scripts": {
     "start": "nodemon server/server.js",
-    "test": "mocha ./tests/testServer.js && gulp buildTest && node node_modules/mocha-phantomjs/bin/mocha-phantomjs ./tests/reactTests.html"
+    "test": "mocha tests/testServer.js && gulp buildTest && node node_modules/mocha-phantomjs/bin/mocha-phantomjs ./tests/reactTests.html"
   },
   "pre-commit": ["test"],
   "repository": {

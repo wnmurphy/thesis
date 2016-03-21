@@ -33,8 +33,7 @@ bower_components/
 client/dist
 client/lib
 tests/*.js
-
-tests/*.js
+!tests/testServer.js
 
 .floo
 .flooignore
