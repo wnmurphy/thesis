@@ -138,38 +138,40 @@ var CreateView = React.createClass({
 
     var context = this;
 
-    var address = 'http://maps.googleapis.com/maps/api/geocode/json?latlng=' +
-                    globalState.location.latitude + ',' + globalState.location.longitude + '&sensor=true';
+    var request = {
+      location: location,
+      type: 'address_components'
+    }
 
-    $.ajax({
-      method: 'GET',
-      url: address,
-      dataType: 'json',
-      success: function (data) {
+    var geocoder = new google.maps.Geocoder;
 
-        var addressFound = data.results[0].formatted_address;
-        context.setState({ address: addressFound, location:{latitude: globalState.location.latitude, longitude:globalState.location.longitude} });
-
-        context.state.marker.setPlace(({
-          placeId: data.results[0].place_id,
-          location: data.results[0].geometry.location
-        }));
-
-        context.state.map.setCenter(data.results[0].geometry.location);
-        context.state.map.setZoom(17);
-
-        var parts = data.results[0].formatted_address.split(',');
-        var street = parts[0];
-        var locality = parts[1] + ', ' + parts[2];
-
-        context.state.infowindow.setContent('<div><strong>' + "My Location" + '</strong><br>' + street + '<br>' + locality + '</div>')
-        context.state.infowindow.open(context.state.map, context.state.marker);
-
-      },
-      error: function (error) {
-        console.log("ERROR: ", error);
+    var location = {
+      lat: globalState.location.latitude,
+      lng: globalState.location.longitude
+    }
+    geocoder.geocode({location: location}, function(results, status) {
+      if (status !== 'OK') {
+        return console.error('Cannot find user address from location');
       }
-    });
+      var addressFound = results[0].formatted_address;
+      context.setState({ address: addressFound, location:{latitude: globalState.location.latitude, longitude:globalState.location.longitude} });
+
+      context.state.marker.setPlace(({
+        placeId: results[0].place_id,
+        location: results[0].geometry.location
+      }));
+
+      context.state.map.setCenter(results[0].geometry.location);
+      context.state.map.setZoom(17);
+
+      var parts = results[0].formatted_address.split(',');
+      var street = parts[0];
+      var locality = parts[1] + ', ' + parts[2];
+
+      context.state.infowindow.setContent('<div><strong>' + "My Location" + '</strong><br>' + street + '<br>' + locality + '</div>')
+      context.state.infowindow.open(context.state.map, context.state.marker);
+
+    })
   },
 
   selectChange: function(category) {
