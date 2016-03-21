@@ -1,3 +1,5 @@
+!tests/socket.io-1.4.5.js
+
 node_modules/
 bower_components/
 *.log
@@ -8,7 +10,7 @@ dist/
 client/dist
 client/lib
 tests/*.js
-!tests/socket.io-1.4.5.js
+
 
 .floo
 .flooignore
