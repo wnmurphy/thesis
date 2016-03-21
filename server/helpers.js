@@ -356,25 +356,27 @@ module.exports = {
       TableName: "Spots",
       
       Key: {
-        spotId: {
-          N: spotId
-        }
+        spotId: spotId
       },
       
-      UpdateExpression: "SET messages = list_append (messages, :text)",
+      UpdateExpression: "SET #messages = list_append (#messages, :text)",
       
+      ExpressionAttributeNames: {
+        "#messages": "messages"
+      },
+
       ExpressionAttributeValues: {
-        ":text": [user, message]
+        ":text": [[user, message]]
       }
     };
 
     // Push a new message to the messages array for that spot.
-    dbSchema.updateItem(params, function(err, data) {
+    dbSchema.update(params, function(err, data) {
       if(err) {
         return console.error('Error writing message to spot', err);
       }
       else {
-        console.log(data);
+        console.log("POST MESSAGE TO DATABASE ==================>", data);
         return data;
       } 
     });
