@@ -20,6 +20,12 @@ var SpotView = React.createClass({
 
   componentDidMount: function() {
     this.getSpot();
+    var message = {
+      spotId: 9,
+      username: 'testUser',
+      text: 'Hello World!'
+    }
+    socket.emit('messageSend', message);
   },
 
   getSpot: function() {
