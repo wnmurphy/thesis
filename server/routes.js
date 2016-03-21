@@ -126,6 +126,7 @@ module.exports = function(app, express, io) {
     // broadcast spotAdded event to trigger client-side map refresh.
     socket.on('addSpot', function(){
       io.emit('spotAdded');
+
     });
 
     /* Chat socket */
@@ -137,11 +138,15 @@ module.exports = function(app, express, io) {
     // Listen for whenever a chat message is sent.
     socket.on('messageSend', function(message){
       //add message to database
-      console.log("MESSAGE ===================>", message);
       helpers.postMessageToDatabase(message.spotId, message.username, message.text);
-      //io.emit('messageAdded', spotId, user, message);
+      io.emit('newMessage', spotId, user, message);
     });
 
+    socket.on('populateChat', function(id) {
+      helpers.getMessagesFromDatabase(id, function(data) {
+        io.sockets.connected[socket.id].emit('returnChat', data);
+      });
+    })
   });
 
 };

@@ -382,7 +382,7 @@ module.exports = {
     });
   },
 
-  getMessagesFromDatabase: function(spotId){
+  getMessagesFromDatabase: function(spotId, callback){
     // Retrieves all messages in spots.spotId
     // Called by AJAX call to server
     
@@ -405,7 +405,8 @@ module.exports = {
       } else if(spot.Count === 0) {
         return console.error('spot does not exist', err);
       } else if(spot.Count === 1) {
-        return Items[0].messages;
+        console.log(spot);
+        callback(spot.Items[0].messages);
       } else {
         return console.error('Multiple spots for same id', err);
       }

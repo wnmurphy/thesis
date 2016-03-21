@@ -14,18 +14,26 @@ var SpotView = React.createClass({
       shareClass: "share-card-container",
       buttonIcon: "fa fa-share-alt",
       sharing: false,
-      showChat: ""
+      showChat: "",
+      messages: []
     };
   },
 
   componentDidMount: function() {
+    var context = this;
     this.getSpot();
-    var message = {
-      spotId: 9,
-      username: 'testUser',
-      text: 'Hello World!'
-    }
-    socket.emit('messageSend', message);
+    var id = Number(this.state.spotHash.split('/spot/')[1]);
+    socket.emit('populateChat', id);
+    socket.on('returnChat', function(data) {
+      console.log("RETURN DATA ======>", data);
+      context.setState({messages: data});
+    })
+    // var message = {
+    //   spotId: 9,
+    //   username: 'testUser',
+    //   text: 'Hello World!'
+    // }
+    // socket.emit('messageSend', message);
   },
 
   getSpot: function() {
@@ -115,7 +123,7 @@ var SpotView = React.createClass({
         </div>
 
         <div className={chatContainerClass + this.state.showChat}>
-          <Chat />
+          <Chat messages={this.state.messages}/>
         </div>
 
       </div>
