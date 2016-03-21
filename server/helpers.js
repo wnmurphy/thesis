@@ -459,8 +459,49 @@ module.exports = {
         success(decoded);
       }
     });
-  }
+  },
 
+  spotCleaner: function() {
+    //date is current time 
+    var date = new Date() - 24*60*60;
+
+    var params = {
+      TableName: 'Spots',
+      FilterExpression: "#start <= (:currentHour)",
+      ExpressionAttributeNames:{
+          "#start": "start"
+      },
+      ExpressionAttributeValues: {
+          ":currentHour": date
+      }
+    };
+    dbSchema.scan(params, function(err, spots) {
+      if (err) {console.error(err);}
+      var deleteSpot = function(list) {
+        var params = {
+          TableName: "Spots",
+          FilterExpression: "#spotId = (:spotId)",
+          ExpressionAttributeNames: {
+            "#spotId": "spotId"
+          },
+          ExpressionAttributeValues: {
+            ":spotId": list[0].spotId
+          }
+        };
+        dbSchema.delete(params, function(err, data) {
+          list.shift();
+          if (list.length) {
+            deleteSpot(list);
+          } else {
+            console.log("Database has been cleaned");
+          }
+        });
+      };
+      if (spots.Items.length) {
+        deleteSpots(spots.Items);
+      }
+    });
+  }
 };
 
 var hash = function (password, callback) {
