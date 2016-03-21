@@ -3,6 +3,7 @@ var morgan = require('morgan');
 var parser = require('body-parser');
 var routes = require('./routes.js');
 var env = require('node-env-file');
+var helpers = require('./helpers.js');
 
 if(!process.env.TRAVIS) {
   env(__dirname + '../../.env');
@@ -17,6 +18,8 @@ app.use('/', express.static(__dirname + '../../client'));
 
 var server = app.listen(port, function() {
   console.log('listening on port', port);
+  helpers.spotCleaner();
+  setTimeout(helpers.spotCleaner, 3600000);
 });
 
 var io = require('socket.io')({
