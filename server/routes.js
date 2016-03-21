@@ -72,7 +72,6 @@ module.exports = function(app, express, io) {
       username: req.body.username,
       password: req.body.password
     };
-
     helpers.signin(user, function(result) {
       res.json(result);
       //res.direct('/#/mainpage', result)
@@ -84,24 +83,33 @@ module.exports = function(app, express, io) {
   // GET to retrieve a user's profile by userId.
   app.get('/api/profile/:id', function(req, res) {
     var id = req.params.id;
-    helpers.checkToken(JSON.parse(req.headers.token), function (decoded) {
-      var currentUserId = decoded.userId.toString();
-      helpers.getProfile(id, function(result) {
-        res.json({result: result, currentUser: (id === currentUserId)});
-      }, function(err) {
-        res.send(404);
-      });
-    }, function (err) {
-      if (id) {
+    if (req.headers.token) {
+      helpers.checkToken(JSON.parse(req.headers.token), function (decoded) {
+        var currentUserId = decoded.userId.toString();
         helpers.getProfile(id, function(result) {
-          res.json(result);
+          res.json({result: result, currentUser: (id === currentUserId)});
         }, function(err) {
           res.send(404);
         });
-      } else {
-        res.send(404, err);
-      }
-    });
+      }, function (err) {
+        if (id) {
+          helpers.getProfile(id, function(result) {
+            res.json(result);
+          }, function(err) {
+            res.send(404);
+          });
+        } else {
+          res.send(404, err);
+        }
+      });
+    } else {
+      console.log("no token");
+      helpers.getProfile(id, function(result) {
+        res.json(result);
+      }, function(err) {
+        res.send(404);
+      });
+    }
   });
 
 
