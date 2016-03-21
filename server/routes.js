@@ -135,10 +135,11 @@ module.exports = function(app, express, io) {
     });    
 
     // Listen for whenever a chat message is sent.
-    socket.on('messageHeard', function(spotId, user, message){
+    socket.on('messageSend', function(message){
       //add message to database
-      helpers.postMessageToDatabase(spotId, user, message);
-      io.emit('messageAdded', spotId, user, message);
+      console.log("MESSAGE ===================>", message);
+      helpers.postMessageToDatabase(message.spotId, message.username, message.text);
+      //io.emit('messageAdded', spotId, user, message);
     });
 
   });
