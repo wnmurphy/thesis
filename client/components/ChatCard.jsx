@@ -2,13 +2,23 @@
 
 var Chat = React.createClass({
   render: function () {
+
+    var messages = this.props.messages.map(function(message) {
+      return (
+        <div>
+          <span>{message.username} - </span><span>{message.text}</span>
+        </div>
+      )
+    }, this);
+
     return (
       <div className="chat-card">
 
         <div className="chat-container">
 
-          <ul className="chat">
-          </ul>
+          <div className="chat">
+          {messages}
+          </div>
 
         </div>
 

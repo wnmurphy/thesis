@@ -28,12 +28,12 @@ var SpotView = React.createClass({
       console.log("RETURN DATA ======>", data);
       context.setState({messages: data});
     })
-    // var message = {
-    //   spotId: 9,
-    //   username: 'testUser',
-    //   text: 'Hello World!'
-    // }
-    // socket.emit('messageSend', message);
+    var message = {
+      spotId: 9,
+      username: 'Calvin',
+      text: 'YO YO YO YO Hello World!'
+    }
+    socket.emit('messageSend', message);
   },
 
   getSpot: function() {

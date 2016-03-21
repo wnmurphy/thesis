@@ -366,7 +366,7 @@ module.exports = {
       },
 
       ExpressionAttributeValues: {
-        ":text": [[user, message]]
+        ":text": [{username: user, text: message}]
       }
     };
 
