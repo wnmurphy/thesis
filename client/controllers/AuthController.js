@@ -25,9 +25,10 @@ var AuthController = {
       dataType: 'json',
       data: login,
       success: function (data) {
-        console.log("SUCCESS", data);
+        console.log("SUCCESS DATA AFTER LOGIN =============>", data);
         localStorage.setItem('token', JSON.stringify(data.token));
         localStorage.setItem('userId', data.userId);
+        localStorage.setItem('username', data.username);
         AuthController.initAuth();
         success();
       },

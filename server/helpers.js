@@ -265,6 +265,7 @@ module.exports = {
             if(correct) {
               success({
                 userId: user.Items[0].userId,
+                username: user.Items[0].username,
                 token: tokenizer({
                           userId: user.Items[0].userId,
                           username: user.Items[0].username
@@ -347,7 +348,7 @@ module.exports = {
     });
   },
 
-  postMessageToDatabase: function(spotId, user, message){
+  postMessageToDatabase: function(spotId, user, message, timeStamp){
     // Writes message to spots.spotId.messages
     // Called by socket event
 
@@ -356,31 +357,33 @@ module.exports = {
       TableName: "Spots",
       
       Key: {
-        spotId: {
-          N: spotId
-        }
+        spotId: spotId
       },
       
-      UpdateExpression: "SET messages = list_append (messages, :text)",
+      UpdateExpression: "SET #messages = list_append (#messages, :text)",
       
+      ExpressionAttributeNames: {
+        "#messages": "messages"
+      },
+
       ExpressionAttributeValues: {
-        ":text": [user, message]
+        ":text": [{username: user, text: message, timeStamp: timeStamp}]
       }
     };
 
     // Push a new message to the messages array for that spot.
-    dbSchema.updateItem(params, function(err, data) {
+    dbSchema.update(params, function(err, data) {
       if(err) {
         return console.error('Error writing message to spot', err);
       }
       else {
-        console.log(data);
+        console.log("POST MESSAGE TO DATABASE ==================>", data);
         return data;
       } 
     });
   },
 
-  getMessagesFromDatabase: function(spotId){
+  getMessagesFromDatabase: function(spotId, callback){
     // Retrieves all messages in spots.spotId
     // Called by AJAX call to server
     
@@ -403,7 +406,8 @@ module.exports = {
       } else if(spot.Count === 0) {
         return console.error('spot does not exist', err);
       } else if(spot.Count === 1) {
-        return Items[0].messages;
+        console.log(spot);
+        callback(spot.Items[0].messages);
       } else {
         return console.error('Multiple spots for same id', err);
       }
