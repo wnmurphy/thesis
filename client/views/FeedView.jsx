@@ -9,16 +9,12 @@ var FeedView = React.createClass({
   },
   componentDidMount: function() {
     var context = this;
-    FeedController.getSavedSpots(function(data){
-      if (data.length) {
-        context.setState({savedSpots: data});
+    FeedController.getSpots(function(data){
+      if (data.savedSpots.length) {
+        context.setState({savedSpots: data.savedSpots});
       }
-    }, function(err) {
-      console.log(err);
-    });
-    FeedController.getFollowedUsersSpots(function(data) {
-      if (data.length) {
-        context.setState({followedUsersSpots: data});
+      if (data.followedUsersSpots.length) {
+        context.setState({followedUsersSpots: data.followedUsersSpots});
       }
     }, function(err) {
       console.log(err);
@@ -33,8 +29,8 @@ var FeedView = React.createClass({
       return (
         <div className ='saved-spot'>
           <div className = 'saved-spot-name'>{spot.name}</div>
-          <div className = 'saved-spot-creator'>{spot.creator}</div>
-          <div className = 'saved-spot-start'>{spot.start}</div>
+          <div className = 'saved-spot-creator'>Created by {spot.creator}</div>
+          <div className = 'saved-spot-start'>Starting at {spot.start}</div>
         </div>
       );
     }, this);
@@ -42,8 +38,8 @@ var FeedView = React.createClass({
       return (
         <div className = 'followed-user-spot'>
           <div className = 'followed-user-spot-name'>{spot.name}</div>
-          <div className = 'followed-user-spot-creator'>{spot.creator}</div>
-          <div className = 'followed-user-spot-start'>{spot.start}</div>
+          <div className = 'followed-user-spot-creator'>Created by {spot.creator}</div>
+          <div className = 'followed-user-spot-start'>Starting at {spot.start}</div>
         </div>
       );
     });
@@ -51,12 +47,10 @@ var FeedView = React.createClass({
     return (
       <div>
         <LoginRequired />
-        <div >Saved Spots
-          <div className='saved-spot-container'>{savedSpots}</div>
-        </div>
-        <div>Feed
-          <div className='followed-user-spot-container'>{followedUsersSpots}</div>
-        </div>
+        <h3 >Saved Spots</h3>
+        <div className='saved-spot-container'>{savedSpots}</div>
+        <h3>Feed</h3>
+        <div className='followed-user-spot-container'>{followedUsersSpots}</div>
       </div>
     );
   }
