@@ -1,9 +1,12 @@
+// Create a Google Map element.
+// Takes current user location, component as context to render within, and callback.
 var initMap = function (location, context, callback) {
 
   var position = new google.maps.LatLng(location.latitude, location.longitude);
 
   context.setState({position: position});
 
+  // Array containing style configuration for Google Maps.
   var style = [
     {
         "featureType": "administrative",
@@ -238,6 +241,7 @@ var initMap = function (location, context, callback) {
     }
 ]
 
+  // Create a new map and append to #map element.
   var map = new google.maps.Map(document.getElementById('map'), {
     mapTypeControl: false,
     streetViewControl: false,
@@ -247,12 +251,15 @@ var initMap = function (location, context, callback) {
     zoomControl: false
   });
 
+  // Create a new style object for map, using the config array above.
   var type = new google.maps.StyledMapType(style, {name: '/'});
 
   map.mapTypes.set('/', type);
 
   map.setMapTypeId('/');
 
+  // Extend Map prototype with ability to offset the map center.
+  // Useful for styling map around other elements.
   google.maps.Map.prototype.offsetPan = function(position, x, y) {
     var map = this;
     var overlay = new google.maps.OverlayView();
@@ -267,6 +274,7 @@ var initMap = function (location, context, callback) {
     overlay.setMap(this); 
   };
 
+  // Listen for the end of a drag and update the map center.
   google.maps.event.addListener(map, 'dragend', function(event) {
     var center = {
       latitude: this.center.lat(),
@@ -281,11 +289,12 @@ var initMap = function (location, context, callback) {
     url: '/you_test.png'
   }
 
+  // Define marker for user location. 
+  // (i.e., 'You are here.')
   var marker = new google.maps.Marker({
     icon: icon,
     position: position,
     map: map,
-    // animation: google.maps.Animation.BOUNCE,
     getPosition: function() {
       return this.position;
     }
