@@ -15,7 +15,7 @@ var SearchView = React.createClass({
   
   getInitialState: function () {
     return {
-      query: "";
+      query: ""
     };
   },
 
