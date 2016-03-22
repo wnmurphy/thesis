@@ -513,6 +513,54 @@ module.exports = {
       }
     });
   },
+  saveSpot: function(userId, spotId, success, fail) {
+    //get user
+    var params = {
+      TableName: "Users",
+      FilterExpression: "#userId = (:userId)",
+      ExpressionAttributeNames: {
+        "#userId": "userId"
+      },
+      ExpressionAttributeValues: {
+        ":userId": parseInt(userId)
+      }
+    };
+    dbSchema.scan(params, function(err, user) {
+      if (err) {
+        console.error(err);
+        fail('error getting user');
+      }
+      if (user.Count === 1) {
+        console.log('user.Items: ', user.Items);
+        if (user.Items[0].savedSpots.indexOf(spotId) === -1) {
+          params = {
+            TableName: 'Users',
+            Key: { userId: user.Items[0].userId },
+            UpdateExpression: 'SET savedSpots = list_append(savedSpots, :spotId)',
+            ExpressionAttributeValues: {
+              ':spotId': parseInt(spotId)
+            }
+          };
+          dbSchema.update(params, function(err, data) {
+            if (err) {
+              console.error(err);
+              fail('error saving spot');
+            }
+            success('successfully saved spot');
+          });
+        } else {
+          fail('user has already saved this spot');
+        }
+      } else {
+        fail('failed to get correct user');
+      }
+    });
+
+      
+  },
+  followUser: function(userId, followUser, success, fail) {
+    
+  },
   getFeed: function(id, success, fail) {
     var results = {savedSpots: [], followedUsersSpots: []};
     var params = {

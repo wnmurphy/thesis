@@ -138,8 +138,8 @@ module.exports = function(app, express, io) {
   //post to follow a user
   app.post('/api/followUser', function(req, res) {
     var userId = req.body.userId;
-    var followId = req.body.followId;
-    helpers.followUser(userId, followId, function(data) {
+    var followUser = req.body.username;
+    helpers.followUser(userId, followUser, function(data) {
       res.json(data);
     }, function(err) {
       res.send(404, err);
