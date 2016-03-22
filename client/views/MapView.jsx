@@ -1,12 +1,14 @@
 /** @jsx React.DOM */
 
-// This will be used as the min time (ms) to show
-// welcome-view-container
+// Load react.js from index.html for browser environment, or npm for test environment.
 var React = React || require('react');
+
+// Define the minimum time (ms) to show welcome-view-container on first run.
 var welcomeScreenTimeout = 1000;
 
 var MapView = React.createClass({
 
+  // Create a lookup for CSS classes.
   getDefaultProps: function () {
     return {
       collapseButtonContainer: "collapse-button-container",
@@ -29,6 +31,7 @@ var MapView = React.createClass({
     };
   },
 
+  // 
   componentDidMount: function() {
 
     var context = this;
@@ -36,6 +39,10 @@ var MapView = React.createClass({
     // Listen for spots created by other users and refresh map.
     // socket.on('spotAdded', this.getSpots);
 
+
+    // Check whether location has been set globally.
+    // If not, get location and initialize map with nearby spots.
+    // Otherwise, just initialize the map.
     if(!globalState.location) {
       context.setState({showScreen: true})
       setTimeout(function() {
@@ -64,10 +71,13 @@ var MapView = React.createClass({
     }
   },
 
+  // Make AJAX call to server to retrieve spot data near center of map.
+  // Server calculates distance and returns only spots within 50 miles.
   getSpots: function (animate) {
 
     var context = this;
 
+    // Hide all previous markers.
     this.state.markers.forEach(function(marker) {
       marker.setVisible(false);
     })
@@ -83,7 +93,6 @@ var MapView = React.createClass({
       success: function (data) {
         globalState.spots = data;
         context.setState({spots: data});
-        //console.log("SUCCESS: ", context.state.spots);
         context.setState({refreshingClass: ""});
         context.initSpots(animate);
 
@@ -95,8 +104,9 @@ var MapView = React.createClass({
     })
   },
 
+  // Loop through spot data from server.
+  // Generate a map marker and summary bubble for each spot.
   initSpots: function (animate) {
-    // need to make this wait to run until map loads
     var context = this;
 
     for(var i = 0; i < this.state.spots.length; i++) {
@@ -107,8 +117,8 @@ var MapView = React.createClass({
         continue;
       }
 
-      /* Comparator for current time with start or end time;
-         parsing into a formatted string for info window display */
+      // Comparator for current time with start or end time;
+      // Parses time to a formatted string for display in spot summary bubble.
 
       var start = spot.start.split(':').join('');
       if (spot.end) {
@@ -214,6 +224,7 @@ var MapView = React.createClass({
         animation = null;
       }
 
+      // Create a new map marker for each spot.
       var spot = new google.maps.Marker({
         icon: icon,
         position: new google.maps.LatLng(spot.location.latitude, spot.location.longitude),
@@ -233,6 +244,7 @@ var MapView = React.createClass({
         }
       });
 
+      // Define summary bubble for each spot.
       var infoWindow = new google.maps.InfoWindow({
         maxWidth: 250,
         content: contentString
@@ -243,6 +255,7 @@ var MapView = React.createClass({
 
       this.setState({markers: array});
 
+      // When user clicks on spot, open summary bubble, load that spot's data, and center the map on the marker.
       google.maps.event.addListener(spot, 'click', function () {
         infoWindow.setContent(this.info);
         infoWindow.open(context.state.map, this);
@@ -252,10 +265,12 @@ var MapView = React.createClass({
     }
   },
 
+  // Center the map on the user's current GPS location.
   center: function() {
     this.state.map.offsetPan(this.state.position, 0, -50);
   },
 
+  // Toggle visibility of button drawer via CSS class.
   collapseClick: function () {
     var newState = {};
     if (this.state.showButtonClass === "") {
@@ -300,6 +315,7 @@ var MapView = React.createClass({
   }
 });
 
+// Display welcome message on first run. 
 var LoadScreen = React.createClass({
   render: function() {
     return (
@@ -314,6 +330,7 @@ var LoadScreen = React.createClass({
   }
 })
 
+// Toggle visibility of on-screen map markers depending on user text input.
 var FilterSearch = React.createClass({
   getInitialState: function () {
     return {

@@ -1,10 +1,12 @@
 /** @jsx React.DOM */
 
 var SpotView = React.createClass({
+
   getInitialState: function() {
     var hash = window.location.hash.substr(1);
     return {
       spotHash: hash,
+      // Define default text for sharing a spot.
       shareProps: {
         contents: 'Check out this Spot! www.irl.com/#' + hash,
         subject: 'Check out irl',
@@ -19,6 +21,8 @@ var SpotView = React.createClass({
     };
   },
 
+  // Load spot's data from server via AJAX.
+  // Load spot's chat messages via socket.
   componentDidMount: function() {
     var context = this;
     this.getSpot();
@@ -26,11 +30,12 @@ var SpotView = React.createClass({
     this.setState({spotId: id});
     socket.emit('populateChat', id);
     socket.on('returnChat', function(data) {
-      console.log("RETURN DATA ======>", data);
       context.setState({messages: data});
     })
   },
 
+  // Defines AJAX call to server to retrieve spot data.
+  // Adds a new map marker if successful.
   getSpot: function() {
     var context = this;
 
@@ -38,7 +43,6 @@ var SpotView = React.createClass({
 
     $.ajax({
       method: 'GET',
-      //refactor to get correct spotId
       url: '/api' + context.state.spotHash,
       dataType: 'json',
       success: function (data) {
@@ -58,6 +62,7 @@ var SpotView = React.createClass({
     });
   },
 
+  // Open share card when user clicks Share button.
   toggleShare: function () {
     var sharing = !this.state.sharing;
     var newState = {sharing: sharing};
@@ -72,6 +77,7 @@ var SpotView = React.createClass({
     this.setState(newState);
   },
 
+  // Open chat card when user clicks chat button.
   toggleChat: function (){
     if(this.state.showChat === ""){
       this.setState({
