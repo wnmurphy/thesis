@@ -212,7 +212,9 @@ module.exports = {
                   userId: info.userId,
                   username: info.username,
                   password: hash,
-                  email: info.email
+                  email: info.email,
+                  following: [],
+                  savedSpots: []
                 }
               };
 
@@ -510,7 +512,101 @@ module.exports = {
         console.log("Database has been cleaned");
       }
     });
+  },
+  getFeed: function(id, success, fail) {
+    var results = {savedSpots: [], followedUsersSpots: []};
+    var params = {
+      TableName: 'Users',
+      FilterExpression: '#userId = (:userId)',
+      ExpressionAttributeNames: {
+        '#userId': 'userId'
+      },
+      ExpressionAttributeValues: {
+        ':userId': id
+      }
+    };
+    //get user
+    dbSchema.scan(params, function(err, user) {
+      if (err) {console.error(err);}
+      if (user.Count === 1) {
+        //if user has any saved spotId's, call function to find the spots and save them to results
+        if (user.Items[0].savedSpots && user.Items[0].savedSpots.length > 0) {
+          getSavedSpots(user.Items[0].savedSpots, user.Items[0], results, success);
+        } else {
+          //if not, move on to finding followed user's spots
+          if (user.Items[0].followedUsers && user.Items[0].followedUsers.length) {
+            //if user is following any other users, call function to find all their spots and save them to results
+            getFollowedUserSpots(user.Items[0].following, results, success);
+          } else {
+            //if user is not following anyone, send back results
+            success(results);
+          }
+        }
+      //error handling
+      } else if (user.Count === 0) {
+        fail('no user found');
+      //error handling
+      } else {
+        fail('server error, too many users found');
+      }
+    });
   }
+};
+
+var getSavedSpots = function(savedIds, user, results, success) {
+  var params = {
+    TableName: "Spots",
+    FilterExpression: "#spotId = (:spotId)",
+    ExpressionAttributeNames: {
+      "#spotId": "spotId"
+    },
+    ExpressionAttributeValues: {
+      ":spotId": parseInt(savedIds[0])
+    }
+  };
+  dbSchema.scan(params, function(err, spot) {
+    if (spot.Items[0]) {
+      results.savedSpots.push(spot.Items[0]);
+    }
+    savedIds.shift();
+    if (savedIds.length) {
+      getSavedSpots(savedIds, user, results, success);
+    } else {
+      //find followed users spots
+      if (user.following && user.following.length) {
+        console.log('1');
+        getFollowedUserSpots(user.following, results, success);
+      } else {
+        success(results);
+      }
+    }
+  });
+};
+var getFollowedUserSpots = function(users, results, success) {
+  var params = {
+    TableName: 'Spots',
+    FilterExpression: '#creator = (:creator)',
+    ExpressionAttributeNames: {
+      '#creator': 'creator'
+    },
+    ExpressionAttributeValues: {
+      ':creator': users[0]
+    }
+  };
+  dbSchema.scan(params, function(err, spots) {
+    console.log('user: ', users[0]);
+    console.log('spots: ', spots.Items);
+    if (err) {console.error(err);}
+    if (spots.Items.length) {
+      results.followedUsersSpots = results.followedUsersSpots.concat(spots.Items);
+    }
+    users.shift();
+    if (users.length) {
+      getFollowedUserSpots(users, results, success);
+    } else {
+      success(results);
+    }
+  });
 };
 
 var hash = function (password, callback) {
