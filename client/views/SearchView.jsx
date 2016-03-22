@@ -44,22 +44,29 @@ var SearchView = React.createClass({
     });
   },
 
+  spotRedirect: function(spotId) {
+    window.location.hash = "/spot/" + spotId;
+  },
+
+  profileRedirect: function(userId) {
+    window.location.hash = "/profile/" + userId;
+  },
+
   render: function() {
-    var results = this.state.results.map(function(result){
-      if(result.email){
+    var results = this.state.results.map(function(result) {
+      if(result.email) {
           return (
-            <div>
-              <span>{result.userid}</span>
-              <span>{result.username}</span>
-              <span>{result.email}</span>
+            <div className="search-result search-result-profile" onClick={this.profileRedirect.bind(this, result.userId)}>
+              <span className="result-user-img">{result.userid}</span>
+              <span className="result-username">{result.username}</span>
             </div>
         );
-      }else{
+      } else {
         return (
-          <div>
-            <span>{result.category}</span>
-            <span>{result.name}</span>
-            <span>{result.start}</span>
+          <div className="search-result search-result-spot" onClick={this.spotRedirect.bind(this, result.spotId)}>
+            <i className={"result-icon " + categories[result.category]}></i>
+            <span className="result-name">{result.name}</span>
+            <span className="result-time">{result.start}</span>
           </div>
           );
       }
