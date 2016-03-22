@@ -137,9 +137,9 @@ module.exports = function(app, express, io) {
 
     // Listen for whenever a chat message is sent.
     socket.on('messageSend', function(message){
-      //add message to database
-      helpers.postMessageToDatabase(message.spotId, message.username, message.text);
-      io.emit('newMessage', spotId, user, message);
+      console.log("RECIEVED IN ROUTES", message);
+      helpers.postMessageToDatabase(message.spotId, message.username, message.text, message.timeStamp);
+      io.emit('newMessage', {username: message.username, text: message.text, spotId: message.spotId, timeStamp: message.timeStamp});
     });
 
     socket.on('populateChat', function(id) {

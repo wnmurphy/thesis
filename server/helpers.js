@@ -265,6 +265,7 @@ module.exports = {
             if(correct) {
               success({
                 userId: user.Items[0].userId,
+                username: user.Items[0].username,
                 token: tokenizer({
                           userId: user.Items[0].userId,
                           username: user.Items[0].username
@@ -347,7 +348,7 @@ module.exports = {
     });
   },
 
-  postMessageToDatabase: function(spotId, user, message){
+  postMessageToDatabase: function(spotId, user, message, timeStamp){
     // Writes message to spots.spotId.messages
     // Called by socket event
 
@@ -366,7 +367,7 @@ module.exports = {
       },
 
       ExpressionAttributeValues: {
-        ":text": [{username: user, text: message}]
+        ":text": [{username: user, text: message, timeStamp: timeStamp}]
       }
     };
 
