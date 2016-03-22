@@ -212,7 +212,9 @@ module.exports = {
                   userId: info.userId,
                   username: info.username,
                   password: hash,
-                  email: info.email
+                  email: info.email,
+                  following: [],
+                  savedSpots: []
                 }
               };
 
