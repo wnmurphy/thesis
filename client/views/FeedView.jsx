@@ -37,8 +37,8 @@ var FeedView = React.createClass({
   }
 });
 
-<div className ='saved-spot'>
-  <div className = 'saved-spot-name'>{spot.name}</div>
-  <div className = 'saved-spot-creator'>{spot.creator}</div>
-  <div className = 'saved-spot-start'>{spot.start}</div>
-</div>
+// <div className ='saved-spot'>
+//   <div className = 'saved-spot-name'>{spot.name}</div>
+//   <div className = 'saved-spot-creator'>{spot.creator}</div>
+//   <div className = 'saved-spot-start'>{spot.start}</div>
+// </div>
