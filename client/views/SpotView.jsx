@@ -23,17 +23,12 @@ var SpotView = React.createClass({
     var context = this;
     this.getSpot();
     var id = Number(this.state.spotHash.split('/spot/')[1]);
+    this.setState({spotId: id});
     socket.emit('populateChat', id);
     socket.on('returnChat', function(data) {
       console.log("RETURN DATA ======>", data);
       context.setState({messages: data});
     })
-    var message = {
-      spotId: 9,
-      username: 'Calvin',
-      text: 'YO YO YO YO Hello World!'
-    }
-    socket.emit('messageSend', message);
   },
 
   getSpot: function() {
@@ -123,7 +118,7 @@ var SpotView = React.createClass({
         </div>
 
         <div className={chatContainerClass + this.state.showChat}>
-          <Chat messages={this.state.messages}/>
+          <Chat messages={this.state.messages} spotId={this.state.spotId}/>
         </div>
 
       </div>
