@@ -146,7 +146,7 @@ describe("Persistent Spot and User Server", function() {
     });
   });
 
-  it('should return a 200 when getting a spot', function(done) {
+  xit('should return a 200 when getting a spot', function(done) {
     request({
       method: "GET",
       // uri: "http://localhost:8080/api/spot/999999999999"
