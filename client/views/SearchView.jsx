@@ -15,7 +15,8 @@ var SearchView = React.createClass({
   
   getInitialState: function () {
     return {
-      query: ""
+      query: "",
+      results: []
     };
   },
 
@@ -35,6 +36,7 @@ var SearchView = React.createClass({
       },
       success: function (data) {
         console.log("SUCCESS: ", data);
+        context.setState({results: data});
       },
       error: function (error) {
         console.log(error);
@@ -43,13 +45,35 @@ var SearchView = React.createClass({
   },
 
   render: function() {
-    console.log("Rendering SearchView");
+    var results = this.state.results.map(function(result){
+      if(result.email){
+          return (
+            <div>
+              <span>{result.userid}</span>
+              <span>{result.username}</span>
+              <span>{result.email}</span>
+            </div>
+        );
+      }else{
+        return (
+          <div>
+            <span>{result.category}</span>
+            <span>{result.name}</span>
+            <span>{result.start}</span>
+          </div>
+          );
+      }
+    }, this);
+
     return (
       <div className="search-view">
-        <form id="searchForm" onSubmit={this.handleSubmit}>
+        <form id="search-form" onSubmit={this.handleSubmit}>
           <input type="text" placeholder="Search" value={this.state.query} onChange={this.handleChange} />
           <input type="submit" value="Search" />
         </form>
+        <div className="search-results-container">
+          {results}
+        </div>
       </div>
     );
   }
