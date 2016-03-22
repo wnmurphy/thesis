@@ -59,20 +59,24 @@ var ProfileView = React.createClass({
       var login = null;
     }
 
+    // shows only when signed in
     if (globalState.userId === this.state.userId) {
-      var button = null;
+      var editButton = <div id="edit-button" />;
     } else {
-      var button =  <div>
-                      <div className={this.state.shareClass} onClick={this.toggleShare}>
-                        <ShareCard shareProps={this.state.shareProps}/>
-                      </div>
-                      <div className="share-button-container">
-                        <a onClick={this.toggleShare} className="circle">
-                          <i className={this.state.buttonIcon}></i>
-                        </a>
-                      </div>
-                    </div>
+      var editButton = null
     }
+
+    var shareButton =  <div>
+                    <div className={this.state.shareClass} onClick={this.toggleShare}>
+                      <ShareCard shareProps={this.state.shareProps}/>
+                    </div>
+                    <div className="share-button-container">
+                      <a onClick={this.toggleShare} className="circle">
+                        <i className={this.state.buttonIcon}></i>
+                      </a>
+                    </div>
+                  </div>
+
     return (
       <div className="profile-view">
         <div className="profile-header">
@@ -95,7 +99,8 @@ var ProfileView = React.createClass({
           </tr>
         </table>
         {login}
-        {button}
+        {shareButton}
+        {editButton}
       </div>
     );
   }
