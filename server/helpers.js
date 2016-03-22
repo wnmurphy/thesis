@@ -598,7 +598,7 @@ var getFollowedUserSpots = function(users, results, success) {
     console.log('spots: ', spots.Items);
     if (err) {console.error(err);}
     if (spots.Items.length) {
-      results.getFollowedUserSpots = results.followedUsersSpots.concat(spots.Items);
+      results.followedUsersSpots = results.followedUsersSpots.concat(spots.Items);
     }
     users.shift();
     if (users.length) {

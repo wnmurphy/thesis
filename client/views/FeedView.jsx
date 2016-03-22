@@ -10,6 +10,7 @@ var FeedView = React.createClass({
   componentDidMount: function() {
     var context = this;
     FeedController.getSpots(function(data){
+      console.log('data: ', data);
       if (data.savedSpots.length) {
         context.setState({savedSpots: data.savedSpots});
       }

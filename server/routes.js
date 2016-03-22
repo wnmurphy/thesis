@@ -124,6 +124,7 @@ module.exports = function(app, express, io) {
     });
   });
 
+  //GET to retrieve user's feed data
   app.get('/api/feed/:id', function(req, res) {
     var id = Number(req.params.id);
 
@@ -132,6 +133,16 @@ module.exports = function(app, express, io) {
     }, function(err) {
       res.send(404, err);
     });
+  });
+
+  //post to follow a user
+  app.post('/api/followUser', function(req, res) {
+    
+  });
+
+  //post to save a users spot
+  app.post('/api/saveSpot', function(req, res) {
+
   });
 
   // Sockets
