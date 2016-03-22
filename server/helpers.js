@@ -126,9 +126,6 @@ module.exports = {
         });
       }
     });
-
-
-
   },
 
   getSpots: function(location, success, fail) {
