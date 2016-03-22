@@ -553,3 +553,44 @@ form {
     line-height: 24px;
   }
 }
+
+.search-result{
+  border: 1px solid #CCCCCC;
+  padding: 5px;
+ 
+  &:hover {
+    background-color: #F1F1F1;
+  }
+}
+
+.search-result-spot {
+
+
+
+}
+
+.search-result-profile {
+  .result-user-img {}
+  .result-username {}
+}
+
+.search-form {
+
+}
+
+.result-name {}
+
+.result-time {
+  float: right;
+}
+ 
+.result-icon {
+  padding-right: 4%; 
+}
+
+.result-category {
+}
+
+.search-results-container {
+
+}
