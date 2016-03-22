@@ -6,6 +6,7 @@ var jwt = require('jsonwebtoken');
 
 var dbSchema = new aws.DynamoDB.DocumentClient();
 
+var secret = process.env.secret || "dummySecretToKeepOurRealSecretActuallyASecret";
 
 
 module.exports = {
@@ -250,6 +251,7 @@ module.exports = {
     };
 
     dbSchema.scan(params, function(err, user) {
+      console.log("Found user: ", user.Items);
       if(err) {
         console.error('Error handling user sign in', err);
         fail(err);
@@ -260,9 +262,11 @@ module.exports = {
       else if(user.Count === 1) {
         compare(info.password, user.Items[0].password, function (err, correct) {
           if(err) {
+            console.log("failed encryption test");
             fail('encryption error');
           } else {
             if(correct) {
+              console.log("passed encryption test");
               success({
                 userId: user.Items[0].userId,
                 username: user.Items[0].username,
@@ -286,6 +290,7 @@ module.exports = {
   },
 
   getProfile: function(id, success, fail) {
+    console.log('id: ', id);
     var params = {
       TableName: "Users",
       FilterExpression: "#userId = (:userId)",
@@ -333,16 +338,18 @@ module.exports = {
 
     dbSchema.scan(params, function(err, spot) {
       if(err) {
-        console.error('Error handling getting spot', err);
+        console.log('1. Error handling getting spot', err);
         fail(err);
       }
       else if(spot.Count === 0) {
+        console.log('2. spot does not exist');
         fail('spot does not exist');
       }
       else if(spot.Count === 1) {
         success(spot.Items[0]);
       }
       else {
+        console.log('3. have more than one same spot');
         fail('have more than one same spot');
       }
     });
@@ -455,11 +462,10 @@ module.exports = {
   },
 
   checkToken: function (token, success, fail) {
-    jwt.verify(token, process.env.secret, function(err, decoded) {
+    jwt.verify(token, secret, function(err, decoded) {
       if (err) {
         fail("invalid token");
       } else {
-        console.log("checkToken decoded:", decoded);
         success(decoded);
       }
     });
@@ -503,6 +509,8 @@ module.exports = {
       };
       if (spots.Items.length) {
         deleteSpots(spots.Items);
+      } else {
+        console.log("Database has been cleaned");
       }
     });
   }
@@ -517,5 +525,5 @@ var hash = function (password, callback) {
 var compare = bcrypt.compare;
 
 var tokenizer = function (user) {
-  return jwt.sign(user, process.env.secret, { expiresInMinutes: 525600 });
+  return jwt.sign(user, secret, { expiresInMinutes: 525600 });
 };
