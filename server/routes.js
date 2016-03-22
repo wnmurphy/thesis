@@ -120,7 +120,17 @@ module.exports = function(app, express, io) {
     helpers.getSpot(id, function(result) {
       res.json(result);
     }, function(err) {
-      res.send(404);
+      res.send(404, err);
+    });
+  });
+
+  app.get('/api/feed/:id', function(req, res) {
+    var id = Number(req.params.id);
+
+    helpers.getFeed(id, function(results) {
+      res.json(results);
+    }, function(err) {
+      res.send(404, err);
     });
   });
 
