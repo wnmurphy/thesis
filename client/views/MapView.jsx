@@ -46,7 +46,7 @@ var MapView = React.createClass({
           context.setState({filterClass: ""});
           context.setState({location: location});
           context.setState({center: location});
-          context.getSpots();
+          context.getSpots(true);
         });
       }, context);
       }, welcomeScreenTimeout);
@@ -64,7 +64,7 @@ var MapView = React.createClass({
     }
   },
 
-  getSpots: function () {
+  getSpots: function (animate) {
 
     var context = this;
 
@@ -85,7 +85,7 @@ var MapView = React.createClass({
         context.setState({spots: data});
         //console.log("SUCCESS: ", context.state.spots);
         context.setState({refreshingClass: ""});
-        context.initSpots();
+        context.initSpots(animate);
 
       },
       error: function (error) {
@@ -95,7 +95,7 @@ var MapView = React.createClass({
     })
   },
 
-  initSpots: function () {
+  initSpots: function (animate) {
     // need to make this wait to run until map loads
     var context = this;
 
@@ -206,13 +206,21 @@ var MapView = React.createClass({
         url: '/pin_test.png'
       }
 
+      var animation;
+
+      if (animate) {
+        animation = google.maps.Animation.DROP;
+      } else {
+        animation = null;
+      }
+
       var spot = new google.maps.Marker({
         icon: icon,
         position: new google.maps.LatLng(spot.location.latitude, spot.location.longitude),
         map: context.state.map,
         id: spot.spotId,
         info: contentString,
-        animation: google.maps.Animation.DROP,
+        animation: animation,
         fields: spot.name + " " + spot.description + " " + spot.category,
         getId: function() {
           return this.id;
