@@ -27,25 +27,31 @@ var FeedView = React.createClass({
     console.log("Saved spots: ", this.state.savedSpots);
     console.log("Followed Users' Spots: ", this.state.followedUsersSpots);
     var savedSpots = this.state.savedSpots.map(function (spot) {
-      var url = '#/spot/' + spot.spotId;
+      var spotUrl = '#/spot/' + spot.spotId;
+      var creatorUrl = '#/profile/' + spot.creatorId;
       return (
         <div className ='saved-spot'>
           <div className = 'saved-spot-name'>
-            <a href={url}>{spot.name}</a>
+            <a href={spotUrl}>{spot.name}</a>
           </div>
-          <div className = 'saved-spot-creator'>Created by {spot.creator}</div>
+          <div className = 'saved-spot-creator'>Created by 
+            <a href={creatorUrl}>{spot.creator}</a>
+          </div>
           <div className = 'saved-spot-start'>@{spot.start}</div>
         </div>
       );
     }, this);
     var followedUsersSpots = this.state.followedUsersSpots.map(function (spot) {
-      var url = '#/spot/' + spot.spotId;
+      var spotUrl = '#/spot/' + spot.spotId;
+      var creatorUrl = '#/profile/' + spot.creatorId;
       return (
         <div className = 'followed-user-spot'>
           <div className = 'followed-user-spot-name'>
-            <a href={url}>{spot.name}</a>
+            <a href={spotUrl}>{spot.name}</a>
           </div>
-          <div className = 'followed-user-spot-creator'>Created by {spot.creator}</div>
+          <div className = 'followed-user-spot-creator'>Created by 
+            <a href={creatorUrl}>{spot.creator}</a>
+          </div>
           <div className = 'followed-user-spot-start'>@{spot.start}</div>
         </div>
       );
