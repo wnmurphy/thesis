@@ -136,10 +136,8 @@ module.exports = {
   getSpots: function(location, success, fail) {
     var params = {
       TableName : "Spots"
-      // FilterExpression: 'asdfsadf'
     };
     var context = this;
-    //  Include logic to return only points within 3 miles of center of screen?
     var filteredDistSpots = [];
     //find all spots
     dbSchema.scan(params, function(err, data) {
@@ -153,15 +151,17 @@ module.exports = {
               filteredDistSpots.push(result);
             }
           }
-          // console.log(context.distanceBetween(location, result.location));
         });
-        // this.distanceBetween(location, )
         success(filteredDistSpots);
       }
     });
   },
 
   signup: function(info, success, fail) {
+    
+    // Make incoming username string lowercase to prevent username collisions.
+    info.username = info.username.toLowerCase();
+  
     var params = {
       TableName: "Users",
       FilterExpression: "#username in (:userid)",

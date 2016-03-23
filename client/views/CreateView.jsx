@@ -179,7 +179,17 @@ var CreateView = React.createClass({
   },
 
   handleChange: function (event) {
+    var context = this;
     var newState = {};
+
+    if (event.target.maxLength) {
+      if (event.target.value.length >= event.target.maxLength) {
+        event.target.style["background-color"] = "#eaadae";
+      } else {
+        event.target.style["background-color"] = ""; 
+      }
+    }
+
     newState[event.target.id] = event.target.value;
     this.setState(newState);
     console.log(this.state);
@@ -209,7 +219,7 @@ var CreateView = React.createClass({
         <div>
           <form id="createSpotForm" onChange={this.handleChange} onSubmit={this.sendSpot}>
             <input type="text" id="address" placeholder="Location" onChange={this.changeAddress} value={this.state.address || ''} required />
-            <input type="text" id="name" placeholder="Title" defaultValue={this.state.name || ''} required />
+            <input type="text" id="name" placeholder="Title" defaultValue={this.state.name || ''} maxLength="50" required />
             <select valueLink={valueLink}>
               <option id="category">Select Category</option>
               {this.state.categoryOptions}
