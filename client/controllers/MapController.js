@@ -269,9 +269,9 @@ var initMap = function (location, context, callback) {
       point.x = point.x + x;
       point.y = point.y + y;
       map.panTo(projection.fromContainerPixelToLatLng(point));
-    }; 
-    overlay.draw = function() {}; 
-    overlay.setMap(this); 
+    };
+    overlay.draw = function() {};
+    overlay.setMap(this);
   };
 
   // Listen for the end of a drag and update the map center.
@@ -286,10 +286,10 @@ var initMap = function (location, context, callback) {
   context.setState({map: map});
 
   var icon = {
-    url: '/you_test.png'
+    url: '/img/map/you_test.png'
   }
 
-  // Define marker for user location. 
+  // Define marker for user location.
   // (i.e., 'You are here.')
   var marker = new google.maps.Marker({
     icon: icon,
