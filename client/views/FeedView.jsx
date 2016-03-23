@@ -35,7 +35,7 @@ var FeedView = React.createClass({
             <a href={spotUrl}>{spot.name}</a>
           </div>
           <div className = 'saved-spot-creator'>Created by 
-            <a href={creatorUrl}>{spot.creator}</a>
+            <a href={creatorUrl}> {spot.creator}</a>
           </div>
           <div className = 'saved-spot-start'>@{spot.start}</div>
         </div>
@@ -50,7 +50,7 @@ var FeedView = React.createClass({
             <a href={spotUrl}>{spot.name}</a>
           </div>
           <div className = 'followed-user-spot-creator'>Created by 
-            <a href={creatorUrl}>{spot.creator}</a>
+            <a href={creatorUrl}> {spot.creator}</a>
           </div>
           <div className = 'followed-user-spot-start'>@{spot.start}</div>
         </div>
