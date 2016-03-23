@@ -21,6 +21,7 @@
 ## Usage
 
 To install locally:
+
 1. Fork and clone repo.
 1. Download and install [Java SDK 8](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html).
 1. Download and install the [DynamoDB JAR](http://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Tools.DynamoDBLocal.html).
