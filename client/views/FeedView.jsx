@@ -13,6 +13,9 @@ var FeedView = React.createClass({
       console.log('data: ', data);
       if (data.savedSpots.length) {
         context.setState({savedSpots: data.savedSpots});
+        context.setState({savedContainerClass: 'feed-saved-spot-container'});
+      } else {
+        context.setState({savedContainerClass: 'feed-saved-spot-container hide'});
       }
       if (data.followedUsersSpots.length) {
         context.setState({followedUsersSpots: data.followedUsersSpots});
@@ -30,14 +33,14 @@ var FeedView = React.createClass({
       var spotUrl = '#/spot/' + spot.spotId;
       var creatorUrl = '#/profile/' + spot.creatorId;
       return (
-        <div className ='saved-spot'>
-          <div className = 'saved-spot-name'>
+        <div className ='feed-saved-spot'>
+          <div className = 'feed-saved-spot-name'>
             <a href={spotUrl}>{spot.name}</a>
           </div>
-          <div className = 'saved-spot-creator'>Created by 
+          <div className = 'feed-saved-spot-creator'>Created by 
             <a href={creatorUrl}> {spot.creator}</a>
           </div>
-          <div className = 'saved-spot-start'>@{spot.start}</div>
+          <div className = 'feed-saved-spot-start'>@{spot.start}</div>
         </div>
       );
     }, this);
@@ -45,14 +48,14 @@ var FeedView = React.createClass({
       var spotUrl = '#/spot/' + spot.spotId;
       var creatorUrl = '#/profile/' + spot.creatorId;
       return (
-        <div className = 'followed-user-spot'>
-          <div className = 'followed-user-spot-name'>
+        <div className = 'feed-followed-user-spot'>
+          <div className = 'feed-followed-user-spot-name'>
             <a href={spotUrl}>{spot.name}</a>
           </div>
-          <div className = 'followed-user-spot-creator'>Created by 
+          <div className = 'feed-followed-user-spot-creator'>Created by 
             <a href={creatorUrl}> {spot.creator}</a>
           </div>
-          <div className = 'followed-user-spot-start'>@{spot.start}</div>
+          <div className = 'feed-followed-user-spot-start'>@{spot.start}</div>
         </div>
       );
     });
@@ -60,10 +63,12 @@ var FeedView = React.createClass({
     return (
       <div>
         <LoginRequired />
-        <h3 >Saved Spots</h3>
-        <div className='saved-spot-container'>{savedSpots}</div>
+        <div className={this.state.savedContainerClass}>
+          <h3>Saved Spots</h3>
+          <div>{savedSpots}</div>
+        </div>
         <h3>Feed</h3>
-        <div className='followed-user-spot-container'>{followedUsersSpots}</div>
+        <div className='feed-followed-user-spot-container'>{followedUsersSpots}</div>
       </div>
     );
   }
