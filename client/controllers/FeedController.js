@@ -28,5 +28,19 @@ var FeedController = {
         fail(error.responseText);
       }
     });
+  },
+  getFollowedUsers: function(success, fail) {
+    $.ajax({
+       method: 'GET',
+       url: '/api/followedUsers/' + localStorage.getItem('userId'),
+       dataType: 'json',
+       success: function (data) {
+         console.log("SUCCESS RETRIEVED FOLLOWED USERS =============>", data);
+         success(data);
+       },
+       error: function (error) {
+         fail(error.responseText);
+       } 
+    });
   }
 };
