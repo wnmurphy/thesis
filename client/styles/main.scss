@@ -554,8 +554,7 @@ form {
 }
 
 .search-result{
-  border: 1px solid #CCCCCC;
-  padding: 5px;
+  padding: 10px;
  
   &:hover {
     background-color: #F1F1F1;
@@ -580,8 +579,6 @@ form {
 
 .result-category {}
 
-.search-results-container {}
-
 .feed-saved-spot-header {
   display: flex;
   align-items: center;
@@ -602,7 +599,7 @@ form {
   margin-top: 0;
 }
 
-.feed-saved-spot-container, .feed-followed-user-spot-container {
+.feed-saved-spot-container, .feed-followed-user-spot-container, .search-results-container {
   margin: 0 20px 0 50px;
 
   .category-icon-container {
@@ -615,11 +612,12 @@ form {
     font-size: 2em;
     height: 1em;
     margin-bottom: 5px; 
-
-    a:link, a:visited, a:active {
+    
+    a {
       color: $secondary-color;
-      text-decoration: none;
+      text-decoration: none; 
     }
+
     a:hover {
       text-decoration: underline;
     }

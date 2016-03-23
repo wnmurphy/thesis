@@ -51,17 +51,28 @@ var SearchView = React.createClass({
     var results = this.state.results.map(function(result) {
       if(result.email) {
           return (
-            <div className="search-result search-result-profile" onClick={this.profileRedirect.bind(this, result.userId)}>
-              <span className="result-user-img">{result.userid}</span>
-              <span className="result-username">{result.username}</span>
+            <div className="search-result">
+              <div className="spot-name-container" onClick={this.profileRedirect.bind(this, result.userId)}>
+
+                <div className='category-icon-container'>
+                  <i className='fa fa-user'></i>
+                </div>
+                <span className='spot-name'><a>{result.username}</a></span>
+              </div>
             </div>
+            
         );
       } else {
         return (
-          <div className="search-result search-result-spot" onClick={this.spotRedirect.bind(this, result.spotId)}>
-            <i className={"result-icon " + categories[result.category]}></i>
-            <span className="result-name">{result.name}</span>
-            <span className="result-time">{result.start}</span>
+          <div className="search-result">
+            <div className="spot-name-container" onClick={this.spotRedirect.bind(this, result.spotId)}>
+
+              <div className='category-icon-container'>
+                <i className={categories[result.category] || categories.General}></i>
+              </div>
+              <span className='spot-name'><a onClick={this.spotRedirect.bind(this, result.spotId)}>{result.name}</a></span>
+            </div>
+            <div> @{result.start}</div>
           </div>
           );
       }
