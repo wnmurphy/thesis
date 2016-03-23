@@ -78,6 +78,10 @@ module.exports = {
     //search is a string
     //username, user email
     //name, creator, description
+
+    // Make incoming search string lowercase to make search case-insensitive.
+    search = search.toLowerCase();
+
     var queriedArr = [];
     var params = {
       TableName: 'Users',
