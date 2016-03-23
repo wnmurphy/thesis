@@ -36,7 +36,7 @@ var CreateView = React.createClass({
 
     map.setOptions({disableDefaultUI: true});
 
-    marker.setIcon('/pin_test.png');
+    marker.setIcon('/img/map/pin_test.png');
 
     var context = this;
 

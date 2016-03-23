@@ -31,7 +31,7 @@ var MapView = React.createClass({
     };
   },
 
-  // 
+  //
   componentDidMount: function() {
 
     var context = this;
@@ -66,7 +66,7 @@ var MapView = React.createClass({
           console.log('globalState location', globalState.location);
           context.setState({center: globalState.location}, function() {
             context.getSpots();
-          }); 
+          });
         });
     }
   },
@@ -205,7 +205,7 @@ var MapView = React.createClass({
       }
 
       var contentString = '<div style="font-size: 12px"><strong>' + spot.name + '</strong></div>' +
-                          '<img style="float: right; padding-top: 15px" src="/silhouette.png">' +
+                          '<img style="float: right; padding-top: 15px" src="/img/map/silhouette.png">' +
                           '<div style="font-size: 11px; float: right; clear: right; padding-right: .5px"><small>' + spot.creator + '</small></div>' +
                           '<div style="font-size: 11px; padding-top: 2px">' + spot.category + '</div>' +
                           '<div><small><small>' + time + '</small></small></div>';
@@ -213,7 +213,7 @@ var MapView = React.createClass({
       contentString += '<div><small><small><a href="#/spot/' + spot.spotId +'">More Details</a></small></small></div>';
 
       var icon = {
-        url: '/pin_test.png'
+        url: '/img/map/pin_test.png'
       }
 
       var animation;
@@ -315,7 +315,7 @@ var MapView = React.createClass({
   }
 });
 
-// Display welcome message on first run. 
+// Display welcome message on first run.
 var LoadScreen = React.createClass({
   render: function() {
     return (
