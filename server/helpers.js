@@ -45,6 +45,7 @@ module.exports = {
                 "spotId": spot.spotId,
                 "name": spot.name,
                 "creator": spot.creator,
+                "creatorId": spot.creatorId,
                 "category": spot.category,
                 "location": spot.location,
                 "address": spot.address,
@@ -510,67 +511,6 @@ module.exports = {
         deleteSpots(spots.Items);
       } else {
         console.log("Database has been cleaned");
-      }
-    });
-  },
-  getFollowedUsers: function(id, success, fail) {
-    var params = {
-      TableName: "Users",
-      FilterExpression: "#userId = (:userId)",
-      ExpressionAttributeNames: {
-        "#userId": "userId"
-      },
-      ExpressionAttributeValues: {
-        ":userId": parseInt(id)
-      }
-    };
-    dbSchema.scan(params, function(err, user) {
-      var results = [];
-      if (err) {
-        console.error(err);
-        fail('error getting user');
-      } else {
-        if (user.Count === 1) {
-          if (user.Items[0].following) {
-            var findUserIds = function(users) {
-              console.log('1', users);
-              var params = {
-                TableName: "Users",
-                FilterExpression: "#username = (:username)",
-                ExpressionAttributeNames: {
-                  "#username": "username"
-                },
-                ExpressionAttributeValues: {
-                  ":username": users[0]
-                }
-              };
-              dbSchema.scan(params, function(err, user) {
-                console.log("user: ", user);
-                if (err) {
-                  console.error(err);
-                  fail('error getting followed users');
-                } else {
-                  if (user.Count === 1) {
-                    results.push({username: user.Items[0].username, userId: user.Items[0].userId});
-                    users.shift();
-                    if (users.length) {
-                      findUserIds(users);
-                    } else {
-                      success(results);
-                    }
-                  } else {
-                    fail('error getting followed users');
-                  }
-                }
-              });
-            };
-            findUserIds(user.Items[0].following);
-          } else {
-            fail('error getting followed users');
-          }
-        } else {
-          fail('error getting user');
-        }
       }
     });
   },

@@ -157,16 +157,6 @@ module.exports = function(app, express, io) {
     });
   });
 
-  //get to get a user's subscribed users and their userId's
-  app.get('/api/followedUsers/:id', function(req, res) {
-    var userId = Number(req.params.id);
-    helpers.getFollowedUsers(userId, function(data) {
-      res.json(data);
-    }, function (err) {
-      res.send(404, err);
-    });
-  });
-
   // Sockets
 
   io.sockets.on('connection', function(socket) {
