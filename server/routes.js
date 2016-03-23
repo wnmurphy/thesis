@@ -158,7 +158,6 @@ module.exports = function(app, express, io) {
   });
 
   // Sockets
-
   io.sockets.on('connection', function(socket) {
 
     /* Spot socket */
