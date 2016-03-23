@@ -38,7 +38,7 @@ module.exports = {
           }
           else {
             console.log('Updated data item successfully');
-            if(spot.name && spot.creator && spot.category && spot.location && spot.description && spot.start) {
+            if(spot.name && spot.creator && spot.creatorId && spot.category && spot.location && spot.description && spot.start) {
               params = {
               TableName: 'Spots',
               Item: {
