@@ -312,29 +312,28 @@ form {
 
 .spot-view-container {
   padding: 0 3em;
+}
 
+.category-icon-container, .spot-name-container{
+  display: flex;
+}
 
-  .category-icon-container, .spot-name-container{
-    display: flex;
-  }
+.spot-name-container {
+  position: relative;
+  left: -3em;
+}
 
-  .spot-name-container {
-    position: relative;
-    left: -3em;
-  }
+.category-icon-container {
+  align-items: center;
+  width: auto;
+  justify-content: center;
+  width: 2em;
+  font-size: 1.5em;
+  height: 2.2em;
+}
 
-  .category-icon-container {
-    align-items: center;
-    width: auto;
-    justify-content: center;
-    width: 2em;
-    font-size: 1.5em;
-    height: 2.2em;
-  }
-
-  .spot-name {
-    font-size: 3em;
-  }
+.spot-name {
+  font-size: 3em;
 }
 
 .share-card-container, .createView-card-container, .chat-card-container{
@@ -582,3 +581,75 @@ form {
 .result-category {}
 
 .search-results-container {}
+
+.feed-saved-spot-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: $color-dark;
+  height: 45px;
+  color: white;
+  margin-top: 0;
+}
+
+.feed-followed-user-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: $color-dark;
+  height: 45px;
+  color: white;
+  margin-top: 0;
+}
+
+.feed-saved-spot-container, .feed-followed-user-spot-container {
+  margin: 0 20px 0 50px;
+
+  .category-icon-container {
+    font-size: 1em;
+  }
+  .spot-name-container {
+    left: -2em;
+  }
+  .spot-name {
+    font-size: 2em;
+    height: 1em;
+    margin-bottom: 5px; 
+
+    a:link, a:visited, a:active {
+      color: $secondary-color;
+      text-decoration: none;
+    }
+    a:hover {
+      text-decoration: underline;
+    }
+  }
+}
+
+.feed-saved-spot {
+  margin: 10px 0;
+
+  &:last-child {
+    margin-bottom: 25px;
+  }
+}
+
+.feed-followed-user-spot {
+  margin: 10px 0;
+}
+
+
+.feed-spot-creator {
+  font-style: italic;
+
+  a:link, a:visited, a:active {
+    color: black;
+    text-decoration: none;
+  }
+  a:hover {
+    text-decoration: underline;
+  }
+}
+
+
+
