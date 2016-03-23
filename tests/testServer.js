@@ -262,7 +262,7 @@ describe("Persistent Spot and User Server", function() {
       done();
     });
   });
-  it('should return a 200 when signing up a user and when logging in a user', function(done) {
+  xit('should return a 200 when signing up a user and when logging in a user', function(done) {
     request({
       method: "POST",
       uri: "http://localhost:8080/api/signup",

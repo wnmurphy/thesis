@@ -134,7 +134,7 @@ module.exports = function(app, express, io) {
       res.send(404, err);
     });
   });
-
+  
   //post to follow a user
   app.post('/api/followUser', function(req, res) {
     var userId = req.body.userId;
@@ -158,7 +158,7 @@ module.exports = function(app, express, io) {
   });
 
   // Sockets
-  
+
   io.sockets.on('connection', function(socket) {
 
     /* Spot socket */
