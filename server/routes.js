@@ -134,15 +134,27 @@ module.exports = function(app, express, io) {
       res.send(404, err);
     });
   });
-
+  
   //post to follow a user
   app.post('/api/followUser', function(req, res) {
-    
+    var userId = req.body.userId;
+    var followUser = req.body.followUser;
+    helpers.followUser(userId, followUser, function(data) {
+      res.json(data);
+    }, function(err) {
+      res.send(404, err);
+    });
   });
 
   //post to save a users spot
   app.post('/api/saveSpot', function(req, res) {
-
+    var userId = req.body.userId;
+    var spotId = req.body.spotId;
+    helpers.saveSpot(userId, spotId, function(data) {
+      res.json(data);
+    }, function(err) {
+      res.send(404, err);
+    });
   });
 
   // Sockets

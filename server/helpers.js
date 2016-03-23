@@ -513,6 +513,99 @@ module.exports = {
       }
     });
   },
+  saveSpot: function(userId, spotId, success, fail) {
+    //get user
+    var params = {
+      TableName: "Users",
+      FilterExpression: "#userId = (:userId)",
+      ExpressionAttributeNames: {
+        "#userId": "userId"
+      },
+      ExpressionAttributeValues: {
+        ":userId": parseInt(userId)
+      }
+    };
+    dbSchema.scan(params, function(err, user) {
+      if (err) {
+        console.error(err);
+        fail('error getting user');
+      //should only find 1 user
+      } else if (user.Count === 1) {
+        //if user has not already saved that spot
+        if (user.Items[0].savedSpots.indexOf(spotId) === -1) {
+          params = {
+            TableName: 'Users',
+            Key: { userId: user.Items[0].userId },
+            UpdateExpression: 'SET savedSpots = list_append(savedSpots, :spotId)',
+            ExpressionAttributeValues: {
+              ':spotId': [parseInt(spotId)]
+            }
+          };
+          //update user's 'savedSpots' array to include this new spotId
+          dbSchema.update(params, function(err, data) {
+            if (err) {
+              console.error(err);
+              fail('error saving spot');
+            } else {
+              success('successfully saved spot');
+            }
+          });
+        } else {
+          fail('user has already saved this spot');
+        }
+      } else {
+        fail('failed to get correct user');
+      }
+    });
+
+      
+  },
+  followUser: function(userId, followUser, success, fail) {
+    console.log("Follow user: ", followUser);
+    var params = {
+      TableName: "Users",
+      FilterExpression: "#userId = (:userId)",
+      ExpressionAttributeNames: {
+        "#userId": "userId"
+      },
+      ExpressionAttributeValues: {
+        ":userId": parseInt(userId)
+      }
+    };
+    //find user
+    dbSchema.scan(params, function (err, user) {
+      if (err) {
+        console.error(err);
+        fail('error getting user');
+      //should only find 1 user
+      } else if (user.Count === 1) {
+        //if user has not already followed that user
+        if (user.Items[0].following.indexOf(followUser) === -1) {
+          params = {
+            TableName: 'Users',
+            Key: { userId: user.Items[0].userId },
+            UpdateExpression: 'SET following = list_append(following, :followUser)',
+            ExpressionAttributeValues: {
+              ':followUser': [followUser]
+            }
+          };
+          //update user's 'following' array to include this new user
+          dbSchema.update(params, function(err, data) {
+            if (err) {
+              console.error(err);
+              fail('error following user');
+            } else {
+              success('successfully followed user');
+            }
+          });
+        } else {
+          fail('user has already followed this user');
+        }
+      } else {
+        fail('failed to get correct user');
+      }
+    });
+  },
   getFeed: function(id, success, fail) {
     var results = {savedSpots: [], followedUsersSpots: []};
     var params = {
