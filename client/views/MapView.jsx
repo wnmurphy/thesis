@@ -38,8 +38,29 @@ var MapView = React.createClass({
 
     // Listen for spots created by other users and create new map marker on spotDrop.
     socket.on('spotDrop', function(spot){
-      console.log(spot); //create marker eventually
-      // context.getSpots;
+      
+      // Create spot object for incoming spot.
+      var spot = new google.maps.Marker({
+        icon: icon,
+        position: new google.maps.LatLng(spot.location.latitude, spot.location.longitude),
+        map: context.state.map,
+        id: spot.spotId,
+        info: contentString,
+        animation: animation,
+        fields: spot.name + " " + spot.description + " " + spot.category,
+        getId: function() {
+          return this.id;
+        },
+        getPosition: function() {
+          return this.position;
+        },
+        getFields: function() {
+          return this.fields;
+        }
+      });
+
+      var array = this.state.markers;
+      array.push(spot);
     });
 
 

@@ -125,6 +125,7 @@ var CreateView = React.createClass({
       data: newSpot,
       success: function (data) {
         globalState.createState = undefined;
+        console.log("CreateView hope:", data);
         socket.emit('newSpot', newSpot);
         window.location = '/#/';
       },

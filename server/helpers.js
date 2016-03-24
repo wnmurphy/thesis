@@ -55,13 +55,16 @@ module.exports = {
                 "messages": []
                 },
               };
+
+              var spot = params.item;
+
               dbSchema.put(params, function(err, data) {
                 if (err) {
                   console.error('error on item put', err);
                   fail(err);
                 }
                 else {
-                  success(data);
+                  success(spot);
                 }
               });
             }
