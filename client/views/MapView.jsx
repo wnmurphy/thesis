@@ -36,19 +36,28 @@ var MapView = React.createClass({
 
     var context = this;
 
+
     var icon = {
       url: '../img/map/pin_test.png'
     }
     // Listen for spots created by other users and create new map marker on spotDrop.
-    socket.on('spotDrop', function(newSpot){
-      
+    socket.on('spotDrop', function (newSpot) {
+
+      var contentString = '<div style="font-size: 12px"><strong>' + newSpot.name + '</strong></div>' +
+                          // '<img style="float: right; padding-top: 15px" src="/img/map/silhouette.png">' +
+                          '<div style="font-size: 11px;"><small>' + newSpot.creator + '</small></div>' +
+                          '<div style="font-size: 11px; padding-top: 2px">' + newSpot.category + '</div>' +
+                          '<div><small><small>' + timeController.msToTime(newSpot.start) + '</small></small></div>';
+
+      contentString += '<div><small><small><a href="#/spot/' + newSpot.spotId +'">More Details</a></small></small></div>';
+
       // Create spot object for incoming spot.
       var spot = new google.maps.Marker({
         icon: icon,
         position: new google.maps.LatLng(newSpot.location.latitude, newSpot.location.longitude),
         map: context.state.map,
         id: newSpot.spotId,
-        info: '<div>WORKS!</div>',
+        info: contentString,
         animation: google.maps.Animation.DROP,
         fields: newSpot.name + " " + newSpot.description + " " + newSpot.category,
         getId: function() {
@@ -61,6 +70,20 @@ var MapView = React.createClass({
           return this.fields;
         }
       });
+
+      var infoWindow = new google.maps.InfoWindow({
+        maxWidth: 250,
+        content: contentString
+      })
+
+        // When user clicks on spot, open summary bubble, load that spot's data, and center the map on the marker.
+      google.maps.event.addListener(spot, 'click', function () {
+        // context.state.selected.close();
+        infoWindow.setContent(this.info);
+        infoWindow.open(context.state.map, this);
+        context.setState({selected: infoWindow});
+        context.state.map.offsetPan(this.getPosition(), 0, -55);
+      })
 
       var array = context.state.markers;
       array.push(spot);
@@ -105,13 +128,6 @@ var MapView = React.createClass({
 
     var context = this;
 
-    // Hide all previous markers.
-    this.state.markers.forEach(function(marker) {
-      marker.setVisible(false);
-    })
-
-    this.setState({markers: []});
-
     this.setState({refreshingClass: " spin"});
     $.ajax({
       method: 'GET',
@@ -123,6 +139,9 @@ var MapView = React.createClass({
         globalState.spots = data;
         context.setState({spots: data});
         context.setState({refreshingClass: ""});
+        if(!animate) {
+          context.checkMarkers();
+        }
         context.initSpots(animate);
 
       },
@@ -132,13 +151,39 @@ var MapView = React.createClass({
       }
     })
   },
+  checkMarkers: function() {
+    var context = this;
+    //Hide previous markers if in new data set.
+    this.state.markers.forEach(function(marker) {
+      console.log(marker)
+      var match = false;
+      for(var i = 0; i < context.state.spots.length; i++) {
+        if(context.state.spots[i].spotId === marker.getId()) {
+          match = true;
+        }
+      }
+      if (!match) {
+        marker.setVisible(false);
+        delete marker;
+      }
+    })
+
+  },
 
   // Loop through spot data from server.
   // Generate a map marker and summary bubble for each spot.
   initSpots: function (animate) {
     var context = this;
 
-    for(var i = 0; i < this.state.spots.length; i++) {
+    for(var i = 0; i < context.state.spots.length; i++) {
+      // var found = false;
+      // var newData = context.state.spots[i].spotId;
+      // for(var j = 0; j < context.state.markers.length; j++) {
+      //   var oldData = context.state.markers[j].getId();
+      //   if(oldData.toString() === newData.toString()) {
+      //     found = true;
+      //   }
+      // }
 
       var spot = this.state.spots[i];
 
@@ -151,8 +196,8 @@ var MapView = React.createClass({
 
 
       var contentString = '<div style="font-size: 12px"><strong>' + spot.name + '</strong></div>' +
-                          '<img style="float: right; padding-top: 15px" src="/img/map/silhouette.png">' +
-                          '<div style="font-size: 11px; float: right; clear: right; padding-right: .5px"><small>' + spot.creator + '</small></div>' +
+                          // '<img style="float: right; padding-top: 15px" src="/img/map/silhouette.png">' +
+                          '<div style="font-size: 11px;"><small>' + spot.creator + '</small></div>' +
                           '<div style="font-size: 11px; padding-top: 2px">' + spot.category + '</div>' +
                           '<div><small><small>' + timeController.msToTime(spot.start) + '</small></small></div>';
 
@@ -203,9 +248,10 @@ var MapView = React.createClass({
 
       // When user clicks on spot, open summary bubble, load that spot's data, and center the map on the marker.
       google.maps.event.addListener(spot, 'click', function () {
+        // context.state.selected.close();
         infoWindow.setContent(this.info);
         infoWindow.open(context.state.map, this);
-        context.setState({selected: this.getId()});
+        context.setState({selected: infoWindow});
         context.state.map.offsetPan(this.getPosition(), 0, -55);
       })
     }
