@@ -59,6 +59,14 @@ var ProfileView = React.createClass({
     this.setState(newState);
   },
 
+  followUser: function() {
+    FollowController.followUser(this.state.userId, function (data) {
+      console.log(data);
+    }, function (err) {
+      console.error(err);
+    });
+  },
+
   render: function() {
     console.log("Rendering ProfileView");
     if (this.props.requireAuth) {
@@ -89,8 +97,11 @@ var ProfileView = React.createClass({
       <div className="profile-view">
         <div className="profile-header">
           <img className="profile-picture" src={this.state.img} />
-          <div className="profile-name">
-            <h1>{this.state.username}</h1>
+          <div>
+            <div className="profile-name">
+              <h1>{this.state.username}</h1>
+            </div>
+            <button className="follow-button" onClick={this.followUser()}>Follow {this.state.username}</button>
           </div>
         </div>
         <h3 className="profile-bio">{this.state.bio}</h3>
