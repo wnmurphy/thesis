@@ -554,21 +554,15 @@ form {
 }
 
 .search-result{
-  border: 1px solid #CCCCCC;
-  padding: 5px;
+  padding: 10px;
+  -webkit-transition: all 0.25s;
+    transition: all 0.25s;
  
   &:hover {
-    background-color: #F1F1F1;
+    -webkit-transform: scale(1.05);
+      transform: scale(1.05);
   }
 }
-
-.search-result-spot {}
-
-.search-result-profile {}
-
-.search-form {}
-
-.result-name {}
 
 .result-time {
   float: right;
@@ -577,10 +571,6 @@ form {
 .result-icon {
   padding-right: 4%; 
 }
-
-.result-category {}
-
-.search-results-container {}
 
 .feed-saved-spot-header {
   display: flex;
@@ -602,7 +592,7 @@ form {
   margin-top: 0;
 }
 
-.feed-saved-spot-container, .feed-followed-user-spot-container {
+.feed-saved-spot-container, .feed-followed-user-spot-container, .search-results-container {
   margin: 0 20px 0 50px;
 
   .category-icon-container {
@@ -615,11 +605,12 @@ form {
     font-size: 2em;
     height: 1em;
     margin-bottom: 5px; 
-
-    a:link, a:visited, a:active {
+    
+    a {
       color: $secondary-color;
-      text-decoration: none;
+      text-decoration: none; 
     }
+
     a:hover {
       text-decoration: underline;
     }
