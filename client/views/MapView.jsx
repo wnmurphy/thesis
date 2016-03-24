@@ -36,8 +36,32 @@ var MapView = React.createClass({
 
     var context = this;
 
-    // Listen for spots created by other users and refresh map.
-    // socket.on('spotAdded', this.getSpots);
+    // Listen for spots created by other users and create new map marker on spotDrop.
+    socket.on('spotDrop', function(spot){
+      
+      // Create spot object for incoming spot.
+      var spot = new google.maps.Marker({
+        icon: icon,
+        position: new google.maps.LatLng(spot.location.latitude, spot.location.longitude),
+        map: context.state.map,
+        id: spot.spotId,
+        info: contentString,
+        animation: animation,
+        fields: spot.name + " " + spot.description + " " + spot.category,
+        getId: function() {
+          return this.id;
+        },
+        getPosition: function() {
+          return this.position;
+        },
+        getFields: function() {
+          return this.fields;
+        }
+      });
+
+      var array = this.state.markers;
+      array.push(spot);
+    });
 
 
     // Check whether location has been set globally.

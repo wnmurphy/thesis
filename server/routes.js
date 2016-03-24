@@ -12,16 +12,18 @@ module.exports = function(app, express, io) {
   // POST to create a new spot from CreateView.
   app.post('/api/create', function(req, res) {
     var spot = req.body;
+
     helpers.checkToken(JSON.parse(req.headers.token), function (decoded) {
       spot.creatorId = decoded.userId;
       spot.creator = decoded.username;
+
       helpers.createSpot(spot, function(spot_id) {
         res.json(spot_id);
-      }, function(err) {
-        res.send(err);
+      }, function(data) {
+        res.send(spot);
       });
-    }, function (message) {
-      res.send(404, message);
+    }, function (error) {
+      res.send(404, error);
     });
   });
 
@@ -165,20 +167,16 @@ module.exports = function(app, express, io) {
 
     // Listen for whenever a new spot is created, and
     // broadcast spotAdded event to trigger client-side map refresh.
-    socket.on('addSpot', function(){
-      io.emit('spotAdded');
-
+    socket.on('newSpot', function(newSpot){
+      socket.broadcast.emit('spotDrop', newSpot);
+      console.log("new spot: ", newSpot);
     });
+
 
     /* Chat socket */
 
-    socket.on('hello', function(){
-      console.log('socket sez what up biotch');
-    });    
-
     // Listen for whenever a chat message is sent.
     socket.on('messageSend', function(message){
-      console.log("RECIEVED IN ROUTES", message);
       helpers.postMessageToDatabase(message.spotId, message.username, message.text, message.timeStamp);
       io.emit('newMessage', {username: message.username, text: message.text, spotId: message.spotId, timeStamp: message.timeStamp});
     });
