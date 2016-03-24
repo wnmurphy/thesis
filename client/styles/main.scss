@@ -555,19 +555,14 @@ form {
 
 .search-result{
   padding: 10px;
+  -webkit-transition: all 0.25s;
+    transition: all 0.25s;
  
   &:hover {
-    background-color: #F1F1F1;
+    -webkit-transform: scale(1.05);
+      transform: scale(1.05);
   }
 }
-
-.search-result-spot {}
-
-.search-result-profile {}
-
-.search-form {}
-
-.result-name {}
 
 .result-time {
   float: right;
@@ -576,8 +571,6 @@ form {
 .result-icon {
   padding-right: 4%; 
 }
-
-.result-category {}
 
 .feed-saved-spot-header {
   display: flex;
