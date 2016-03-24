@@ -297,7 +297,6 @@ module.exports = {
   },
 
   getProfile: function(id, success, fail) {
-    console.log('id: ', id);
     var params = {
       TableName: "Users",
       FilterExpression: "#userId = (:userId)",
@@ -345,18 +344,15 @@ module.exports = {
 
     dbSchema.scan(params, function(err, spot) {
       if(err) {
-        console.log('1. Error handling getting spot', err);
         fail(err);
       }
       else if(spot.Count === 0) {
-        console.log('2. spot does not exist');
         fail('spot does not exist');
       }
       else if(spot.Count === 1) {
         success(spot.Items[0]);
       }
       else {
-        console.log('3. have more than one same spot');
         fail('have more than one same spot');
       }
     });
@@ -420,7 +416,6 @@ module.exports = {
       } else if(spot.Count === 0) {
         return console.error('spot does not exist', err);
       } else if(spot.Count === 1) {
-        console.log(spot);
         callback(spot.Items[0].messages);
       } else {
         return console.error('Multiple spots for same id', err);
@@ -569,7 +564,6 @@ module.exports = {
       
   },
   followUser: function(userId, followUser, success, fail) {
-    console.log("Follow user: ", followUser);
     var params = {
       TableName: "Users",
       FilterExpression: "#userId = (:userId)",
@@ -648,7 +642,6 @@ module.exports = {
         } else {
           //if not, move on to finding followed user's spots
           if (user.Items[0].following && user.Items[0].following.length) {
-            console.log('2');
             //if user is following any other users, call function to find all their spots and save them to results
             getFollowedUserSpots(user.Items[0].following, results, success);
           } else {
@@ -696,7 +689,6 @@ var getSavedSpots = function(savedIds, user, results, success) {
   });
 };
 var getFollowedUserSpots = function(users, results, success) {
-  console.log("Users 1 ", users);
   var params = {
     TableName: 'Spots',
     FilterExpression: '#creator = (:creator)',
