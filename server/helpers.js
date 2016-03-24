@@ -605,7 +605,7 @@ module.exports = {
               Key: { userId: user.Items[0].userId },
               UpdateExpression: 'SET following = list_append(following, :followUser)',
               ExpressionAttributeValues: {
-                ':followUser': [followUser, follow]
+                ':followUser': [{'userId': followUser, 'username': follow.Items[0].username}]
               }
             };
             //update user's 'following' array to include this new user
@@ -647,7 +647,8 @@ module.exports = {
           getSavedSpots(user.Items[0].savedSpots, user.Items[0], results, success);
         } else {
           //if not, move on to finding followed user's spots
-          if (user.Items[0].followedUsers && user.Items[0].followedUsers.length) {
+          if (user.Items[0].following && user.Items[0].following.length) {
+            console.log('2');
             //if user is following any other users, call function to find all their spots and save them to results
             getFollowedUserSpots(user.Items[0].following, results, success);
           } else {
@@ -687,7 +688,6 @@ var getSavedSpots = function(savedIds, user, results, success) {
     } else {
       //find followed users spots
       if (user.following && user.following.length) {
-        console.log('1');
         getFollowedUserSpots(user.following, results, success);
       } else {
         success(results);
@@ -696,6 +696,7 @@ var getSavedSpots = function(savedIds, user, results, success) {
   });
 };
 var getFollowedUserSpots = function(users, results, success) {
+  console.log("Users 1 ", users);
   var params = {
     TableName: 'Spots',
     FilterExpression: '#creator = (:creator)',
@@ -703,12 +704,10 @@ var getFollowedUserSpots = function(users, results, success) {
       '#creator': 'creator'
     },
     ExpressionAttributeValues: {
-      ':creator': users[0]
+      ':creator': users[0].username
     }
   };
   dbSchema.scan(params, function(err, spots) {
-    console.log('user: ', users[0]);
-    console.log('spots: ', spots.Items);
     if (err) {console.error(err);}
     if (spots.Items.length) {
       results.followedUsersSpots = results.followedUsersSpots.concat(spots.Items);
