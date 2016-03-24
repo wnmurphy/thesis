@@ -141,98 +141,15 @@ var MapView = React.createClass({
         continue;
       }
 
-      // Comparator for current time with start or end time;
-      // Parses time to a formatted string for display in spot summary bubble.
+      // skips spots where the start time is in past
+      if (Date.now() > Number(spot.start)) continue;
 
-      var start = spot.start.split(':').join('');
-      if (spot.end) {
-        var end = spot.end.split(':').join('');
-      }
-      var current = getTime();
-      var time, prefix, suffix, hours, minutes;
-
-      var stringify = function(time) {
-
-        hours = Number(time.substring(0, 2)) - Number(current.substr(0, 2));
-
-        hours = hours * 60;
-
-        minutes = Number(time.substring(2)) - Number(current.substr(2));
-
-        var total = hours + minutes;
-
-        minutes = total % 60;
-
-        hours = (total - minutes) / 60;
-
-        if (hours === 0) {
-          hours = null;
-        } else if (hours === 1) {
-          hours = hours + " hour ";
-        } else {
-          hours = hours + " hours ";
-        }
-
-        if (minutes === 0) {
-          minutes = null;
-        } else if (minutes === 1) {
-          minutes = minutes + " minute"
-        } else {
-          minutes = minutes + " minutes"
-        }
-      }
-
-      if (start > current) {
-        stringify(start);
-        if (hours === null) {
-          prefix = "";
-        } else {
-          prefix = "in " + hours;
-        }
-        if (minutes === null) {
-          suffix = "";
-        } else {
-          if (hours === null) {
-            suffix = "in " + minutes;
-          } else {
-            suffix = " and " + minutes;
-          }
-        }
-      } else {
-        if (end) {
-          stringify(end);
-          if (hours === null) {
-            prefix = "";
-          } else {
-            prefix = hours;
-          }
-          if (minutes === null) {
-            suffix = "";
-          } else {
-            if (hours === null) {
-              suffix = minutes + " left";
-            } else {
-              suffix = " and " + minutes + " left";
-            }
-          }
-        } else {
-          prefix = "happening now";
-          suffix = "";
-        }
-      }
-
-      time = prefix + suffix;
-
-      //Temporarily skips marking expired spots until we get server handling and cleanup
-      if(time.indexOf('-') > -1 ) {
-        continue;
-      }
 
       var contentString = '<div style="font-size: 12px"><strong>' + spot.name + '</strong></div>' +
                           '<img style="float: right; padding-top: 15px" src="/img/map/silhouette.png">' +
                           '<div style="font-size: 11px; float: right; clear: right; padding-right: .5px"><small>' + spot.creator + '</small></div>' +
                           '<div style="font-size: 11px; padding-top: 2px">' + spot.category + '</div>' +
-                          '<div><small><small>' + time + '</small></small></div>';
+                          '<div><small><small>' + timeController.msToTime(spot.start) + '</small></small></div>';
 
       contentString += '<div><small><small><a href="#/spot/' + spot.spotId +'">More Details</a></small></small></div>';
 

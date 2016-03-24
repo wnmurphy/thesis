@@ -115,8 +115,8 @@ var CreateView = React.createClass({
         location: context.state.location,
         address: context.state.address,
         description: context.state.description,
-        start: context.state.start,
-        end: context.state.end
+        start: timeController.timeToMS(context.state.start),
+        end: timeController.timeToMS(context.state.end)
     };
     $.ajax({
       method: 'POST',
@@ -188,13 +188,12 @@ var CreateView = React.createClass({
       if (event.target.value.length >= event.target.maxLength) {
         event.target.style["background-color"] = "#eaadae";
       } else {
-        event.target.style["background-color"] = ""; 
+        event.target.style["background-color"] = "";
       }
     }
 
     newState[event.target.id] = event.target.value;
     this.setState(newState);
-    console.log(this.state);
   },
 
   changeAddress: function (event) {
