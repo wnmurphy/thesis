@@ -129,11 +129,11 @@ var MapView = React.createClass({
     var context = this;
 
     // Hide all previous markers.
-    this.state.markers.forEach(function(marker) {
-      marker.setVisible(false);
-    })
+    // this.state.markers.forEach(function(marker) {
+    //   marker.setVisible(false);
+    // })
 
-    this.setState({markers: []});
+    // this.setState({markers: []});
 
     this.setState({refreshingClass: " spin"});
     $.ajax({
@@ -161,11 +161,19 @@ var MapView = React.createClass({
   initSpots: function (animate) {
     var context = this;
 
-    for(var i = 0; i < this.state.spots.length; i++) {
+    for(var i = 0; i < context.state.spots.length; i++) {
+      var found = false;
+      var newData = context.state.spots[i].spotId;
+      for(var j = 0; j < context.state.markers.length; j++) {
+        var oldData = context.state.markers[j].getId();
+        if(oldData.toString() === newData.toString()) {
+          found = true;
+        }
+      }
 
       var spot = this.state.spots[i];
 
-      if(spot.lastId) {
+      if(spot.lastId || found) {
         continue;
       }
 
