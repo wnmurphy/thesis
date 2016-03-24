@@ -25,6 +25,16 @@ var timeController = {
   },
 
   timeToMS: function (time) {
-    return timeController.timeToDate(time).getTime();
+    if (time) {
+      console.log(timeController.timeToDate(time).getTime());
+      return timeController.timeToDate(time).getTime();
+    } else {
+      return undefined;
+    }
+  },
+
+  msToTime: function (ms) {
+    if (typeof ms === "string") ms = Number(ms);
+    return (new Date(ms)).toLocaleTimeString();
   }
 }

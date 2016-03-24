@@ -1,7 +1,7 @@
 /** @jsx React.DOM */
 
 var SearchView = React.createClass({
-  
+
   getInitialState: function () {
     return {
       query: "",
@@ -23,7 +23,7 @@ var SearchView = React.createClass({
       url: '/api/search',
       dataType: 'json',
       data: {
-        search: context.state.query 
+        search: context.state.query
       },
       success: function (data) {
         console.log("SUCCESS: ", data);
@@ -60,7 +60,7 @@ var SearchView = React.createClass({
                 <span className='spot-name'><a>{result.username}</a></span>
               </div>
             </div>
-            
+
         );
       } else {
         return (
@@ -72,7 +72,7 @@ var SearchView = React.createClass({
               </div>
               <span className='spot-name'><a onClick={this.spotRedirect.bind(this, result.spotId)}>{result.name}</a></span>
             </div>
-            <div> @{result.start}</div>
+            <div> @{timeController.msToTime(result.start)}</div>
           </div>
           );
       }

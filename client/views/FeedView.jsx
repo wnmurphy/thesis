@@ -4,7 +4,7 @@ var FeedView = React.createClass({
   getInitialState: function() {
       return {
         savedSpots: [],
-        followedUsersSpots: []     
+        followedUsersSpots: []
       };
   },
   componentDidMount: function() {
@@ -40,7 +40,7 @@ var FeedView = React.createClass({
             </div>
             <span className='spot-name'><a href={spotUrl}>{spot.name}</a></span>
           </div>
-          <div> @{spot.start}</div>
+          <div> @{timeController.msToTime(spot.start)}</div>
           <div className='feed-spot-creator'>Created by <a href={creatorUrl}>{spot.creator}</a></div>
         </div>
       );
@@ -56,7 +56,7 @@ var FeedView = React.createClass({
             </div>
             <span className='spot-name'><a href={spotUrl}>{spot.name}</a></span>
           </div>
-          <div>@{spot.start}</div>
+          <div>@{timeController.msToTime(spot.start)}</div>
           <div className='feed-spot-creator'>Created by <a href={creatorUrl}>{spot.creator}</a></div>
         </div>
       );
@@ -75,4 +75,3 @@ var FeedView = React.createClass({
     );
   }
 });
-
