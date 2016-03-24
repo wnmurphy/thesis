@@ -21,6 +21,14 @@ var ProfileView = React.createClass({
     console.log("mount trigger", globalState.userId, this.state.userId);
     ProfileController.getProfile(context.state.userId, function (profile) {
       context.setState(profile);
+      if(profile.username) {
+        MetaController.setOGP({
+          title: profile.username + ' on irl',
+          description: profile.bio,
+          image: profile.img,
+          url: 'http://www.irl.com/#/profile/' + profile.userId
+        });
+      }
       context.setState({shareProps: {
                           contents: 'Check out ' + profile.username + ' on this irl! www.irl.com/#/profile/' + profile.userId,
                           subject: 'Check out ' + profile.username,
