@@ -251,78 +251,80 @@ var initMap = function (location, context, callback) {
 
 // Loop through spot data from server.
 // Generate a map marker and summary bubble for each spot.
-var initSpots = function (animate, context) {
-  var context = this;
+// var initSpots = function (animate, context) {
 
-  for(var i = 0; i < context.state.spots.length; i++) {
+//   for(var i = 0; i < context.state.spots.length; i++) {
 
-    var spot = this.state.spots[i];
+//     var spot = this.state.spots[i];
 
-    // skips spots where the start time is in past
-    if (spot.lastId || Date.now() > Number(spot.start)) {
-      continue;
-    }
+//     // Skips spots where the start time is in past or if spot is tracker
+//     if (spot.lastId || Date.now() > Number(spot.start)) {
+//       continue;
+//     };
 
-    var contentString = '<div style="font-size: 12px"><strong>' + spot.name + '</strong></div>' +
-                        '<div style="font-size: 11px;"><small>' + spot.creator + '</small></div>' +
-                        '<div style="font-size: 11px; padding-top: 2px">' + spot.category + '</div>' +
-                        '<div><small><small>' + timeController.msToTime(spot.start) + '</small></small></div>';
+//     var contentString = '<div style="font-size: 12px"><strong>' + spot.name + '</strong></div>' +
+//                         '<div style="font-size: 11px;"><small>' + spot.creator + '</small></div>' +
+//                         '<div style="font-size: 11px; padding-top: 2px">' + spot.category + '</div>' +
+//                         '<div><small><small>' + timeController.msToTime(spot.start) + '</small></small></div>' +
+//                         '<div><small><small><a href="#/spot/' + spot.spotId +'">More Details</a></small></small></div>';
 
-    contentString += '<div><small><small><a href="#/spot/' + spot.spotId +'">More Details</a></small></small></div>';
+//     var icon = {
+//       url: '../img/map/pin_test.png'
+//     }
 
-    var icon = {
-      url: '../img/map/pin_test.png'
-    }
+//     // Define summary bubble for each spot.
+//     var infoWindow = new google.maps.InfoWindow({
+//       maxWidth: 250,
+//       content: contentString
+//     });
 
-    var animation;
+//     var animation;
 
-    if (animate) {
-      animation = google.maps.Animation.DROP;
-    } else {
-      animation = null;
-    }
+//     if (animate) {
+//       animation = google.maps.Animation.DROP;
+//     } else {
+//       animation = null;
+//     }
 
-    // Create a new map marker for each spot.
-    var spot = new google.maps.Marker({
-      icon: icon,
-      position: new google.maps.LatLng(spot.location.latitude, spot.location.longitude),
-      map: context.state.map,
-      id: spot.spotId,
-      info: contentString,
-      animation: animation,
-      fields: spot.name + " " + spot.description + " " + spot.category,
-      getId: function() {
-        return this.id;
-      },
-      getPosition: function() {
-        return this.position;
-      },
-      getFields: function() {
-        return this.fields;
-      }
-    });
+//     // Create a new map marker for each spot.
+//     var spot = new google.maps.Marker({
+//       infoWindow: infoWindow,
+//       icon: icon,
+//       position: new google.maps.LatLng(spot.location.latitude, spot.location.longitude),
+//       map: context.state.map,
+//       id: spot.spotId,
+//       info: contentString,
+//       animation: animation,
+//       fields: spot.name + " " + spot.description + " " + spot.category,
+//       getId: function() {
+//         return this.id;
+//       },
+//       getPosition: function() {
+//         return this.position;
+//       },
+//       getFields: function() {
+//         return this.fields;
+//       },
+//       getInfoWindow: function() {
+//         return this.infoWindow;
+//       }
+//     });
 
-    // Define summary bubble for each spot.
-    var infoWindow = new google.maps.InfoWindow({
-      maxWidth: 250,
-      content: contentString
-    })
+//     // Update markers in component's state
+//     var cache = this.state.markers;
+//     cache.push(spot);
+//     this.setState({markers: cache});
 
-    var array = this.state.markers;
-    array.push(spot);
-
-    this.setState({markers: array});
-
-    // When user clicks on spot, open summary bubble, load that spot's data, and center the map on the marker.
-    google.maps.event.addListener(spot, 'click', function () {
-      // context.state.selected.close();
-      infoWindow.setContent(this.info);
-      infoWindow.open(context.state.map, this);
-      context.setState({selected: infoWindow});
-      context.state.map.offsetPan(this.getPosition(), 0, -55);
-    })
-  }
-}
+//     // When user clicks on spot, open summary bubble, load that spot's data, and center the map on the marker.
+//     google.maps.event.addListener(spot, 'click', function () {
+//       console.log("CONTEXT: ", context.state.selected);
+//       infoWindow.setContent(this.info);
+//       infoWindow.open(context.state.map, this);
+//       context.setState({selected: this.getInfoWindow()});
+//       context.state.map.offsetPan(this.getPosition(), 0, -55);
+//     })
+//   }
+// }
 
 var sweepMarkers = function(context, callback) {
   context.state.markers.forEach(function(marker, index, object) {

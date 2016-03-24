@@ -44,22 +44,27 @@ var MapView = React.createClass({
     socket.on('spotDrop', function (newSpot) {
 
       var contentString = '<div style="font-size: 12px"><strong>' + newSpot.name + '</strong></div>' +
-                          // '<img style="float: right; padding-top: 15px" src="/img/map/silhouette.png">' +
                           '<div style="font-size: 11px;"><small>' + newSpot.creator + '</small></div>' +
                           '<div style="font-size: 11px; padding-top: 2px">' + newSpot.category + '</div>' +
                           '<div><small><small>' + timeController.msToTime(newSpot.start) + '</small></small></div>';
 
       contentString += '<div><small><small><a href="#/spot/' + newSpot.spotId +'">More Details</a></small></small></div>';
 
+      var infoWindow = new google.maps.InfoWindow({
+        maxWidth: 250,
+        content: contentString
+      })
+      
       // Create spot object for incoming spot.
       var spot = new google.maps.Marker({
+        infoWindow: infoWindow,
         icon: icon,
-        position: new google.maps.LatLng(newSpot.location.latitude, newSpot.location.longitude),
+        position: new google.maps.LatLng(spot.location.latitude, spot.location.longitude),
         map: context.state.map,
-        id: newSpot.spotId,
+        id: spot.spotId,
         info: contentString,
-        animation: google.maps.Animation.DROP,
-        fields: newSpot.name + " " + newSpot.description + " " + newSpot.category,
+        animation: animation,
+        fields: spot.name + " " + spot.description + " " + spot.category,
         getId: function() {
           return this.id;
         },
@@ -68,20 +73,20 @@ var MapView = React.createClass({
         },
         getFields: function() {
           return this.fields;
+        },
+        getInfoWindow: function() {
+          return this.infoWindow;
         }
       });
 
-      var infoWindow = new google.maps.InfoWindow({
-        maxWidth: 250,
-        content: contentString
-      })
-
         // When user clicks on spot, open summary bubble, load that spot's data, and center the map on the marker.
       google.maps.event.addListener(spot, 'click', function () {
-        // context.state.selected.close();
+        if (context.state.previous) {
+          context.state.previous.close();
+        }
         infoWindow.setContent(this.info);
         infoWindow.open(context.state.map, this);
-        context.setState({selected: infoWindow});
+        context.setState({previous: this.getInfoWindow()});
         context.state.map.offsetPan(this.getPosition(), 0, -55);
       })
 
@@ -153,31 +158,33 @@ var MapView = React.createClass({
   // Loop through spot data from server.
   // Generate a map marker and summary bubble for each spot.
   initSpots: function (animate) {
+
     var context = this;
 
     for(var i = 0; i < context.state.spots.length; i++) {
 
       var spot = this.state.spots[i];
 
-      if(spot.lastId) {
+      // Skips spots where the start time is in past or if spot is tracker
+      if (spot.lastId || Date.now() > Number(spot.start)) {
         continue;
-      }
-
-      // skips spots where the start time is in past
-      if (Date.now() > Number(spot.start)) continue;
-
+      };
 
       var contentString = '<div style="font-size: 12px"><strong>' + spot.name + '</strong></div>' +
-                          // '<img style="float: right; padding-top: 15px" src="/img/map/silhouette.png">' +
                           '<div style="font-size: 11px;"><small>' + spot.creator + '</small></div>' +
                           '<div style="font-size: 11px; padding-top: 2px">' + spot.category + '</div>' +
-                          '<div><small><small>' + timeController.msToTime(spot.start) + '</small></small></div>';
-
-      contentString += '<div><small><small><a href="#/spot/' + spot.spotId +'">More Details</a></small></small></div>';
+                          '<div><small><small>' + timeController.msToTime(spot.start) + '</small></small></div>' +
+                          '<div><small><small><a href="#/spot/' + spot.spotId +'">More Details</a></small></small></div>';
 
       var icon = {
         url: '../img/map/pin_test.png'
       }
+
+      // Define summary bubble for each spot.
+      var infoWindow = new google.maps.InfoWindow({
+        maxWidth: 250,
+        content: contentString
+      });
 
       var animation;
 
@@ -189,6 +196,7 @@ var MapView = React.createClass({
 
       // Create a new map marker for each spot.
       var spot = new google.maps.Marker({
+        infoWindow: infoWindow,
         icon: icon,
         position: new google.maps.LatLng(spot.location.latitude, spot.location.longitude),
         map: context.state.map,
@@ -204,26 +212,25 @@ var MapView = React.createClass({
         },
         getFields: function() {
           return this.fields;
+        },
+        getInfoWindow: function() {
+          return this.infoWindow;
         }
       });
 
-      // Define summary bubble for each spot.
-      var infoWindow = new google.maps.InfoWindow({
-        maxWidth: 250,
-        content: contentString
-      })
-
-      var array = this.state.markers;
-      array.push(spot);
-
-      this.setState({markers: array});
+      // Update markers in component's state
+      var cache = this.state.markers;
+      cache.push(spot);
+      this.setState({markers: cache});
 
       // When user clicks on spot, open summary bubble, load that spot's data, and center the map on the marker.
       google.maps.event.addListener(spot, 'click', function () {
-        // context.state.selected.close();
+        if (context.state.previous) {
+          context.state.previous.close();
+        }
         infoWindow.setContent(this.info);
         infoWindow.open(context.state.map, this);
-        context.setState({selected: infoWindow});
+        context.setState({previous: this.getInfoWindow()});
         context.state.map.offsetPan(this.getPosition(), 0, -55);
       })
     }
