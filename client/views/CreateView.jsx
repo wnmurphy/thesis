@@ -107,9 +107,13 @@ var CreateView = React.createClass({
 
   sendSpot: function (event) {
     event.preventDefault();
-    var context = this;
     console.log('this state', this.state);
-    var newSpot = {
+    var context = this;
+    $.ajax({
+      method: 'POST',
+      url: '/api/create',
+      dataType: 'json',
+      data: {
         name: context.state.name,
         category: context.state.category,
         location: context.state.location,
@@ -117,16 +121,11 @@ var CreateView = React.createClass({
         description: context.state.description,
         start: timeController.timeToMS(context.state.start),
         end: timeController.timeToMS(context.state.end)
-    };
-    $.ajax({
-      method: 'POST',
-      url: '/api/create',
-      dataType: 'json',
-      data: newSpot,
+      },
       success: function (data) {
         globalState.createState = undefined;
-        console.log("CreateView hope:", data);
-        socket.emit('newSpot', newSpot);
+        console.log("SUCCESS :", data);
+        socket.emit('newSpot', data);
         window.location = '/#/';
       },
       error: function (error) {
