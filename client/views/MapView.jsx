@@ -128,13 +128,6 @@ var MapView = React.createClass({
 
     var context = this;
 
-    // Hide all previous markers.
-    // this.state.markers.forEach(function(marker) {
-    //   marker.setVisible(false);
-    // })
-
-    // this.setState({markers: []});
-
     this.setState({refreshingClass: " spin"});
     $.ajax({
       method: 'GET',
@@ -146,6 +139,9 @@ var MapView = React.createClass({
         globalState.spots = data;
         context.setState({spots: data});
         context.setState({refreshingClass: ""});
+        if(!animate) {
+          context.checkMarkers();
+        }
         context.initSpots(animate);
 
       },
@@ -155,6 +151,24 @@ var MapView = React.createClass({
       }
     })
   },
+  checkMarkers: function() {
+    var context = this;
+    //Hide previous markers if in new data set.
+    this.state.markers.forEach(function(marker) {
+      console.log(marker)
+      var match = false;
+      for(var i = 0; i < context.state.spots.length; i++) {
+        if(context.state.spots[i].spotId === marker.getId()) {
+          match = true;
+        }
+      }
+      if (!match) {
+        marker.setVisible(false);
+        delete marker;
+      }
+    })
+
+  },
 
   // Loop through spot data from server.
   // Generate a map marker and summary bubble for each spot.
@@ -162,18 +176,18 @@ var MapView = React.createClass({
     var context = this;
 
     for(var i = 0; i < context.state.spots.length; i++) {
-      var found = false;
-      var newData = context.state.spots[i].spotId;
-      for(var j = 0; j < context.state.markers.length; j++) {
-        var oldData = context.state.markers[j].getId();
-        if(oldData.toString() === newData.toString()) {
-          found = true;
-        }
-      }
+      // var found = false;
+      // var newData = context.state.spots[i].spotId;
+      // for(var j = 0; j < context.state.markers.length; j++) {
+      //   var oldData = context.state.markers[j].getId();
+      //   if(oldData.toString() === newData.toString()) {
+      //     found = true;
+      //   }
+      // }
 
       var spot = this.state.spots[i];
 
-      if(spot.lastId || found) {
+      if(spot.lastId) {
         continue;
       }
 
