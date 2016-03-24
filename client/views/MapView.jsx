@@ -36,8 +36,11 @@ var MapView = React.createClass({
 
     var context = this;
 
-    // Listen for spots created by other users and refresh map.
-    // socket.on('spotAdded', this.getSpots);
+    // Listen for spots created by other users and create new map marker on spotDrop.
+    socket.on('spotDrop', function(spot){
+      console.log(spot); //create marker eventually
+      // context.getSpots;
+    });
 
 
     // Check whether location has been set globally.
