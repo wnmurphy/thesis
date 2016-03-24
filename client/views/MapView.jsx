@@ -36,65 +36,10 @@ var MapView = React.createClass({
 
     var context = this;
 
-
-    var icon = {
-      url: '../img/map/pin_test.png'
-    }
     // Listen for spots created by other users and create new map marker on spotDrop.
     socket.on('spotDrop', function (newSpot) {
-
-      var contentString = '<div style="font-size: 12px"><strong>' + newSpot.name + '</strong></div>' +
-                          '<div style="font-size: 11px;"><small>' + newSpot.creator + '</small></div>' +
-                          '<div style="font-size: 11px; padding-top: 2px">' + newSpot.category + '</div>' +
-                          '<div><small><small>' + timeController.msToTime(newSpot.start) + '</small></small></div>';
-
-      contentString += '<div><small><small><a href="#/spot/' + newSpot.spotId +'">More Details</a></small></small></div>';
-
-      var infoWindow = new google.maps.InfoWindow({
-        maxWidth: 250,
-        content: contentString
-      })
-      
-      // Create spot object for incoming spot.
-      var spot = new google.maps.Marker({
-        infoWindow: infoWindow,
-        icon: icon,
-        position: new google.maps.LatLng(spot.location.latitude, spot.location.longitude),
-        map: context.state.map,
-        id: spot.spotId,
-        info: contentString,
-        animation: animation,
-        fields: spot.name + " " + spot.description + " " + spot.category,
-        getId: function() {
-          return this.id;
-        },
-        getPosition: function() {
-          return this.position;
-        },
-        getFields: function() {
-          return this.fields;
-        },
-        getInfoWindow: function() {
-          return this.infoWindow;
-        }
-      });
-
-        // When user clicks on spot, open summary bubble, load that spot's data, and center the map on the marker.
-      google.maps.event.addListener(spot, 'click', function () {
-        if (context.state.previous) {
-          context.state.previous.close();
-        }
-        infoWindow.setContent(this.info);
-        infoWindow.open(context.state.map, this);
-        context.setState({previous: this.getInfoWindow()});
-        context.state.map.offsetPan(this.getPosition(), 0, -55);
-      })
-
-      var array = context.state.markers;
-      array.push(spot);
-      context.setState({markers: array})
+      createMarker(newSpot, true, context);
     });
-
 
     // Check whether location has been set globally.
     // If not, get location and initialize map with nearby spots.
@@ -158,81 +103,15 @@ var MapView = React.createClass({
   // Loop through spot data from server.
   // Generate a map marker and summary bubble for each spot.
   initSpots: function (animate) {
-
     var context = this;
 
     for(var i = 0; i < context.state.spots.length; i++) {
-
       var spot = this.state.spots[i];
-
       // Skips spots where the start time is in past or if spot is tracker
       if (spot.lastId || Date.now() > Number(spot.start)) {
         continue;
       };
-
-      var contentString = '<div style="font-size: 12px"><strong>' + spot.name + '</strong></div>' +
-                          '<div style="font-size: 11px;"><small>' + spot.creator + '</small></div>' +
-                          '<div style="font-size: 11px; padding-top: 2px">' + spot.category + '</div>' +
-                          '<div><small><small>' + timeController.msToTime(spot.start) + '</small></small></div>' +
-                          '<div><small><small><a href="#/spot/' + spot.spotId +'">More Details</a></small></small></div>';
-
-      var icon = {
-        url: '../img/map/pin_test.png'
-      }
-
-      // Define summary bubble for each spot.
-      var infoWindow = new google.maps.InfoWindow({
-        maxWidth: 250,
-        content: contentString
-      });
-
-      var animation;
-
-      if (animate) {
-        animation = google.maps.Animation.DROP;
-      } else {
-        animation = null;
-      }
-
-      // Create a new map marker for each spot.
-      var spot = new google.maps.Marker({
-        infoWindow: infoWindow,
-        icon: icon,
-        position: new google.maps.LatLng(spot.location.latitude, spot.location.longitude),
-        map: context.state.map,
-        id: spot.spotId,
-        info: contentString,
-        animation: animation,
-        fields: spot.name + " " + spot.description + " " + spot.category,
-        getId: function() {
-          return this.id;
-        },
-        getPosition: function() {
-          return this.position;
-        },
-        getFields: function() {
-          return this.fields;
-        },
-        getInfoWindow: function() {
-          return this.infoWindow;
-        }
-      });
-
-      // Update markers in component's state
-      var cache = this.state.markers;
-      cache.push(spot);
-      this.setState({markers: cache});
-
-      // When user clicks on spot, open summary bubble, load that spot's data, and center the map on the marker.
-      google.maps.event.addListener(spot, 'click', function () {
-        if (context.state.previous) {
-          context.state.previous.close();
-        }
-        infoWindow.setContent(this.info);
-        infoWindow.open(context.state.map, this);
-        context.setState({previous: this.getInfoWindow()});
-        context.state.map.offsetPan(this.getPosition(), 0, -55);
-      })
+      createMarker(spot, animate, context);
     }
   },
 
