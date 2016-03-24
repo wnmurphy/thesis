@@ -36,18 +36,21 @@ var MapView = React.createClass({
 
     var context = this;
 
+    var icon = {
+      url: '../img/map/pin_test.png'
+    }
     // Listen for spots created by other users and create new map marker on spotDrop.
-    socket.on('spotDrop', function(spot){
+    socket.on('spotDrop', function(newSpot){
       
       // Create spot object for incoming spot.
       var spot = new google.maps.Marker({
         icon: icon,
-        position: new google.maps.LatLng(spot.location.latitude, spot.location.longitude),
+        position: new google.maps.LatLng(newSpot.location.latitude, newSpot.location.longitude),
         map: context.state.map,
-        id: spot.spotId,
-        info: contentString,
-        animation: animation,
-        fields: spot.name + " " + spot.description + " " + spot.category,
+        id: newSpot.spotId,
+        info: '<div>WORKS!</div>',
+        animation: google.maps.Animation.DROP,
+        fields: newSpot.name + " " + newSpot.description + " " + newSpot.category,
         getId: function() {
           return this.id;
         },
@@ -59,8 +62,9 @@ var MapView = React.createClass({
         }
       });
 
-      var array = this.state.markers;
+      var array = context.state.markers;
       array.push(spot);
+      context.setState({markers: array})
     });
 
 
@@ -115,6 +119,7 @@ var MapView = React.createClass({
       dataType: 'json',
       data: {"location": context.state.center},
       success: function (data) {
+        console.log("GET SPOTS DATA: ", data);
         globalState.spots = data;
         context.setState({spots: data});
         context.setState({refreshingClass: ""});
@@ -154,7 +159,7 @@ var MapView = React.createClass({
       contentString += '<div><small><small><a href="#/spot/' + spot.spotId +'">More Details</a></small></small></div>';
 
       var icon = {
-        url: '/img/map/pin_test.png'
+        url: '../img/map/pin_test.png'
       }
 
       var animation;
