@@ -27,7 +27,11 @@ var SearchView = React.createClass({
       },
       success: function (data) {
         console.log("SUCCESS: ", data);
-        context.setState({results: data});
+        if (data.length === 0) {
+          context.setState({results: data, message: 'No Query Found'});
+        } else {
+          context.setState({results: data, message: null});
+        }
       },
       error: function (error) {
         console.log(error);
@@ -49,6 +53,7 @@ var SearchView = React.createClass({
     // Create a div for each search result returned from handleSubmit AJAX call.
     // Apply different styles depending on whether search result is a user or a spot.
     var results = this.state.results.map(function(result) {
+
       if(result.email) {
           return (
             <div className="search-result">
@@ -72,10 +77,10 @@ var SearchView = React.createClass({
               </div>
               <span className='spot-name'><a onClick={this.spotRedirect.bind(this, result.spotId)}>{result.name}</a></span>
             </div>
-            <div> @{timeController.msToTime(result.start)}</div>
+            <div> @ {timeController.msToTime(result.start)}</div>
           </div>
           );
-      }
+      } 
     }, this);
 
     return (
@@ -84,6 +89,7 @@ var SearchView = React.createClass({
           <input type="text" placeholder="Search" value={this.state.query} onChange={this.handleChange} />
           <input type="submit" value="Search" />
         </form>
+        <h2 className="search-results-container"> {this.state.message ? this.state.message : null} </h2>
         <div className="search-results-container">
           {results}
         </div>
