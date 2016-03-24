@@ -376,23 +376,37 @@ form {
   display: block;
   position: absolute;
   background-color: white;
-  width: 100%;
-  height: 100%;
   -webkit-transition: all 0.5s;
           transition: all 0.5s;
   top: 100%;
+  width: 100%;
+  height: 100%;
+
 }
 
 .chat-card-container {
   opacity: 100;
   z-index: -1;
-  
+  width: 100%;
+  height: 100%;
+
+
   &.show {
     z-index: 500;
     .chat-card {
       top: 0;
     }
   }
+}
+
+.chat-container {
+  overflow-y: scroll;
+  -webkit-overflow-scrolling: touch;
+  height: calc(100% - 180px);
+}
+
+.chat-form-container {
+  height: 150px;
 }
 
 .show-share-card {
@@ -482,22 +496,21 @@ form {
 .user-bubble {
   position:relative;
   padding:10px 20px;
-  color:white; 
+  color:white;
   background:#0B93F6;
-  border-radius: 10px 10px 0px 10px;
+  border-radius:10px 10px 0px 10px;
   float: right;
   margin: 10px;
-    
+
   &:before {
     content:"";
     position:absolute;
     z-index:-1;
     bottom:-2px;
-    right:-7px;
+    right:-10px;
     height:20px;
-    border-right:20px solid #0B93F6;
-    border-bottom-left-radius: 0px 14px;
-    -webkit-transform:translate(0, -2px);
+    width:20px;
+    background:#0B93F6;
   }
 
   &:after {
@@ -511,6 +524,7 @@ form {
     background:white;
     border-bottom-left-radius: 10px;
     -webkit-transform:translate(-30px, -2px);
+           transform:translate(-30px, -2px);
   }
 }
 
@@ -518,10 +532,10 @@ form {
   position:relative;
   padding:10px 20px;
   background:#E5E5EA;
-  border-radius:25px;
+  border-radius:10px 10px 10px 0px;
   color: black;
   float: left;
-    
+
   &:before {
     content:"";
     position:absolute;
@@ -530,7 +544,6 @@ form {
     left:-7px;
     height:20px;
     border-left:20px solid #E5E5EA;
-    border-bottom-right-radius: 16px 14px;
     -webkit-transform:translate(0, -2px);
   }
 
@@ -564,7 +577,7 @@ form {
   padding: 10px;
   -webkit-transition: all 0.25s;
     transition: all 0.25s;
- 
+
   &:hover {
     -webkit-transform: scale(1.05);
       transform: scale(1.05);
@@ -574,9 +587,9 @@ form {
 .result-time {
   float: right;
 }
- 
+
 .result-icon {
-  padding-right: 4%; 
+  padding-right: 4%;
 }
 
 .feed-saved-spot-header {
@@ -611,11 +624,11 @@ form {
   .spot-name {
     font-size: 2em;
     height: 1em;
-    margin-bottom: 5px; 
-    
+    margin-bottom: 5px;
+
     a {
       color: $secondary-color;
-      text-decoration: none; 
+      text-decoration: none;
     }
 
     a:hover {
@@ -648,6 +661,3 @@ form {
     text-decoration: underline;
   }
 }
-
-
-

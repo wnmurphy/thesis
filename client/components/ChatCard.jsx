@@ -4,7 +4,7 @@ var Chat = React.createClass({
   getInitialState: function () {
     return {
       message: "",
-      messages: []   
+      messages: []
     };
   },
   componentWillReceiveProps: function () {
@@ -28,6 +28,7 @@ var Chat = React.createClass({
     var message = {
       spotId: this.props.spotId,
       username: localStorage.getItem('username'),
+      userId: globalState.userId,
       text: this.state.message,
       timeStamp: timeStamp
     }
@@ -41,10 +42,16 @@ var Chat = React.createClass({
   },
 
   render: function () {
+    var user = localStorage.getItem('username');
 
     var messages = this.state.messages.map(function(message) {
+      if (user === message.username) {
+        var bubble = "user-bubble";
+      } else {
+        var bubble = "chat-bubble";
+      }
       return (
-        <div className="user-bubble">
+        <div className={bubble}>
           <span>{message.timeStamp}: </span><span>{message.username} - </span><span>{message.text}</span>
         </div>
       )
@@ -72,6 +79,6 @@ var Chat = React.createClass({
 
         </div>
       </div>
-    );  
+    );
   }
 });
