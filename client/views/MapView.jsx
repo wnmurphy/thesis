@@ -31,7 +31,6 @@ var MapView = React.createClass({
     };
   },
 
-  //
   componentDidMount: function() {
 
     var context = this;
@@ -48,27 +47,26 @@ var MapView = React.createClass({
       context.setState({showScreen: true})
       setTimeout(function() {
         getLocation(function(location) {
-        initMap(location, context, function(map) {
-          map.setOptions({zoomControl: true});
-          context.setState({buttonClass: "circle"});
-          context.setState({filterClass: ""});
-          context.setState({location: location});
-          context.setState({center: location});
-          context.getSpots(true);
-        });
-      }, context);
+          initMap(location, context, function(map) {
+            map.setOptions({zoomControl: true});
+            context.setState({buttonClass: "circle"});
+            context.setState({filterClass: ""});
+            context.setState({location: location});
+            context.setState({center: location});
+            context.getSpots(true);
+          });
+        }, context);
       }, welcomeScreenTimeout);
     } else {
-        context.setState({showScreen: false})
-        initMap(globalState.location, context, function(map) {
-          map.setOptions({zoomControl: true});
-          context.setState({buttonClass: "circle"});
-          context.setState({filterClass: ""});
-          console.log('globalState location', globalState.location);
-          context.setState({center: globalState.location}, function() {
-            context.getSpots();
-          });
+      context.setState({showScreen: false})
+      initMap(globalState.location, context, function(map) {
+        map.setOptions({zoomControl: true});
+        context.setState({buttonClass: "circle"});
+        context.setState({filterClass: ""});
+        context.setState({center: globalState.location}, function() {
+          context.getSpots();
         });
+      });
     }
   },
 
@@ -85,7 +83,6 @@ var MapView = React.createClass({
       dataType: 'json',
       data: {"location": context.state.center},
       success: function (data) {
-        console.log("GET SPOTS DATA: ", data);
         globalState.spots = data;
         context.setState({spots: data});
         context.setState({refreshingClass: ""});
@@ -94,7 +91,6 @@ var MapView = React.createClass({
         })
       },
       error: function (error) {
-        console.log("ERROR: ", error);
         context.setState({refreshingClass: ""});
       }
     })
