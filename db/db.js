@@ -1,4 +1,5 @@
 var aws = require('aws-sdk');
+var helpers = require('../server/helpers.js');
 
 aws.config.update({
   accessKeyId: "fakeAccessKey",
@@ -43,53 +44,57 @@ db.createTable(userTableParams, function (err, data) {
     console.error("Unable to create table. Error JSON:", JSON.stringify(err, null, 2));
   } else {
     console.log("Created table. Table description JSON:", JSON.stringify(data, null, 2));
+    var userParams = {
+      TableName: "Users",
+      Item: {
+        userId: 0,
+        lastId: 0
+      }
+    };
+
+    dbSchema.put(userParams, function(err, data) {
+      if (err) {
+        console.error('Users: on item put', err);
+      }
+      else {
+        console.log('data', data);
+      }
+    });
   }
 });
 
 db.createTable(spotTableParams, function (err, data) {
   if (err) {
     console.error("Unable to create table. Error JSON:", JSON.stringify(err, null, 2));
+    console.log("HERE: ", helpers);
+    helpers.spotCleaner();
   } else {
     console.log("Created table. Table description JSON:", JSON.stringify(data, null, 2));
+    var spotParams = {
+      TableName: "Spots",
+      Item: {
+        spotId: 0,
+        lastId: 0
+      }
+    };
+
+    dbSchema.put(spotParams, function(err, data) {
+      if (err) {
+        console.error('on item put', err);
+        helpers.spotCleaner();
+      }
+      else {
+        console.log('data', data);
+        helpers.spotCleaner();
+      }
+    });
   }
 });
 
-  var params = {
-    TableName: "Users",
-    Item: {
-      userId: 0,
-      lastId: 0
-    },
-    ConditionExpression: 'attribute_not_exists(userId)'
-  };
-
-  dbSchema.put(params, function(err, data) {
-    if (err) {
-      console.error('Users: on item put', err);
-    }
-    else {
-      console.log('data', data);
-    }
-  });
+  
 
 
-  params = {
-    TableName: "Spots",
-    Item: {
-      spotId: 0,
-      lastId: 0
-    },
-    ConditionExpression: 'attribute_not_exists(spotId)'
-  };
-
-  dbSchema.put(params, function(err, data) {
-    if (err) {
-      console.error('on item put', err);
-    }
-    else {
-      console.log('data', data);
-    }
-  });
+  
 
 
 db.listTables(function(err, data) {

@@ -9,11 +9,11 @@ var dbSchema = new aws.DynamoDB.DocumentClient();
 var serverURI = 'http://localhost:' + (process.env.PORT || 8080);
 
 aws.config.update({
-      accessKeyId: "fakeAccessKey",
-      secretAccessKey: "fakeSecretAccessKey",
-      region: "fakeRegion",
-      endpoint: new aws.Endpoint('http://localhost:8000')
-    });
+  accessKeyId: "fakeAccessKey",
+  secretAccessKey: "fakeSecretAccessKey",
+  region: "fakeRegion",
+  endpoint: new aws.Endpoint('http://localhost:8000')
+});
 
 describe("Persistent Spot and User Server", function() {
   beforeEach(function(done) {
