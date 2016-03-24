@@ -54,6 +54,7 @@ var SpotView = React.createClass({
           description: context.state.spot.description
         });
         context.setState({loading: false});
+        context.setState({creatorId: "/#/profile/" + data.creatorId});
         initMap(data.location, context, function(map, position, marker) {
           map.setOptions({zoomControl: false});
           marker.setIcon('/img/map/pin_test.png');
@@ -113,7 +114,7 @@ var SpotView = React.createClass({
             <span className='spot-name'>{this.state.spot.name}</span>
           </div>
           <h3>@{timeController.msToTime(this.state.spot.start)}</h3>
-          <h4>created by: {this.state.spot.creator}</h4>
+          <h4>created by: <a href={this.state.creatorId}>{this.state.spot.creator}</a></h4>
           <p>description: {this.state.spot.description}</p>
           <p>address: {this.state.spot.address}</p>
           <input type="button" value="show chat" onClick={this.toggleChat} />
