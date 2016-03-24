@@ -139,9 +139,6 @@ var MapView = React.createClass({
         globalState.spots = data;
         context.setState({spots: data});
         context.setState({refreshingClass: ""});
-        if(!animate) {
-          context.checkMarkers();
-        }
         context.initSpots(animate);
 
       },
@@ -151,30 +148,29 @@ var MapView = React.createClass({
       }
     })
   },
-  checkMarkers: function() {
-    var context = this;
-    var count = 0;
-    //Hide previous markers if in new data set.
-    this.state.markers.forEach(function(marker, index, object) {
-      console.log(count++)
-      var match = false;
-      for(var i = 0; i < context.state.spots.length; i++) {
-        if(context.state.spots[i].spotId === marker.getId()) {
-          match = true;
-        }
-      }
-      if (!match) {
-        marker.setVisible(false);
-        delete context.state.markers[index];
-      }
-    })
-
-  },
 
   // Loop through spot data from server.
   // Generate a map marker and summary bubble for each spot.
   initSpots: function (animate) {
     var context = this;
+
+    this.state.markers.forEach(function(marker, index, object) {
+      var match = false;
+      for(var i = 0; i < context.state.spots.length; i++) {
+        if(context.state.spots[i].spotId.toString() === marker.getId().toString()) {
+          var cache = context.state.spots;
+          cache.splice(context.state.spots[i], 1);
+          context.setState({spots: cache})
+          match = true;
+        }
+      }
+      if (!match) {
+        marker.setVisible(false);
+        var cache = context.state.markers;
+        cache.splice(context.state.markers[index], 1);
+        context.setState({markers: cache})
+      }
+    })
 
     for(var i = 0; i < context.state.spots.length; i++) {
 
