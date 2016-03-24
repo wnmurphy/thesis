@@ -35,6 +35,16 @@ var timeController = {
 
   msToTime: function (ms) {
     if (typeof ms === "string") ms = Number(ms);
-    return (new Date(ms)).toLocaleTimeString();
+    var date = new Date(ms);
+    var output = [date.getHours()]
+    if (date.getMinutes()) output.push(':' + ('0' + date.getMinutes()).slice(-2));
+    if (output[0] < 12) {
+      output.push(' AM');
+    } else {
+      output.push(' PM');
+    }
+    if (output[0] > 12) output[0] -= 12;
+    if (output[0] === 0) output[0] = 12;
+    return output.join('');
   }
 }
