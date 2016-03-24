@@ -49,6 +49,10 @@ var SpotView = React.createClass({
         console.log("data: ", data);
         context.setState({spot: data});
         console.log("SUCCESS: ", context.state.spot);
+        MetaController.setOGP({
+          title: context.state.spot.name,
+          description: context.state.spot.description
+        });
         context.setState({loading: false});
         initMap(data.location, context, function(map, position, marker) {
           map.setOptions({zoomControl: false});
