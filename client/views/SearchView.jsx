@@ -28,7 +28,7 @@ var SearchView = React.createClass({
       success: function (data) {
         console.log("SUCCESS: ", data);
         if (data.length === 0) {
-          context.setState({results: data, message: 'No Query Found'});
+          context.setState({results: data, message: 'No Search Found'});
         } else {
           context.setState({results: data, message: null});
         }
