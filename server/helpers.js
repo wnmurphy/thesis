@@ -44,12 +44,14 @@ module.exports = {
               Item: {
                 "spotId": spot.spotId,
                 "name": spot.name,
+                "name_lc": spot.name.toLowerCase(),
                 "creator": spot.creator,
                 "creatorId": spot.creatorId,
                 "category": spot.category,
                 "location": spot.location,
                 "address": spot.address,
                 "description": spot.description,
+                "description_lc": spot.description.toLowerCase(),
                 "start": spot.start,
                 "end": spot.end,
                 "messages": []
@@ -81,7 +83,7 @@ module.exports = {
     //search is a string
     //username, user email
     //name, creator, description
-
+    console.log('search', search);
     // Make incoming search string lowercase to make search case-insensitive.
     search = search.toLowerCase();
 
@@ -112,9 +114,9 @@ module.exports = {
           TableName: 'Spots',
           FilterExpression: "contains (#name, :search) OR contains (#creator, :search) OR contains (#description, :search)",
           ExpressionAttributeNames:{
-            "#name": "name",
+            "#name": "name_lc",
             "#creator": "creator",
-            "#description": "description"
+            "#description": "description_lc"
           },
           ExpressionAttributeValues: {
             ":search": search

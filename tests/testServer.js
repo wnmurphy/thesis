@@ -26,6 +26,7 @@ describe("Persistent Spot and User Server", function() {
         category: 'entertainment',
         location: 'Arizona',
         description: 'test createSpot',
+        description_lc: 'test createSpot',
         start: '10'
       }
     };
@@ -221,6 +222,7 @@ describe("Persistent Spot and User Server", function() {
         category: 'entertainment',
         location: 'Montana',
         description: 'test createSpot',
+        description_lc: 'test createSpot',
         start: '10'
       }
     }, function(err, res, body){
