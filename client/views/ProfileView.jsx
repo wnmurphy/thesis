@@ -60,6 +60,7 @@ var ProfileView = React.createClass({
   },
 
   followUser: function() {
+    console.log('1');
     FollowController.followUser(this.state.userId, function (data) {
       console.log(data);
     }, function (err) {
@@ -101,7 +102,7 @@ var ProfileView = React.createClass({
             <div className="profile-name">
               <h1>{this.state.username}</h1>
             </div>
-            <button className="follow-button" onClick={this.followUser()}>Follow {this.state.username}</button>
+            <button className="follow-button" onClick={this.followUser}>Follow {this.state.username}</button>
           </div>
         </div>
         <h3 className="profile-bio">{this.state.bio}</h3>

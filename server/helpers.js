@@ -588,27 +588,39 @@ module.exports = {
       //should only find 1 user
       } else if (user.Count === 1) {
         //if user has not already followed that user
-        if (user.Items[0].following.indexOf(followUser) === -1) {
-          params = {
-            TableName: 'Users',
-            Key: { userId: user.Items[0].userId },
-            UpdateExpression: 'SET following = list_append(following, :followUser)',
-            ExpressionAttributeValues: {
-              ':followUser': [followUser]
-            }
-          };
-          //update user's 'following' array to include this new user
-          dbSchema.update(params, function(err, data) {
-            if (err) {
-              console.error(err);
-              fail('error following user');
-            } else {
-              success('successfully followed user');
-            }
-          });
-        } else {
-          fail('user has already followed this user');
-        }
+        var params = {
+          TableName: "Users",
+          FilterExpression: "#userId = (:userId)",
+          ExpressionAttributeNames: {
+            "#userId": "userId"
+          },
+          ExpressionAttributeValues: {
+            ":userId": parseInt(followUser)
+          }
+        };
+        dbSchema.scan(params, function (err, follow) {
+          if (user.Items[0].following.indexOf(follow) === -1) {
+            params = {
+              TableName: 'Users',
+              Key: { userId: user.Items[0].userId },
+              UpdateExpression: 'SET following = list_append(following, :followUser)',
+              ExpressionAttributeValues: {
+                ':followUser': [followUser, follow]
+              }
+            };
+            //update user's 'following' array to include this new user
+            dbSchema.update(params, function(err, data) {
+              if (err) {
+                console.error(err);
+                fail('error following user');
+              } else {
+                success('successfully followed user');
+              }
+            });
+          } else {
+            fail('user has already followed this user');
+          }
+        });
       } else {
         fail('failed to get correct user');
       }
