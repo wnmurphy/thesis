@@ -26,13 +26,13 @@ var ProfileView = React.createClass({
           title: profile.username + ' on irl',
           description: profile.bio,
           image: profile.img,
-          url: 'http://www.irl.com/#/profile/' + profile.userId
+          url: 'http://app.irl.events/#/profile/' + profile.userId
         });
       }
       context.setState({shareProps: {
-                          contents: 'Check out ' + profile.username + ' on this irl! www.irl.com/#/profile/' + profile.userId,
+                          contents: 'Check out ' + profile.username + ' on irl! app.irl.events/#/profile/' + profile.userId,
                           subject: 'Check out ' + profile.username,
-                          url: 'www.irl.com/#/profile/' + context.state.userId
+                          url: 'app.irl.events/#/profile/' + context.state.userId
                         }});
     }, function (message) {console.log(message)});
   },
