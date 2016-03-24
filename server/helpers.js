@@ -1,9 +1,13 @@
 var aws = require('aws-sdk');
-var db = require('../db/db.js');
 var bcrypt = require('bcrypt-nodejs');
 var jwt = require('jsonwebtoken');
 
-
+aws.config.update({
+  accessKeyId: "fakeAccessKey",
+  secretAccessKey: "fakeSecretAccessKey",
+  region: "fakeRegion",
+  endpoint: new aws.Endpoint('http://localhost:8000')
+});
 var dbSchema = new aws.DynamoDB.DocumentClient();
 
 var secret = process.env.secret || "dummySecretToKeepOurRealSecretActuallyASecret";

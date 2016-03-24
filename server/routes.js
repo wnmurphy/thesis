@@ -1,4 +1,3 @@
-var db = require('../db/db.js');
 var helpers = require('./helpers.js');
 
 module.exports = function(app, express, io) {
