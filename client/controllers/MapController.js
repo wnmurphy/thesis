@@ -1,4 +1,4 @@
-// Array containing style configuration for Google Maps.
+// Array containing style configuration for Google Map.
 var style = [
   {
     "featureType": "administrative",
@@ -182,6 +182,7 @@ var style = [
 // Takes current user location, component as context to render within, and callback.
 var initMap = function (location, context, callback) {
 
+  // Create a Google maps LatLng object on location parameter.
   var position = new google.maps.LatLng(location.latitude, location.longitude);
 
   // Create a new map and append to #map element.
@@ -230,7 +231,7 @@ var initMap = function (location, context, callback) {
   }
 
   // Define marker for user location.
-  // (i.e., 'You are here.')
+  // (i.e. 'You are here.')
   var marker = new google.maps.Marker({
     icon: icon,
     position: position,
@@ -240,6 +241,7 @@ var initMap = function (location, context, callback) {
     }
   });
 
+  // Set component's state for position, map and marker.
   context.setState({position: position});
   context.setState({map: map});
   context.setState({marker: marker});
@@ -247,4 +249,98 @@ var initMap = function (location, context, callback) {
   callback(map, position, marker);
 }
 
+// Loop through spot data from server.
+// Generate a map marker and summary bubble for each spot.
+var initSpots = function (animate, context) {
+  var context = this;
 
+  for(var i = 0; i < context.state.spots.length; i++) {
+
+    var spot = this.state.spots[i];
+
+    // skips spots where the start time is in past
+    if (spot.lastId || Date.now() > Number(spot.start)) {
+      continue;
+    }
+
+    var contentString = '<div style="font-size: 12px"><strong>' + spot.name + '</strong></div>' +
+                        '<div style="font-size: 11px;"><small>' + spot.creator + '</small></div>' +
+                        '<div style="font-size: 11px; padding-top: 2px">' + spot.category + '</div>' +
+                        '<div><small><small>' + timeController.msToTime(spot.start) + '</small></small></div>';
+
+    contentString += '<div><small><small><a href="#/spot/' + spot.spotId +'">More Details</a></small></small></div>';
+
+    var icon = {
+      url: '../img/map/pin_test.png'
+    }
+
+    var animation;
+
+    if (animate) {
+      animation = google.maps.Animation.DROP;
+    } else {
+      animation = null;
+    }
+
+    // Create a new map marker for each spot.
+    var spot = new google.maps.Marker({
+      icon: icon,
+      position: new google.maps.LatLng(spot.location.latitude, spot.location.longitude),
+      map: context.state.map,
+      id: spot.spotId,
+      info: contentString,
+      animation: animation,
+      fields: spot.name + " " + spot.description + " " + spot.category,
+      getId: function() {
+        return this.id;
+      },
+      getPosition: function() {
+        return this.position;
+      },
+      getFields: function() {
+        return this.fields;
+      }
+    });
+
+    // Define summary bubble for each spot.
+    var infoWindow = new google.maps.InfoWindow({
+      maxWidth: 250,
+      content: contentString
+    })
+
+    var array = this.state.markers;
+    array.push(spot);
+
+    this.setState({markers: array});
+
+    // When user clicks on spot, open summary bubble, load that spot's data, and center the map on the marker.
+    google.maps.event.addListener(spot, 'click', function () {
+      // context.state.selected.close();
+      infoWindow.setContent(this.info);
+      infoWindow.open(context.state.map, this);
+      context.setState({selected: infoWindow});
+      context.state.map.offsetPan(this.getPosition(), 0, -55);
+    })
+  }
+}
+
+var sweepMarkers = function(context, callback) {
+  context.state.markers.forEach(function(marker, index, object) {
+    var match = false;
+    for(var i = 0; i < context.state.spots.length; i++) {
+      if(context.state.spots[i].spotId.toString() === marker.getId().toString()) {
+        var cache = context.state.spots;
+        cache.splice(context.state.spots[i], 1);
+        context.setState({spots: cache})
+        match = true;
+      }
+    }
+    if (!match) {
+      marker.setVisible(false);
+      var cache = context.state.markers;
+      cache.splice(context.state.markers[index], 1);
+      context.setState({markers: cache})
+    }
+  })
+  callback();
+}
