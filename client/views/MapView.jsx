@@ -177,15 +177,6 @@ var MapView = React.createClass({
     var context = this;
 
     for(var i = 0; i < context.state.spots.length; i++) {
-    //   var found = false;
-    //   var newData = context.state.spots[i].spotId;
-    //   for(var j = 0; j < context.state.markers.length; j++) {
-    //     var oldData = context.state.markers[j].getId();
-    //     if(oldData.toString() === newData.toString()) {
-    //       delete context.state.markers[j];
-    //       found = true;
-    //     }
-    //   }
 
       var spot = this.state.spots[i];
 
