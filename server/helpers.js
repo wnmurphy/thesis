@@ -56,7 +56,7 @@ module.exports = {
                 },
               };
 
-              var spot = params.item;
+              var newSpot = params.Item;
 
               dbSchema.put(params, function(err, data) {
                 if (err) {
@@ -64,7 +64,7 @@ module.exports = {
                   fail(err);
                 }
                 else {
-                  success(spot);
+                  success(newSpot);
                 }
               });
             }
