@@ -222,7 +222,7 @@ var initMap = function (location, context, callback) {
       latitude: this.center.lat(),
       longitude: this.center.lng()
     }
-    context.setState({center: center});
+    context.setState({selected: center});
     context.getSpots();
   });
 
@@ -321,6 +321,12 @@ var createMarker = function(spot, animate, context) {
     context.setState({selected: this.getPosition()});
     context.state.map.offsetPan(this.getPosition(), 0, -55);
   })
+
+  // When a user clicks to close the info window, set the selected state to be center of the map.
+  google.maps.event.addListener(infoWindow,'closeclick', function () {
+    var center = context.state.map.getCenter();
+    context.setState({selected: center});
+  });
 }
 
 var sweepMarkers = function(context, callback) {
