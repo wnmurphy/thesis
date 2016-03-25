@@ -263,7 +263,7 @@ var initMap = function (location, context, callback) {
   context.setState({map: map});
   context.setState({marker: marker});
 
-  callback(map, position, marker);
+  callback(map, position, marker, location);
 }
 
 // Loop through spot data from server.
@@ -405,8 +405,11 @@ var placeMarker = function(context, query, infoWindow, map, name) {
   if (name) {
     query.name = name;
   }
-
+  
+  context.state.marker.setIcon('/img/map/pin_test.png');
+  
   infoWindow.setContent('<div><strong>' + query.name + '</strong><br>' + street + '<br>' + locality + '</div>');
 
   infoWindow.open(map, context.state.marker);
+
 }
