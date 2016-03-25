@@ -12,7 +12,7 @@ var style = [
     "featureType": "administrative.province",
     "elementType": "geometry.stroke",
     "stylers": [
-      { "visibility": "off" }
+      { "visibility": "on" }
     ]
   },
 
@@ -40,7 +40,7 @@ var style = [
     "featureType": "landscape.natural.terrain",
     "elementType": "all",
     "stylers": [
-      { "visibility": "off" }
+      { "visibility": "on" }
     ]
   },
 
@@ -48,7 +48,7 @@ var style = [
     "featureType": "poi",
     "elementType": "all",
     "stylers": [
-      { "visibility": "off" }
+      { "visibility": "on" }
     ]
   },
 
@@ -181,7 +181,14 @@ var style = [
 // Create a Google Map element.
 // Takes current user location, component as context to render within, and callback.
 var initMap = function (location, context, callback) {
-
+  // Redfine the set method to hide POI elements
+  var set = google.maps.InfoWindow.prototype.set;
+  google.maps.InfoWindow.prototype.set = function (key) {
+    if (key === 'map' && !this.get('allow')) {
+      return;
+    }
+    set.apply(this, arguments);
+  }
   // Create a Google maps LatLng object on location parameter.
   var position = new google.maps.LatLng(location.latitude, location.longitude);
 
@@ -249,6 +256,7 @@ var initMap = function (location, context, callback) {
   });
 
   // Set component's state for position, map and marker.
+  context.setState({selected: position});
   context.setState({position: position});
   context.setState({map: map});
   context.setState({marker: marker});
@@ -272,6 +280,7 @@ var createMarker = function(spot, animate, context) {
 
   // Define summary bubble for each spot.
   var infoWindow = new google.maps.InfoWindow({
+    allow: true,
     maxWidth: 250,
     content: contentString
   });
