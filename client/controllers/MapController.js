@@ -224,11 +224,15 @@ var initMap = function (location, context, callback) {
     }
     context.setState({center: center});
     context.getSpots();
-  })
+  });
+
+  google.maps.event.addListener(map, 'zoom_changed', function(event) {
+    map.panTo(context.state.selected);
+  });
 
   var icon = {
     url: '/img/map/you_test.png'
-  }
+  };
 
   // Define marker for user location.
   // (i.e. 'You are here.')
@@ -261,7 +265,7 @@ var createMarker = function(spot, animate, context) {
 
   var icon = {
     url: '../img/map/pin_test.png'
-  }
+  };
 
   // Define summary bubble for each spot.
   var infoWindow = new google.maps.InfoWindow({
@@ -275,7 +279,7 @@ var createMarker = function(spot, animate, context) {
     animation = google.maps.Animation.DROP;
   } else {
     animation = null;
-  }
+  };
 
   // Create a new map marker for each spot.
   var spot = new google.maps.Marker({
@@ -314,6 +318,7 @@ var createMarker = function(spot, animate, context) {
     infoWindow.setContent(this.info);
     infoWindow.open(context.state.map, this);
     context.setState({previous: this.getInfoWindow()});
+    context.setState({selected: this.getPosition()});
     context.state.map.offsetPan(this.getPosition(), 0, -55);
   })
 }
@@ -328,13 +333,13 @@ var sweepMarkers = function(context, callback) {
         context.setState({spots: cache})
         match = true;
       }
-    }
+    };
     if (!match) {
       marker.setVisible(false);
       var cache = context.state.markers;
       cache.splice(context.state.markers[index], 1);
       context.setState({markers: cache})
-    }
-  })
+    };
+  });
   callback();
 }

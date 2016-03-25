@@ -15,7 +15,7 @@ var MapView = React.createClass({
       filterSearchClass: "filter-search",
       refreshButtonContainer: "refresh-button-container",
       centerButtonContainer: "center-button-container"
-    }
+    };
   },
 
   getInitialState: function () {
@@ -67,7 +67,7 @@ var MapView = React.createClass({
           context.getSpots();
         });
       });
-    }
+    };
   },
 
   // Make AJAX call to server to retrieve spot data near center of map.
@@ -93,7 +93,7 @@ var MapView = React.createClass({
       error: function (error) {
         context.setState({refreshingClass: ""});
       }
-    })
+    });
   },
 
   // Loop through spot data from server.
@@ -108,7 +108,7 @@ var MapView = React.createClass({
         continue;
       };
       createMarker(spot, animate, context);
-    }
+    };
   },
 
   // Center the map on the user's current GPS location.
@@ -174,7 +174,7 @@ var LoadScreen = React.createClass({
       </div>
     )
   }
-})
+});
 
 // Toggle visibility of on-screen map markers depending on user text input.
 var FilterSearch = React.createClass({
