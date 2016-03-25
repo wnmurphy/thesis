@@ -14,7 +14,8 @@ var app = express();
 var port = process.env.PORT || 8080;
 
 app.use(morgan('tiny'));
-app.use(parser());
+app.use(parser.json({limit: '50mb'}));
+app.use(parser.urlencoded({limit: '50mb', extended: true}));
 app.use('/', express.static(__dirname + '../../client'));
 
 var server = app.listen(port, function() {

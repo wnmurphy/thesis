@@ -22,11 +22,11 @@ var ProfileController = {
   },
 
   updateProfile: function (profile) {
+    console.log(profile);
     $.ajax({
       method: 'PUT',
       url: '/api/profile',
-      contentType: 'json',
-      data: JSON.stringify(profile),
+      data: profile,
       success: function (data) {
         console.log(data);
       },
