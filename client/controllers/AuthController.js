@@ -4,7 +4,6 @@ var AuthController = {
     globalState.userId = localStorage.getItem('userId');
     if (!globalState.userId) localStorage.removeItem('token');
     var token = localStorage.getItem('token');
-    console.log("Auth initialized with token:", token);
     if (token) {
       AuthController.signedIn = true;
       $.ajaxSetup({
@@ -25,7 +24,6 @@ var AuthController = {
       dataType: 'json',
       data: login,
       success: function (data) {
-        console.log("SUCCESS DATA AFTER LOGIN =============>", data);
         localStorage.setItem('token', JSON.stringify(data.token));
         localStorage.setItem('userId', data.userId);
         localStorage.setItem('username', data.username);
