@@ -1,0 +1,162 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+
+    <!-- Fixes scaling issues on iOS -->
+    <meta name = "viewport" content = "user-scalable=no, width=device-width">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="translucent">
+    <link href="/img/icons/big-icon.png" rel="icon" />
+    <link rel="apple-touch-icon" href="/img/icons/ios-icon.png">
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="irl" />
+
+    <title>irl</title>
+
+    <!-- Material icons -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+    <link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="splash.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
+    <script src="lib/babel-browser/browser.js"></script>
+    <script src="lib/react/react.js"></script>
+    <script src="lib/react/react-dom.js"></script>
+    <script src="https://npmcdn.com/react-router/umd/ReactRouter.min.js"></script>
+    <script src="https://npmcdn.com/history/umd/History.min.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?libraries=places"></script>
+    <script src="https://cdn.socket.io/socket.io-1.4.5.js"></script>
+  </head>
+
+  <body>
+    <div id="about-container">
+
+      <div id="banner">
+        <h1 id="app-name">irl</h1>
+
+        <div>
+          <img src="logo.svg" alt="irl logo" id="logo"/>
+        </div>
+
+        <h2 id="tagline">irl is an ultra-local live feed of events happening near you, today.</h2>
+
+        <h3 id="description">browse spots, create spots, share spots.</h3>
+      </div>
+
+
+      <div class="section" id="get-started">
+        <h1>Get Started</h1>
+        <a href="https://app.irl.events">Get Started.</a>
+      </div>
+
+      <div class="section" id="add-app">
+        <h1>Add irl as a mobile app</h1>
+        <h2>iOS</h2>
+        <ol>
+          <li>From <a href="http://app.irl.events">app.irl.events</a>, tap the <strong>Share</strong> button at the bottom of the screen.</li>
+          <li>Tap <strong>Add to Home Screen.</strong></li>
+          <li>Tap <strong>Add.</strong></li>
+        </ol>
+
+        <h2>Android</h2>
+        <ol>
+          <li>From <a href="app.irl.events">app.irl.events</a>, tap the <strong>Menu button.</strong></li>
+          <li>Tap <span class="strong">Add to homescreen.</span></li>
+          <li>Tap <strong>Add.</strong></li>
+        </ol>
+        </div>
+
+      <div class="section" id="team">
+        <h1>Team</h1>
+        <div class="team-member">
+          <div class="team-member-name">Josh Riesenbach</div>
+          <div class="team-member-role">Product Owner</div>
+          <div class="team-member-photo">[photo]</div>
+        </div>
+        <div class="team-member">
+          <div class="team-member-name">Michelle Thorsell</div>
+          <div class="team-member-role">Scrum Master</div>
+          <div class="team-member-photo">[photo]</div>
+        </div>
+        <div class="team-member">
+          <div class="team-member-name">Jisoo Yoon</div>
+          <div class="team-member-role">Full-Stack Developer</div>
+          <div class="team-member-photo">[photo]</div>
+        </div>
+        <div class="team-member">
+          <div class="team-member-name">Calvin Le</div>
+          <div class="team-member-role">Full-Stack Developer</div>
+          <div class="team-member-photo">[photo]</div>
+        </div>
+        <div class="team-member">
+          <div class="team-member-name">Neil Murphy</div>
+          <div class="team-member-role">Full-Stack Developer</div>
+          <div class="team-member-photo">[photo]</div>
+        </div>
+      </div>
+
+      <div class="section" id="tech">
+        <h1>Tech Stack</h1>
+        <div class="tech">
+          <div class="tech-logo">[logo]</div>
+          <div class="tech-name">React.js</div>
+        </div>
+        <div class="tech">
+          <div class="tech-logo">[logo]</div>
+          <div class="tech-name">Express.js</div>
+        </div>
+        <div class="tech">
+          <div class="tech-logo">[logo]</div>
+          <div class="tech-name">Node.js</div>
+        </div>
+        <div class="tech">
+          <div class="tech-logo">[logo]</div>
+          <div class="tech-name">Amazon Web Services</div>
+        </div>
+        <div class="tech">
+          <div class="tech-logo">[logo]</div>
+          <div class="tech-name">Amazon DynamoDB</div>
+        </div>
+        <div class="tech">
+          <div class="tech-logo">[logo]</div>
+          <div class="tech-name">Socket.io</div>
+        </div>
+        <div class="tech">
+          <div class="tech-logo">[logo]</div>
+          <div class="tech-name">Google Maps API</div>
+        </div>
+        <div class="tech">
+          <div class="tech-logo">[logo]</div>
+          <div class="tech-name">Materialize</div>
+        </div>
+        <div class="tech">
+          <div class="tech-logo">[logo]</div>
+          <div class="tech-name">SASS</div>
+        </div>
+        <div class="tech">
+          <div class="tech-logo">[logo]</div>
+          <div class="tech-name">Travis-CI</div>
+        </div>
+        <div class="tech">
+          <div class="tech-logo">[logo]</div>
+          <div class="tech-name">Mocha</div>
+        </div>
+        <div class="tech">
+          <div class="tech-logo">[logo]</div>
+          <div class="tech-name">Chai</div>
+        </div>
+        <div class="tech">
+          <div class="tech-logo">[logo]</div>
+          <div class="tech-name">PhantomJS</div>
+        </div>
+      </div>
+
+      <div class="section" id="privacy">
+        <h1>Privacy</h1>
+      </div>
+
+    </div>
+  </body>
+</html>

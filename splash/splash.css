@@ -1,0 +1,52 @@
+* {
+  font-family: 'Roboto', sans-serif;
+}
+.section {
+  padding-left: 8%;
+  padding-top: 5%;
+}
+a {
+  text-decoration: none;
+}
+.strong {
+  font-weight: 900;
+}
+.team-member {
+  margin: 2%;
+  display: inline-block;
+}
+.tech {
+  margin: 2%;
+  display: inline-block;
+}
+.logo{
+
+}
+#banner{
+  background-color: rgb(144, 213, 181);
+  margin: -20px;
+  margin-bottom: 2%;
+  padding-bottom: 20px;
+}
+#app-name {
+  font-size: 700%;
+  text-align: center;
+  padding-top: 10%;
+}
+#tagline {
+  text-align: center;
+}
+#description {
+  text-align: center;
+}
+#logo {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  height: 25%;
+  width: 25%;
+  max-height: 300px;
+  max-width: 300px;
+  min-height: 200px;
+  min-width: 200px;
+}
