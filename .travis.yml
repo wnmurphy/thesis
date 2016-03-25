@@ -22,6 +22,13 @@ before_script:
   - npm start &
   - sleep 5
 script: npm test
+env:
+  - CXX=g++-4.8
 addons:
   hosts:
     - dynamodb-local
+  apt:
+      sources:
+        - ubuntu-toolchain-r-test
+      packages:
+        - g++-4.8
