@@ -7,7 +7,9 @@
     "start": "nodemon server/server.js",
     "test": "mocha tests/testServer.js && gulp buildTest && node node_modules/mocha-phantomjs/bin/mocha-phantomjs ./tests/reactTests.html"
   },
-  "pre-commit": ["test"],
+  "pre-commit": [
+    "test"
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/MThorsell/thesis.git"
@@ -40,6 +42,7 @@
     "react": "^0.14.7",
     "react-addons-test-utils": "^0.14.7",
     "request": "^2.69.0",
+    "sharp": "^0.13.1",
     "socket.io": "^1.4.5"
   },
   "devDependencies": {
