@@ -42,8 +42,12 @@ describe("Persistent Spot and User Server", function() {
         } 
       };
       dbSchema.put(params, function(err, data) {
-        if (err) {console.error("Error creating Johnny", err);}
-        done();
+        if (err) {
+          console.error("Error creating Johnny", err);
+          setTimeout(done, 1000);
+        } else {
+          setTimeout(done, 1000);
+        }
       });
     });
   });
