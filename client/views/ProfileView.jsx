@@ -8,6 +8,10 @@ var ProfileView = React.createClass({
   },
 
   getInitialState: function () {
+    return this.updateState();
+  },
+
+  updateState: function () {
     var state = {
       userId: window.location.hash.substring(10) || globalState.userId,
       shareClass: "share-card-container",
@@ -37,15 +41,11 @@ var ProfileView = React.createClass({
     return state;
   },
 
-  componentDidMount: function () {
-
-  },
-
   post: function () {
     console.log("signIn triggered");
     this.setState({userId: globalState.userId}, function () {
       console.log("callback triggered");
-      this.componentDidMount();
+      this.setState(this.updateState());
     });
   },
 
@@ -101,6 +101,10 @@ var ProfileView = React.createClass({
 
   handleFileInput: function () {
     $('#img').click();
+  },
+
+  handleLogin: function () {
+    this.setState(this.updateState());
   },
 
   render: function() {
