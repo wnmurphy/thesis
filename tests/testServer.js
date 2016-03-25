@@ -147,7 +147,7 @@ describe("Persistent Spot and User Server", function() {
     });
   });
 
-  xit('should return a 200 when getting a spot', function(done) {
+  it('should return a 200 when getting a spot', function(done) {
     request({
       method: "GET",
       // uri: "http://localhost:8080/api/spot/999999999999"
@@ -163,7 +163,7 @@ describe("Persistent Spot and User Server", function() {
       done();
     });
   });
-  xit('should return a 200 when getting a user\'s profile', function(done) {
+  it('should return a 200 when getting a user\'s profile', function(done) {
     request({
       method: "GET",
       uri: serverURI + "/api/profile/999999999999"
@@ -196,7 +196,7 @@ describe("Persistent Spot and User Server", function() {
       done();
     });
   });
-  xit('should be able to serve the main page', function(done) {
+  it('should be able to serve the main page', function(done) {
     request({
       method: "GET",
       // uri: "http://localhost:8080/"
@@ -264,7 +264,7 @@ describe("Persistent Spot and User Server", function() {
       done();
     });
   });
-  xit('should return a 200 when signing up a user and when logging in a user', function(done) {
+  it('should return a 200 when signing up a user and when logging in a user', function(done) {
     request({
       method: "POST",
       uri: "http://localhost:8080/api/signup",
