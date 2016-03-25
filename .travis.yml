@@ -10,6 +10,7 @@ before_script:
   - node db/db.js
   - npm install -g nodemon
   - npm start &
+  - sleep 5
 script: npm test
 addons:
   hosts:
