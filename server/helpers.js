@@ -1,6 +1,7 @@
 var aws = require('aws-sdk');
 var bcrypt = require('bcrypt-nodejs');
 var jwt = require('jsonwebtoken');
+var sharp = require('sharp');
 
 aws.config.update({
   accessKeyId: "fakeAccessKey",
@@ -328,7 +329,8 @@ module.exports = {
           username: user.Items[0].username,
           bio: user.Items[0].bio || "This user has not created a bio yet.",
           spotCount: user.Items[0].spotCount || 0,
-          followerCount: user.Items[0].followerCount || 0
+          followerCount: user.Items[0].followerCount || 0,
+          img: user.Items[0].img
         });
       }
       else {
@@ -338,32 +340,61 @@ module.exports = {
   },
 
   updateProfile: function (userId, update, success, fail) {
+    var field, value;
     for (var key in update) {
-      var field = key;
-      var value = update[key];
+      field = key;
+      value = update[key];
     }
-    var params = {
-      TableName: 'Users',
-      Key: {
-        userId: Number(userId)
-      },
-      UpdateExpression: 'SET #field =(:value)',
-      ExpressionAttributeNames: {
-        '#field': field
-      },
-      ExpressionAttributeValues: { // a map of substitutions for all attribute values
-        ':value': value
-      }
-    };
+    if (field === 'img') {
+      imageResize(value, function(image) {
+        var params = {
+          TableName: 'Users',
+          Key: {
+            userId: Number(userId)
+          },
+          UpdateExpression: 'SET #field =(:value)',
+          ExpressionAttributeNames: {
+            '#field': field
+          },
+          ExpressionAttributeValues: { // a map of substitutions for all attribute values
+            ':value': image
+          }
+        };
 
-    dbSchema.update(params, function(err, data) {
-      if (err) {
-        fail()
-      } else {
-        success();
-      }
-    });
+        dbSchema.update(params, function(err, data) {
+          if (err) {
+            fail();
+          } else {
+            success();
+          }
+        });
+      }, function(err) {
+        fail(err);
+      });
+    }
+    else {
+      var params = {
+        TableName: 'Users',
+        Key: {
+          userId: Number(userId)
+        },
+        UpdateExpression: 'SET #field =(:value)',
+        ExpressionAttributeNames: {
+          '#field': field
+        },
+        ExpressionAttributeValues: { // a map of substitutions for all attribute values
+          ':value': value
+        }
+      };
 
+      dbSchema.update(params, function(err, data) {
+        if (err) {
+          fail();
+        } else {
+          success();
+        }
+      });
+    }
   },
 
   getSpot: function(id, success, fail) {
@@ -760,4 +791,23 @@ var compare = bcrypt.compare;
 
 var tokenizer = function (user) {
   return jwt.sign(user, secret, { expiresInMinutes: 525600 });
+};
+
+var imageResize = function(image, success, fail) {
+
+  image = image.split(',')[1];
+  image = new Buffer(image, 'base64');
+
+  sharp(image)
+  .resize(300, 300)
+  .background({r: 230, g: 230, b: 230, a: 1})
+  .flatten()
+  .jpeg()
+  .toBuffer(function(err, buffer, info) {
+    if (err) {
+      fail(err);
+    } else {
+      success('data:image/jpeg;base64,' + buffer.toString('base64'));
+    }
+  });
 };
