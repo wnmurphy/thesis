@@ -222,12 +222,15 @@ var initMap = function (location, context, callback) {
       latitude: this.center.lat(),
       longitude: this.center.lng()
     }
-    context.setState({selected: center});
+    context.setState({center: center});
+    context.setState({selected: false});
     context.getSpots();
   });
 
   google.maps.event.addListener(map, 'zoom_changed', function(event) {
-    map.panTo(context.state.selected);
+    if (context.state.selected) {
+      map.offsetPan(context.state.selected, 0, -50);
+    }
   });
 
   var icon = {
