@@ -18,17 +18,7 @@ var CreateView = React.createClass({
     var state = {};
     if (globalState.createState) {
       state = globalState.createState;
-    } else {
-      var categoryOptions = [];
-      for (var category in categories) {
-        categoryOptions.push(
-          <option id="category" value={category}>
-            <i className={categories[category]}></i>
-            {category}
-          </option>);
-      }
-      state.categoryOptions = categoryOptions;
-    }
+    } 
     return state;
   },
 
@@ -176,6 +166,7 @@ var CreateView = React.createClass({
   },
 
   selectChange: function(category) {
+    console.log('category', category);
     this.setState({category: category});
   },
 
@@ -205,7 +196,7 @@ var CreateView = React.createClass({
       value: this.state.category,
       requestChange: this.selectChange
     };
-    console.log(this.state.categoryOptions);
+    
     return (
       <div>
         <div className="create-map-view-container">
@@ -222,7 +213,16 @@ var CreateView = React.createClass({
             <input type="text" id="name" placeholder="Title" defaultValue={this.state.name || ''} maxLength="50" required />
             <select valueLink={valueLink}>
               <option id="category">Select Category</option>
-              {this.state.categoryOptions}
+              <option id="category" value="General">&#xf069; General</option>
+              <option id="category" value="Food">&#xf0f5; Food</option>
+              <option id="category" value="Entertainment">&#xf145; Entertainment</option>
+              <option id="category" value="Health & Fitness">&#xf21e; Health & Fitness</option>
+              <option id="category" value="Arts & Culture">&#xf1fc; Arts & Culture</option>
+              <option id="category" value="Parties & Nightlife">&#xf000; Parties & Nightlife</option>
+              <option id="category" value="Nature & Outdoors">&#xf1bb; Nature & Outdoors</option>
+              <option id="category" value="Politics">&#xf25b; Politics</option>
+              <option id="category" value="Education">&#xf19d; Education</option>
+              
             </select>
             <input type="text" id="description" placeholder="Description" defaultValue={this.state.description || ''} required />
             <span className="time-input">Start Time</span>
