@@ -27,7 +27,7 @@ var CreateView = React.createClass({
 
     map.setOptions({disableDefaultUI: true});
 
-    marker.setIcon('/img/map/pin_test.png');
+    marker.setIcon('/img/map/you_test.png');
 
     var context = this;
 
@@ -92,7 +92,7 @@ var CreateView = React.createClass({
     })
   },
 
-  getAddress: function (event, location) {
+  getAddress: function (event) {
     if (event) {
       event.preventDefault();
     }
