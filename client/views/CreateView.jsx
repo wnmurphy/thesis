@@ -66,6 +66,8 @@ var CreateView = React.createClass({
   sendSpot: function (event) {
     event.preventDefault();
     var context = this;
+    var duration = timeController.hoursToMS(this.state.hours) + timeController.minutesToMS(this.state.minutes); 
+    console.log('duration', duration);
     $.ajax({
       method: 'POST',
       url: '/api/create',
@@ -77,7 +79,7 @@ var CreateView = React.createClass({
         address: context.state.address,
         description: context.state.description,
         start: timeController.timeToMS(context.state.start),
-        end: timeController.timeToMS(context.state.end)
+        end: duration
       },
       success: function (data) {
         globalState.createState = undefined;
@@ -125,7 +127,6 @@ var CreateView = React.createClass({
   handleChange: function (event) {
     var context = this;
     var newState = {};
-
     if (event.target.maxLength) {
       if (event.target.value.length >= event.target.maxLength) {
         event.target.style["background-color"] = "#eaadae";
@@ -178,9 +179,12 @@ var CreateView = React.createClass({
             </select>
             <input type="text" id="description" placeholder="Description" defaultValue={this.state.description || ''} required />
             <span className="time-input">Start Time</span>
-            <input type="time" id="start" placeholder="Start" defaultValue={this.state.start || ''} required />
-            <span className="time-input">End Time</span>
-            <input type="time" id="end" placeholder="End" defaultValue={this.state.end || ''} />
+            <input type="time" id="start" step="900" placeholder="Start" defaultValue={this.state.start || ''} required />
+            <span className="time-input">Duration</span>
+            <div className="duration-input-container">
+              <input type="number" className="duration-input" step="1" min="1" max="24" id="hours" placeholder="Hours" defaultValue={this.state.hours || ''} />
+              <input type="number" className="duration-input" step="15" min="0" max="60" id="minutes" placeholder="Minutes" defaultValue={this.state.minutes || ''}/>
+            </div>
             <input type="submit" value="submit" />
           </form>
         </div>

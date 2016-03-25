@@ -46,5 +46,39 @@ var timeController = {
     if (output[0] > 12) output[0] -= 12;
     if (output[0] === 0) output[0] = 12;
     return output.join('');
+  },
+
+  hoursToMS: function(hours) {
+    return hours * 3600000;
+  },
+
+  minutesToMS: function(minutes) {
+    return minutes * 60000;
+  }, 
+
+  msToDuration: function(ms) {
+  var hourStr = " hour ";
+  var convertMin, minutes, hours, minStr;
+  
+    if(!Number.isInteger(ms / 3600000)) {
+      minStr = " minutes";
+      minutes = ms % 3600000;
+      hours = Math.floor(ms / 3600000);
+      if(hours > 1) {
+        hourStr = " hours ";
+      }
+      convertMin = minutes/60000;
+      
+      return hours + hourStr + convertMin + minStr;
+    } else {
+      hours = Math.floor(ms / 3600000);
+      
+      if(hours > 1) {
+        hourStr = " hours";
+      }
+      
+      return hours + hourStr;
+    }
+    
   }
 }
