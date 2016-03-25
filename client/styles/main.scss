@@ -23,6 +23,14 @@ body {
   font-family: 'Roboto', sans-serif;
 }
 
+.clickable {
+  cursor: pointer;
+
+  &.disabled {
+    cursor: no-drop;
+  }
+}
+
 // Makes circle buttons
 .circle {
   display: inline-flex;
@@ -460,15 +468,58 @@ form {
   margin: 15px;
 }
 
+.no-profile-picture {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 100%;
+  background-color: #c2c2c2;
+  width: 30vw;
+  width: 150px;
+  height: 150px;
+  margin: 15px;
+  -webkit-transition: all 0.25s;
+          transition: all 0.25s;
+
+  div {
+    text-align: center;
+  }
+
+  &.add {
+    cursor: pointer;
+  }
+
+  &.add:hover {
+    -webkit-transform: scale(1.02);
+            transform: scale(1.02);
+
+    box-shadow: 0px 0px 5px rgba(0,0,0, 0.5);
+  }
+}
+
 .profile-name {
   display: inline-block;
 }
 
-.follow-button {
+.follow-button, .save-button {
   display: block;
-  background-color: blue;
+  background-color: $primary-color;
   border-radius: 10px;
   color: white;
+  text-align: center;
+  padding: 2px;
+  cursor: pointer;
+  box-shadow: 0px 0px 5px #888888;
+
+  &:hover {
+    background-color: $color-light;
+  }
+}
+
+.save-button {
+  width: 150px;
+  float: right;
+  margin-right: 10px;
 }
 
 .profile-bio {
@@ -483,12 +534,32 @@ form {
 
   .stat {
     font-size: 60px;
+    width: calc(100%/2);
   }
 
   .divider {
     width: 0.5px;
     background-color: black;
   }
+}
+.bio-input-container {
+  margin-bottom: 40px;
+}
+
+.bio-input {
+  font-size: 1.2em;
+  font-weight: bold;
+  width: calc(100vw - 40px);
+  max-width: 580px;
+  padding: 2px 9px;
+  height: 1.2em;
+  margin: 1em 10px 5px 10px;
+}
+
+.edit-message {
+  font-size: 0.75em;
+  font-style: italic;
+  font-weight: normal;
 }
 
 .clear {clear: both;}

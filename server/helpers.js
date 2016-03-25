@@ -167,10 +167,10 @@ module.exports = {
   },
 
   signup: function(info, success, fail) {
-    
+
     // Make incoming username string lowercase to prevent username collisions.
     info.username = info.username.toLowerCase();
-  
+
     var params = {
       TableName: "Users",
       FilterExpression: "#username in (:userid)",
@@ -325,8 +325,10 @@ module.exports = {
       else if(user.Count === 1) {
         success({
           userId: user.Items[0].userId,
-          email: user.Items[0].email,
-          username: user.Items[0].username
+          username: user.Items[0].username,
+          bio: user.Items[0].bio || "This user has not created a bio yet.",
+          spotCount: user.Items[0].spotCount || 0,
+          followerCount: user.Items[0].followerCount || 0
         });
       }
       else {
@@ -371,13 +373,13 @@ module.exports = {
     // Identify the correct spot in database.
     var params = {
       TableName: "Spots",
-      
+
       Key: {
         spotId: spotId
       },
-      
+
       UpdateExpression: "SET #messages = list_append (#messages, :text)",
-      
+
       ExpressionAttributeNames: {
         "#messages": "messages"
       },
@@ -395,14 +397,14 @@ module.exports = {
       else {
         console.log("POST MESSAGE TO DATABASE ==================>", data);
         return data;
-      } 
+      }
     });
   },
 
   getMessagesFromDatabase: function(spotId, callback){
     // Retrieves all messages in spots.spotId
     // Called by AJAX call to server
-    
+
     // Identify the correct spot in database.
     var params = {
       TableName: "Spots",
@@ -480,7 +482,7 @@ module.exports = {
   },
 
   spotCleaner: function() {
-    //date is current time 
+    //date is current time
     var date = new Date() - 24*60*60;
 
     var params = {
@@ -567,7 +569,7 @@ module.exports = {
       }
     });
 
-      
+
   },
   followUser: function(userId, followUser, success, fail) {
     var params = {
