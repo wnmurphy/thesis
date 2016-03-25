@@ -267,11 +267,11 @@ var initMap = function (location, context, callback) {
 // Loop through spot data from server.
 // Generate a map marker and summary bubble for each spot.
 var createMarker = function(spot, animate, context) {
-
-  var contentString = '<div style="font-size: 12px"><strong>' + spot.name + '</strong></div>' +
-                      '<div style="font-size: 11px;"><small>' + spot.creator + '</small></div>' +
-                      '<div style="font-size: 11px; padding-top: 2px">' + spot.category + '</div>' +
-                      '<div><small><small>' + timeController.msToTime(spot.start) + '</small></small></div>' +
+  
+  var contentString = '<div style="font-size: 14px"><strong>' + spot.name  + '</strong></div>' +
+                      '<div style="font-size: 11px;"><strong>by <a href="/#/profile/' + spot.creatorId + '" class="map-view-userid">' + spot.creator + '</a>' + '</strong></div>' +
+                      '<div style="font-size: 11px; padding-top: 2px"><i class="' + categories[spot.category] + '"></i> ' + spot.category + '</div>' +
+                      '<div><small><small>@ ' + timeController.msToTime(spot.start) + '</small></small></div>' +
                       '<div><small><small><a href="#/spot/' + spot.spotId +'">More Details</a></small></small></div>';
 
   var icon = {

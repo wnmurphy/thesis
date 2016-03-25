@@ -755,15 +755,19 @@ form {
   }
 }
 
-a.spot-view-creatorid {
+a.spot-view-creatorid, .map-view-userid {
   color: black;
   text-decoration: none;
 }
 
-a.spot-view-creatorid:hover {
+a.spot-view-creatorid:hover, .map-view-userid:hover {
   text-decoration: underline;
 }
 
 select {
   font-family: 'FontAwesome', Arial;
+}
+
+.map-view-userid {
+  color: dodgerblue;
 }
