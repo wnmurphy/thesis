@@ -768,6 +768,11 @@ select {
   font-family: 'FontAwesome', Arial;
 }
 
+
 .map-view-userid {
   color: dodgerblue;
+}
+
+.pac-container:after {
+  display: none !important;
 }

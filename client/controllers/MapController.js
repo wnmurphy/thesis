@@ -231,7 +231,9 @@ var initMap = function (location, context, callback) {
     }
     context.setState({center: center});
     context.setState({selected: false});
-    context.getSpots();
+    if (context.getSpots) {
+      context.getSpots();
+    }
   });
 
   google.maps.event.addListener(map, 'zoom_changed', function(event) {
@@ -360,4 +362,51 @@ var sweepMarkers = function(context, callback) {
     };
   });
   callback();
+}
+
+var placeMarker = function(context, query, infoWindow, map, name) {
+
+  context.setState({location: {latitude: query.geometry.location.lat(), longitude: query.geometry.location.lng() } });
+
+  context.setState({ address: query.formatted_address });
+
+  if (!query.geometry) {
+    return;
+  }
+
+  if (query.geometry.viewport) {
+    map.fitBounds(query.geometry.viewport);
+  } else {
+    map.setCenter(query.geometry.location);
+    map.setZoom(14);
+  }
+
+  // Set the position of the marker using the query ID and location.
+  context.state.marker.setPlace(({
+    placeId: query.place_id,
+    location: query.geometry.location
+  }));
+
+  //context.state.marker.setVisible(true);
+
+  var parts = query.formatted_address.split(',');
+  var street = parts[0];
+  var locality = parts[1] + ', ' + parts[2];
+
+  if (query.address_components) {
+    var component = query.address_components[0].long_name + ' ' + query.address_components[1].short_name;
+    var placeName = query.name;
+
+    if (component === placeName) {
+      query.name = "Spot";
+    }
+  } 
+
+  if (name) {
+    query.name = name;
+  }
+
+  infoWindow.setContent('<div><strong>' + query.name + '</strong><br>' + street + '<br>' + locality + '</div>');
+
+  infoWindow.open(map, context.state.marker);
 }

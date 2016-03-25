@@ -23,6 +23,7 @@ var CreateView = React.createClass({
   },
 
   searchMap: function (map, position, marker) {
+    google.maps.event.clearListeners(map, 'zoom_changed');
 
     map.setOptions({disableDefaultUI: true});
 
@@ -30,74 +31,40 @@ var CreateView = React.createClass({
 
     var context = this;
 
-    var input = (document.getElementById('address'));
-
-    var autocomplete = new google.maps.places.Autocomplete(input);
+    var autocomplete = new google.maps.places.Autocomplete(document.getElementById('address'));
 
     autocomplete.bindTo('bounds', map);
 
     var infowindow = new google.maps.InfoWindow({
+      allow: true,
       maxWidth: 200
     });
 
     this.setState({infowindow: infowindow});
 
     this.setState({marker: marker}, function() {
-      google.maps.event.addListener(context.state.marker, 'click', function() {
-        infowindow.open(map, this);
-        map.panTo(this.getPosition());
-      });
 
       google.maps.event.addListener(autocomplete, 'place_changed', function() {
 
-        infowindow.close();
-
         var place = autocomplete.getPlace();
 
-        context.setState({location: {latitude: place.geometry.location.lat(), longitude: place.geometry.location.lng() } });
-
-        context.setState({address: place.formatted_address });
-
-        if (!place.geometry) {
-          return;
-        }
-
-        if (place.geometry.viewport) {
-          map.fitBounds(place.geometry.viewport);
+        if (typeof place.address_components === 'undefined') {
+          var first = $(".pac-container .pac-item:first").text();
+          var service = new google.maps.places.PlacesService(map);
+          service.textSearch({query: place.name, bounds: map.getBounds()}, function(results, status) {
+            if (status === google.maps.places.PlacesServiceStatus.OK) {
+              placeMarker(context, results[0], infowindow, map);
+            }
+          })
         } else {
-          map.setCenter(place.geometry.location);
-          map.setZoom(17);
+          placeMarker(context, place, infowindow, map);
         }
-
-        // Set the position of the marker using the place ID and location.
-        context.state.marker.setPlace(({
-          placeId: place.place_id,
-          location: place.geometry.location
-        }));
-
-        context.state.marker.setVisible(true);
-
-        var parts = place.formatted_address.split(',');
-        var street = parts[0];
-        var locality = parts[1] + ', ' + parts[2];
-
-        var component = place.address_components[0].long_name + ' ' + place.address_components[1].short_name;
-        var placeName = place.name;
-
-        if (component === placeName) {
-          place.name = "Spot";
-        }
-
-        infowindow.setContent('<div><strong>' + place.name + '</strong><br>' + street + '<br>' + locality + '</div>');
-
-        infowindow.open(map, context.state.marker);
       });
     });
   },
 
   sendSpot: function (event) {
     event.preventDefault();
-    console.log('this state', this.state);
     var context = this;
     $.ajax({
       method: 'POST',
@@ -114,7 +81,6 @@ var CreateView = React.createClass({
       },
       success: function (data) {
         globalState.createState = undefined;
-        console.log("SUCCESS :", data);
         socket.emit('newSpot', data);
         window.location = '/#/';
       },
@@ -124,8 +90,10 @@ var CreateView = React.createClass({
     })
   },
 
-  getAddress: function (event) {
-    event.preventDefault();
+  getAddress: function (event, location) {
+    if (event) {
+      event.preventDefault();
+    }
 
     var context = this;
 
@@ -140,33 +108,17 @@ var CreateView = React.createClass({
       lat: globalState.location.latitude,
       lng: globalState.location.longitude
     }
+
     geocoder.geocode({location: location}, function(results, status) {
       if (status !== 'OK') {
         return console.error('Cannot find user address from location');
       }
-      var addressFound = results[0].formatted_address;
-      context.setState({ address: addressFound, location:{latitude: globalState.location.latitude, longitude:globalState.location.longitude} });
-
-      context.state.marker.setPlace(({
-        placeId: results[0].place_id,
-        location: results[0].geometry.location
-      }));
-
-      context.state.map.setCenter(results[0].geometry.location);
-      context.state.map.setZoom(17);
-
-      var parts = results[0].formatted_address.split(',');
-      var street = parts[0];
-      var locality = parts[1] + ', ' + parts[2];
-
-      context.state.infowindow.setContent('<div><strong>' + "My Location" + '</strong><br>' + street + '<br>' + locality + '</div>')
-      context.state.infowindow.open(context.state.map, context.state.marker);
+      placeMarker(context, results[0], context.state.infowindow, context.state.map, 'My Location');
 
     })
   },
 
   selectChange: function(category) {
-    console.log('category', category);
     this.setState({category: category});
   },
 
