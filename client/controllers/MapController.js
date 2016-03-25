@@ -365,7 +365,7 @@ var sweepMarkers = function(context, callback) {
 }
 
 var placeMarker = function(context, query, infoWindow, map, name) {
-  console.log(query)
+
   context.setState({location: {latitude: query.geometry.location.lat(), longitude: query.geometry.location.lng() } });
 
   context.setState({ address: query.formatted_address });
@@ -405,7 +405,7 @@ var placeMarker = function(context, query, infoWindow, map, name) {
   if (name) {
     query.name = name;
   }
-  
+
   infoWindow.setContent('<div><strong>' + query.name + '</strong><br>' + street + '<br>' + locality + '</div>');
 
   infoWindow.open(map, context.state.marker);
