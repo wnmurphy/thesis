@@ -48,7 +48,7 @@ var style = [
     "featureType": "poi",
     "elementType": "all",
     "stylers": [
-      { "visibility": "off" }
+      { "visibility": "on" }
     ]
   },
 
@@ -249,6 +249,7 @@ var initMap = function (location, context, callback) {
   });
 
   // Set component's state for position, map and marker.
+  context.setState({selected: position});
   context.setState({position: position});
   context.setState({map: map});
   context.setState({marker: marker});
