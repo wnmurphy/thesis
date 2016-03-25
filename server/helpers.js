@@ -800,6 +800,8 @@ var imageResize = function(image, success, fail) {
 
   sharp(image)
   .resize(300, 300)
+  .background({r: 230, g: 230, b: 230, a: 1})
+  .flatten()
   .jpeg()
   .toBuffer(function(err, buffer, info) {
     if (err) {
