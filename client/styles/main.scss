@@ -776,3 +776,13 @@ select {
 .pac-container:after {
   display: none !important;
 }
+
+.duration-input {
+  width: 138px;
+  display: inline-block;
+}
+
+input#start {
+  width: 300px;
+}
+
