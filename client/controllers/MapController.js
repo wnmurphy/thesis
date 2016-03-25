@@ -183,8 +183,8 @@ var style = [
 var initMap = function (location, context, callback) {
   // Redfine the set method to hide POI elements
   var set = google.maps.InfoWindow.prototype.set;
-  google.maps.InfoWindow.prototype.set = function (key, val) {
-    if (key === 'map' && ! this.get('noSupress')) {
+  google.maps.InfoWindow.prototype.set = function (key) {
+    if (key === 'map' && !this.get('allow')) {
       return;
     }
     set.apply(this, arguments);
@@ -280,7 +280,7 @@ var createMarker = function(spot, animate, context) {
 
   // Define summary bubble for each spot.
   var infoWindow = new google.maps.InfoWindow({
-    noSupress: true,
+    allow: true,
     maxWidth: 250,
     content: contentString
   });
