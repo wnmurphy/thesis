@@ -231,7 +231,9 @@ var initMap = function (location, context, callback) {
     }
     context.setState({center: center});
     context.setState({selected: false});
-    context.getSpots();
+    if (context.getSpots) {
+      context.getSpots();
+    }
   });
 
   google.maps.event.addListener(map, 'zoom_changed', function(event) {

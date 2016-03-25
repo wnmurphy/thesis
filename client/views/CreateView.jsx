@@ -23,6 +23,7 @@ var CreateView = React.createClass({
   },
 
   searchMap: function (map, position, marker) {
+    google.maps.event.clearListeners(map, 'zoom_changed');
 
     map.setOptions({disableDefaultUI: true});
 
@@ -30,27 +31,22 @@ var CreateView = React.createClass({
 
     var context = this;
 
-    var input = (document.getElementById('address'));
-
-    var autocomplete = new google.maps.places.Autocomplete(input);
+    var autocomplete = new google.maps.places.Autocomplete(document.getElementById('address'));
 
     autocomplete.bindTo('bounds', map);
 
     var infowindow = new google.maps.InfoWindow({
+      allow: true,
       maxWidth: 200
     });
 
     this.setState({infowindow: infowindow});
 
     this.setState({marker: marker}, function() {
-      google.maps.event.addListener(context.state.marker, 'click', function() {
-        infowindow.open(map, this);
-        map.panTo(this.getPosition());
-      });
 
       google.maps.event.addListener(autocomplete, 'place_changed', function() {
 
-        infowindow.close();
+        //infowindow.close();
 
         var place = autocomplete.getPlace();
 
@@ -66,7 +62,7 @@ var CreateView = React.createClass({
           map.fitBounds(place.geometry.viewport);
         } else {
           map.setCenter(place.geometry.location);
-          map.setZoom(17);
+          map.setZoom(14);
         }
 
         // Set the position of the marker using the place ID and location.
@@ -75,7 +71,7 @@ var CreateView = React.createClass({
           location: place.geometry.location
         }));
 
-        context.state.marker.setVisible(true);
+        //context.state.marker.setVisible(true);
 
         var parts = place.formatted_address.split(',');
         var street = parts[0];
@@ -97,7 +93,6 @@ var CreateView = React.createClass({
 
   sendSpot: function (event) {
     event.preventDefault();
-    console.log('this state', this.state);
     var context = this;
     $.ajax({
       method: 'POST',
@@ -114,7 +109,6 @@ var CreateView = React.createClass({
       },
       success: function (data) {
         globalState.createState = undefined;
-        console.log("SUCCESS :", data);
         socket.emit('newSpot', data);
         window.location = '/#/';
       },
@@ -166,7 +160,6 @@ var CreateView = React.createClass({
   },
 
   selectChange: function(category) {
-    console.log('category', category);
     this.setState({category: category});
   },
 
