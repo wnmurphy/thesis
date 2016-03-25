@@ -129,15 +129,21 @@ var ProfileView = React.createClass({
                       </a>
                     </div>
                   </div>);
+
+    // handles how image, bio, and follow display
     if (this.state.signedIn) {
       var followButton = null;
       if(this.state.img) {
-        var profileImage = <div>
-                            <img className="profile-picture add" src={this.state.img} onClick={this.handleFileInput}/>
+        var style = {
+          'background-image': 'url(' + this.state.img + ')'
+        }
+
+        var profileImage = <div className="profile-picture add clickable" style={style} onClick={this.handleFileInput} >
                             <input type="file" id="img" className="hide" onChange={this.handleChange} accept="image/*"/>
+                            <div className="change-image-message">Change image</div>
                            </div>
       } else {
-        var profileImage = (<div className="no-profile-picture add" onClick={this.handleFileInput}>
+        var profileImage = (<div className="no-profile-picture add clicakable" onClick={this.handleFileInput}>
                               <div>
                                 <i className="fa fa-plus" /><br />Add an image
                               </div>
@@ -147,7 +153,7 @@ var ProfileView = React.createClass({
     } else {
       var followButton = (<div className="follow-button" onClick={this.followUser}>Follow {this.state.username}</div>);
       if(this.state.img) {
-        var profileImage = <img className="profile-picture" src={this.state.img} />
+        var profileImage = <div className="profile-picture" style={style} />
       } else {
         var profileImage = (<div className="no-profile-picture">
                               <p>No image</p>
@@ -155,6 +161,7 @@ var ProfileView = React.createClass({
       }
     }
 
+    // Handles editing bio
     if (this.state.editting) {
       var bio =
         <div className="bio-input-container">
