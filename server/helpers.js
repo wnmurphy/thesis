@@ -337,6 +337,35 @@ module.exports = {
     });
   },
 
+  updateProfile: function (userId, update, success, fail) {
+    for (var key in update) {
+      var field = key;
+      var value = update[key];
+    }
+    var params = {
+      TableName: 'Users',
+      Key: {
+        userId: Number(userId)
+      },
+      UpdateExpression: 'SET #field =(:value)',
+      ExpressionAttributeNames: {
+        '#field': field
+      },
+      ExpressionAttributeValues: { // a map of substitutions for all attribute values
+        ':value': value
+      }
+    };
+
+    dbSchema.update(params, function(err, data) {
+      if (err) {
+        fail()
+      } else {
+        success();
+      }
+    });
+
+  },
+
   getSpot: function(id, success, fail) {
 
     var params = {

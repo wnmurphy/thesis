@@ -113,6 +113,26 @@ module.exports = function(app, express, io) {
     }
   });
 
+  // PUT to update user's profile
+  app.put('/api/profile', function (req, res){
+    if (req.headers.token) {
+      helpers.checkToken(JSON.parse(req.headers.token), function (decoded) {
+        console.log('token verified');
+        var userId = decoded.userId.toString();
+        helpers.updateProfile(userId, req.body, function () {
+          res.sendStatus(202);
+        }, function (err) {
+          res.sendStatus(404);
+        });
+      }, function (err) {
+        console.log('invalid token');
+        res.send(404, 'invalid token');
+      });
+    } else {
+      console.log("no token");
+      res.send(404, 'user not signed in');
+    }
+  })
 
   // GET to retrieve a spot's information by spotId.
   app.get('/api/spot/:id', function(req, res) {
@@ -135,7 +155,7 @@ module.exports = function(app, express, io) {
       res.send(404, err);
     });
   });
-  
+
   //post to follow a user
   app.post('/api/followUser', function(req, res) {
     var userId = req.body.userId;
