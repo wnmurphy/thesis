@@ -39,6 +39,7 @@ To install locally:
 - React ^0.14.7
 - Express ^4.13.4
 - Gulp ^3.9.1
+- Python 2.7.x
 
 ### For Testing:
 - Mocha ^2.4.5
