@@ -270,18 +270,10 @@ var initMap = function (location, context, callback) {
 // Generate a map marker and summary bubble for each spot.
 var createMarker = function(spot, animate, context) {
 
-  var timeString;
-
-  if (Number(spot.start) > new Date().getTime()) {
-    timeString = "in " + timeController.msToDuration(Number(spot.start) + Number(spot.end) - new Date().getTime());
-  } else {
-    timeString = timeController.msToDuration(Number(spot.end) + Number(spot.start) - new Date().getTime()) + " left";
-  }
-
   var contentString = '<div style="font-size: 14px"><strong>' + spot.name  + '</strong></div>' +
                       '<div style="font-size: 11px;"><strong>by <a href="/#/profile/' + spot.creatorId + '" class="map-view-userid">' + spot.creator + '</a>' + '</strong></div>' +
                       '<div style="font-size: 11px; padding-top: 2px"><i class="' + categories[spot.category] + '"></i> ' + spot.category + '</div>' +
-                      '<div><small><small>' + timeString + '</small></small></div>' +
+                      '<div><small><small>' + timeController.stringifyTime(spot) + '</small></small></div>' +
                       '<div><small><small><a href="#/spot/' + spot.spotId +'">More Details</a></small></small></div>';
 
   var icon = {

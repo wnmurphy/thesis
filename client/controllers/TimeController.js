@@ -82,9 +82,17 @@ var timeController = {
       if(hours > 1) {
         hourStr = " hours";
       }
-      
       return hours + hourStr;
     }
-    
+  },
+
+  stringifyTime: function(spot) {
+    var timeString = "";
+    if (Number(spot.start) > new Date().getTime()) {
+      timeString = "in " + timeController.msToDuration(Number(spot.start) + Number(spot.end) - new Date().getTime());
+    } else {
+      timeString = timeController.msToDuration(Number(spot.end) + Number(spot.start) - new Date().getTime()) + " left";
+    }
+    return timeString;
   }
 }
