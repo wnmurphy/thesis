@@ -74,7 +74,7 @@ var Chat = React.createClass({
 
             <input type="text" className="chat-input" value={this.state.message} placeholder="speak yo mind, russell" name="message" onChange={this.handleChange}/>
 
-            <div className="button small right" onSubmit={this.handleSubmit}>send</div>
+            <div className="button small right" onClick={this.handleSubmit}>send</div>
           </form>
 
         </div>
