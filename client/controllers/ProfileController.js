@@ -64,7 +64,7 @@ var ProfileController = {
     } else {
       height *= (img.height / img.width);
     }
-
+    
     canvas.height = 400;
     canvas.width = 400;
 
