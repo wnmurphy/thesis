@@ -4,6 +4,7 @@ var jwt = require('jsonwebtoken');
 var env = require('node-env-file');
 var pe, accessKeyId, secretAccessKey, region, endpoint;
 
+
 if(!process.env.TRAVIS) {
   pe = env(__dirname + '../../.env');
 }

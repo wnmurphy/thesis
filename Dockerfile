@@ -1,4 +1,4 @@
-FROM centos:centos7
+FROM centos:centos6
 
 RUN yum install -y epel-release
 RUN yum install -y nodejs npm
