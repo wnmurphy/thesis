@@ -17,7 +17,8 @@ var SpotView = React.createClass({
       buttonIcon: "fa fa-share-alt",
       sharing: false,
       showChat: "",
-      messages: []
+      messages: [],
+      login: 'hide'
     };
   },
 
@@ -98,17 +99,20 @@ var SpotView = React.createClass({
      });
     }
   },
-
-  saveSpot: function() {
+  checkAuth: function() {
     if (localStorage.getItem('token')) {
-      SaveSpotController.saveSpot(this.state.spotId, function(spot) {
-        console.log(spot);
-      }, function(err) {
-        console.error(err);
-      });
+      this.post();
     } else {
-      //make user login
+      this.setState({login: 'show'});
     }
+  },
+
+  post: function() {
+    SaveSpotController.saveSpot(this.state.spotId, function(spot) {
+      console.log(spot);
+    }, function(err) {
+      console.error(err);
+    });
   },
 
   render: function() {
@@ -139,7 +143,7 @@ var SpotView = React.createClass({
           <h4>created by: <a href={this.state.creatorId} className="spot-view-creatorid">{this.state.spot.creator}</a></h4>
           <p>{this.state.spot.description}</p>
           <p>{this.state.spot.address}</p>
-          <div className='save-spot-button' onClick={this.saveSpot}>Save spot</div>
+          <div className='save-spot-button' onClick={this.checkAuth}>Save spot</div>
           <DirectionsLink location={this.state.spot.location} />
           <input type="button" value="show chat" onClick={this.toggleChat} />
         </div>
@@ -155,7 +159,9 @@ var SpotView = React.createClass({
         <div className={chatContainerClass + this.state.showChat}>
           <Chat messages={this.state.messages} spotId={this.state.spotId}/>
         </div>
-
+        <div className={this.state.login}>
+          <LoginRequired parent={this} />
+        </div>
       </div>
     );
   }
