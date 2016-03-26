@@ -1,7 +1,12 @@
 var aws = require('aws-sdk');
 var helpers = require('../server/helpers.js');
 var env = require('node-env-file');
-var pe = env(__dirname + '../../.env');
+var pe;
+
+if(!process.env.TRAVIS) {
+  pe = env(__dirname + '../../.env');
+}
+
 
 if(process.env.accessKeyId) {
   endpoint = "dynamodb.us-east-1.amazonaws.com";

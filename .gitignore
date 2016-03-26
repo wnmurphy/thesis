@@ -1,8 +1,5 @@
 .env
 
-tests
-.travis.yml
-
 node_modules/
 bower_components/
 *.log
