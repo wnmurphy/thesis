@@ -67,18 +67,32 @@ var timeController = {
       if(hours > 1) {
         hourStr = " hours ";
       }
-      convertMin = minutes/60000;
-      
-      return hours + hourStr + convertMin + minStr;
+      convertMin = Math.floor(minutes/60000);
+      if (convertMin === 1) {
+        minStr = " minute";
+      }
+      if (hours > 0) {
+        return hours + hourStr + convertMin + minStr;
+      } else {
+        return convertMin + minStr;
+      }
     } else {
       hours = Math.floor(ms / 3600000);
       
       if(hours > 1) {
         hourStr = " hours";
       }
-      
       return hours + hourStr;
     }
-    
+  },
+
+  stringifyTime: function(spot) {
+    var timeString = "";
+    if (Number(spot.start) > new Date().getTime()) {
+      timeString = "in " + timeController.msToDuration(Number(spot.start) + Number(spot.end) - new Date().getTime());
+    } else {
+      timeString = timeController.msToDuration(Number(spot.end) + Number(spot.start) - new Date().getTime()) + " left";
+    }
+    return timeString;
   }
 }

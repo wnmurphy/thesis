@@ -104,7 +104,7 @@ var MapView = React.createClass({
     for(var i = 0; i < context.state.spots.length; i++) {
       var spot = this.state.spots[i];
       // Skips spots where the start time is in past or if spot is tracker
-      if (spot.lastId || Date.now() > Number(spot.start)) {
+      if (spot.lastId || timeController.stringifyTime(spot).charAt(0) === "-") {
         continue;
       };
       createMarker(spot, animate, context);
