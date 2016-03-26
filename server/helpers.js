@@ -625,7 +625,7 @@ module.exports = {
       //should only find 1 user
       } else if (user.Count === 1) {
         //if user has not already saved that spot
-        if (user.Items[0].savedSpots.indexOf(spotId) === -1) {
+        if (user.Items[0].savedSpots.indexOf(Number(spotId)) === -1) {
           params = {
             TableName: 'Users',
             Key: { userId: user.Items[0].userId },
