@@ -86,10 +86,5 @@ var timeController = {
       return hours + hourStr;
     }
     
-  },
-
-  msToMinutes: function(ms) {
-    console.log("MS:", ms, typeof ms);
-    return Math.floor(ms / 60000);
   }
 }
