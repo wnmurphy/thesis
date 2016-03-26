@@ -1,11 +1,31 @@
 var aws = require('aws-sdk');
 var helpers = require('../server/helpers.js');
+var env = require('node-env-file');
+var pe, accessKeyId, secretAccessKey, region, endpoint;
+
+if(!process.env.TRAVIS) {
+  pe = env(__dirname + '../../.env');
+}
+
+
+if(process.env.accessKeyId) {
+  accessKeyId = pe.accessKeyId;
+  secretAccessKey = pe.secretAccessKey;
+  endpoint = "dynamodb.us-east-1.amazonaws.com";
+  region = "us-east-1";
+}
+else {
+  accessKeyId = "fakeAccessKey";
+  secretAccessKey = "fakeSecretAccessKey";
+  endpoint = "http://localhost:8000";
+  region = "fakeRegion";
+}
 
 aws.config.update({
-  accessKeyId: "fakeAccessKey",
-  secretAccessKey: "fakeSecretAccessKey",
-  region: "fakeRegion",
-  endpoint: new aws.Endpoint('http://localhost:8000')
+  accessKeyId: accessKeyId,
+  secretAccessKey: secretAccessKey,
+  region: region,
+  endpoint: new aws.Endpoint(endpoint)
 });
 
 var db = new aws.DynamoDB();
