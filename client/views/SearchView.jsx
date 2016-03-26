@@ -53,7 +53,7 @@ var SearchView = React.createClass({
     // Create a div for each search result returned from handleSubmit AJAX call.
     // Apply different styles depending on whether search result is a user or a spot.
     var results = this.state.results.map(function(result) {
-
+    var creatorIdLink = "/#/profile/" + result.creatorId;
       if(result.email) {
           return (
             <div className="search-result">
@@ -62,7 +62,7 @@ var SearchView = React.createClass({
                 <div className='category-icon-container'>
                   <i className='fa fa-user'></i>
                 </div>
-                <span className='spot-name'><a>{result.username}</a></span>
+                <span className='spot-name'><a className='spot-name-link'>{result.username}</a></span>
               </div>
             </div>
 
@@ -75,9 +75,9 @@ var SearchView = React.createClass({
               <div className='category-icon-container'>
                 <i className={categories[result.category] || categories.General}></i>
               </div>
-              <span className='spot-name'><a onClick={this.spotRedirect.bind(this, result.spotId)}>{result.name}</a></span>
+              <span className='spot-name'><a className='spot-name-link' onClick={this.spotRedirect.bind(this, result.spotId)}>{result.name}</a></span>
             </div>
-            <div> @ {timeController.msToTime(result.start)}</div>
+            <div> @ {timeController.msToTime(result.start)} by <a href={creatorIdLink} className="search-view-creator">{result.creator}</a></div>
           </div>
           );
       } 
