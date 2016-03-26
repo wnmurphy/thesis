@@ -22,7 +22,7 @@ module.exports = {
       TableName : "Spots",
       Key: {spotId: 0}
     };
-
+    //use 'lastId' property of item of spotId: 0 to determine spotId of new spot 
     dbSchema.get(params, function(err, data) {
       if (err) {
         console.error("Unable to query. Error:", JSON.stringify(err, null, 2));
@@ -36,7 +36,7 @@ module.exports = {
             lastId: spot.spotId
           }
         };
-
+        //update 'lastId' property of spotId: 0 for next new spot
         dbSchema.put(params, function(err, data) {
           if(err) {
             console.error('Error updating data item', err);
@@ -44,6 +44,7 @@ module.exports = {
           else {
             console.log('Updated data item successfully');
             if(spot.name && spot.creator && spot.creatorId && spot.category && spot.location && spot.description && spot.start) {
+              //if all necessary info is present, create the new spot
               params = {
               TableName: 'Spots',
               Item: {
@@ -71,7 +72,28 @@ module.exports = {
                   fail(err);
                 }
                 else {
-                  success(newSpot);
+                  //if successful, increment user's spotCount by 1
+                  var params = {
+                    TableName: 'Users',
+                    Key: {
+                      userId: spot.creatorId
+                    },
+                    UpdateExpression: 'ADD #field :value',
+                    ExpressionAttributeNames: {
+                      '#field': 'spotCount'
+                    },
+                    ExpressionAttributeValues: {
+                      ':value': 1
+                    }
+                  };
+                  dbSchema.update(params, function(err, data) {
+                    if (err) {
+                      console.error('error updating user\'s spotCount', err);
+                      fail(err);
+                    } else {
+                      success(newSpot);
+                    }
+                  });                  
                 }
               });
             }
@@ -88,7 +110,6 @@ module.exports = {
     //search is a string
     //username, user email
     //name, creator, description
-    console.log('search', search);
     // Make incoming search string lowercase to make search case-insensitive.
     search = search.toLowerCase();
 
@@ -229,7 +250,9 @@ module.exports = {
                   password: hash,
                   email: info.email,
                   following: [],
-                  savedSpots: []
+                  savedSpots: [],
+                  followers: [],
+                  spotCount: 0
                 }
               };
 
@@ -265,7 +288,6 @@ module.exports = {
     };
 
     dbSchema.scan(params, function(err, user) {
-      console.log("Found user: ", user.Items);
       if(err) {
         console.error('Error handling user sign in', err);
         fail(err);
@@ -329,7 +351,7 @@ module.exports = {
           username: user.Items[0].username,
           bio: user.Items[0].bio || "This user has not created a bio yet.",
           spotCount: user.Items[0].spotCount || 0,
-          followerCount: user.Items[0].followerCount || 0,
+          followers: user.Items[0].followers.length || 0,
           img: user.Items[0].img
         });
       }
@@ -649,7 +671,6 @@ module.exports = {
         fail('error getting user');
       //should only find 1 user
       } else if (user.Count === 1) {
-        //if user has not already followed that user
         var params = {
           TableName: "Users",
           FilterExpression: "#userId = (:userId)",
@@ -660,8 +681,24 @@ module.exports = {
             ":userId": parseInt(followUser)
           }
         };
+        //find user that the user is trying to follow
         dbSchema.scan(params, function (err, follow) {
-          if (user.Items[0].following.indexOf(follow) === -1) {
+          //if user has not already followed that user
+          console.log("Should be Bell: ", user.Items[0].username);
+          console.log("Should be Michelle : ", follow.Items[0].username);
+          console.log("Bell is following: ", user.Items[0].following);
+          var found = false;
+          for (var i = 0; i < user.Items[0].following.length; i++) {
+            console.log(user.Items[0].following[i].userId, ' = ', follow.Items[0].userId);
+            //using type conversion to check equality
+            if (user.Items[0].following[i].userId == follow.Items[0].userId) {
+              console.log("switch found");
+              found = true;
+              break;
+            }
+          }
+          console.log("found? ", found);
+          if (!found) {
             params = {
               TableName: 'Users',
               Key: { userId: user.Items[0].userId },
@@ -676,7 +713,28 @@ module.exports = {
                 console.error(err);
                 fail('error following user');
               } else {
-                success('successfully followed user');
+                params = {
+                  TableName: 'Users',
+                  Key: {
+                    userId: parseInt(followUser)
+                  },
+                  UpdateExpression: 'SET #followers = list_append(followers, :followers)',
+                  ExpressionAttributeNames: {
+                    '#followers': 'followers'
+                  },
+                  ExpressionAttributeValues: {
+                    ':followers': [{'userId': user.Items[0].userId, 'username': user.Items[0].username}]
+                  }
+                };
+                //update followers property of user being followed 
+                dbSchema.update(params, function(err, follower) {
+                  if (err) {
+                    console.error(err);
+                    fail('error updating followers property of user being followed');
+                  } else {
+                    success('successfully followed user');
+                  }
+                });
               }
             });
           } else {

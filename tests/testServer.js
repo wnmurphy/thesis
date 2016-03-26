@@ -38,7 +38,12 @@ describe("Persistent Spot and User Server", function() {
         userId: 999999999999,
         username: 'Johnny',
         password: 'password',
-        email: 'test@gmail.com'
+        email: 'test@gmail.com',
+        followers: [],
+        following: [],
+        spotCount: 0,
+        bio: 'empty',
+        img: 'fake'
         } 
       };
       dbSchema.put(params, function(err, data) {
