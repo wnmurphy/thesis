@@ -67,7 +67,7 @@ var timeController = {
       if(hours > 1) {
         hourStr = " hours ";
       }
-      convertMin = minutes/60000;
+      convertMin = Math.floor(minutes/60000);
       
       return hours + hourStr + convertMin + minStr;
     } else {
@@ -80,5 +80,10 @@ var timeController = {
       return hours + hourStr;
     }
     
+  },
+
+  msToMinutes: function(ms) {
+    console.log("MS:", ms, typeof ms);
+    return Math.floor(ms / 60000);
   }
 }
