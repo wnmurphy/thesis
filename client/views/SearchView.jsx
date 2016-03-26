@@ -80,14 +80,14 @@ var SearchView = React.createClass({
             <div> @ {timeController.msToTime(result.start)} by <a href={creatorIdLink} className="search-view-creator">{result.creator}</a></div>
           </div>
           );
-      } 
+      }
     }, this);
 
     return (
       <div className="search-view">
         <form id="search-form" onSubmit={this.handleSubmit}>
           <input type="text" placeholder="Search" value={this.state.query} onChange={this.handleChange} />
-          <input type="submit" value="Search" />
+          <div className='button' onClick={this.handleSubmit}>Search</div>
         </form>
         <h2 className="search-results-container"> {this.state.message ? this.state.message : null} </h2>
         <div className="search-results-container">
