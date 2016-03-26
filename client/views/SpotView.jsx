@@ -135,7 +135,7 @@ var SpotView = React.createClass({
           <h4>created by: <a href={this.state.creatorId} className="spot-view-creatorid">{this.state.spot.creator}</a></h4>
           <p>{this.state.spot.description}</p>
           <p>{this.state.spot.address}</p>
-          <div className='save-spot-btn' onClick={this.saveSpot}>Save spot</div>
+          <div className='save-spot-button' onClick={this.saveSpot}>Save spot</div>
           <DirectionsLink location={this.state.spot.location} />
           <input type="button" value="show chat" onClick={this.toggleChat} />
         </div>
@@ -147,7 +147,7 @@ var SpotView = React.createClass({
             <i className={this.state.buttonIcon}></i>
           </a>
         </div>
-        
+
         <div className={chatContainerClass + this.state.showChat}>
           <Chat messages={this.state.messages} spotId={this.state.spotId}/>
         </div>
