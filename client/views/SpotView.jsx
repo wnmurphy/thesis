@@ -102,6 +102,14 @@ var SpotView = React.createClass({
   render: function() {
 
     var chatContainerClass = "chat-card-container";
+
+    console.log(this.state.spot.end);
+    if (this.state.spot.end) {
+      var end = <p style={{'font-style': 'italic', 'font-size': '14px'}}>{this.state.end}</p>
+    } else {
+      var end = null;
+    }
+
     return (
       <div className="spot-container">
         <div className="create-map-view-container">
@@ -115,10 +123,11 @@ var SpotView = React.createClass({
             <span className='spot-name'>{this.state.spot.name}</span>
           </div>
           <h3>@{" " + timeController.msToTime(this.state.spot.start)}</h3>
-          <p style={{'font-style': 'italic', 'font-size': '14px'}}>{this.state.end}</p>
+          {end}
           <h4>created by: <a href={this.state.creatorId} className="spot-view-creatorid">{this.state.spot.creator}</a></h4>
           <p>{this.state.spot.description}</p>
           <p>{this.state.spot.address}</p>
+          <DirectionsLink location={this.state.spot.location} />
           <input type="button" value="show chat" onClick={this.toggleChat} />
         </div>
         <div className={this.state.shareClass} onClick={this.toggleShare}>
