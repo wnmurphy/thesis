@@ -100,11 +100,15 @@ var SpotView = React.createClass({
   },
 
   saveSpot: function() {
-    SaveSpotController.saveSpot(this.state.spotId, function(spot) {
-      console.log(spot);
-    }, function(err) {
-      console.error(err);
-    });
+    if (localStorage.getItem('token')) {
+      SaveSpotController.saveSpot(this.state.spotId, function(spot) {
+        console.log(spot);
+      }, function(err) {
+        console.error(err);
+      });
+    } else {
+      //make user login
+    }
   },
 
   render: function() {
