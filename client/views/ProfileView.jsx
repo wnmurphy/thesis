@@ -61,7 +61,6 @@ var ProfileView = React.createClass({
   },
 
   followUser: function() {
-    console.log('1');
     FollowController.followUser(this.state.userId, function (data) {
       console.log(data);
     }, function (err) {

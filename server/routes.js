@@ -95,7 +95,7 @@ module.exports = function(app, express, io) {
       }, function (err) {
         if (id) {
           helpers.getProfile(id, function(result) {
-            res.json(result);
+            res.json({result: result, currentUser: false});
           }, function(err) {
             res.send(404);
           });
@@ -106,7 +106,7 @@ module.exports = function(app, express, io) {
     } else {
       console.log("no token");
       helpers.getProfile(id, function(result) {
-        res.json(result);
+        res.json({result: result, currentUser: false});
       }, function(err) {
         res.send(404);
       });

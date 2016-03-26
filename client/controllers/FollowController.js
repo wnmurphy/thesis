@@ -1,6 +1,5 @@
 var FollowController = {
   followUser: function(followId, success, fail) {
-    console.log('sending user to follow');
     $.ajax({
       method: 'POST',
       url: '/api/followUser/',

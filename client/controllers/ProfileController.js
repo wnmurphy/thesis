@@ -7,9 +7,10 @@ var ProfileController = {
         url: '/api/profile/' + id,
         dataType: 'json',
         success: function (data) {
+          console.log('data: ', data);
           var user = data.result;
           user.signedIn = data.currentUser;
-          console.log(user);
+          console.log('user: ', user);
           success(user);
         },
         error: function (error) {
