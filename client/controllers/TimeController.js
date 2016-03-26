@@ -68,7 +68,9 @@ var timeController = {
         hourStr = " hours ";
       }
       convertMin = Math.floor(minutes/60000);
-      
+      if (convertMin === 1) {
+        minStr = " minute";
+      }
       return hours + hourStr + convertMin + minStr;
     } else {
       hours = Math.floor(ms / 3600000);
