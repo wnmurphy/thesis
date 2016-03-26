@@ -269,19 +269,13 @@ var initMap = function (location, context, callback) {
 // Loop through spot data from server.
 // Generate a map marker and summary bubble for each spot.
 var createMarker = function(spot, animate, context) {
+  
   var timeString;
-  // console.log("SPOT", spot);
-  // console.log("START", spot.start, typeof spot.start);
-  // console.log("END", spot.end, typeof spot.end);
-  var remaining = timeController.msToMinutes(Number(spot.start) + Number(spot.end) - new Date());
-  var duration = timeController.msToMinutes(Number(spot.end));
-  // console.log("REMAINING: ", remaining);
-  // console.log("DURATION: ", duration);
-  // console.log("IS REMAINING MORE THAN DURATION: ", remaining > duration);
-  if (remaining > 0) {
-    timeString = "in " + timeController.msToDuration(Number(spot.start) + Number(spot.end) - new Date());
-  } else {
 
+  if (Number(spot.start) > new Date().getTime()) {
+    timeString = "in " + timeController.msToDuration(Number(spot.start) + Number(spot.end) - new Date().getTime());
+  } else {
+    timeString = timeController.msToDuration((new Date().getTime()) - Number(spot.end)) + " left";
   }
 
   var contentString = '<div style="font-size: 14px"><strong>' + spot.name  + '</strong></div>' +
