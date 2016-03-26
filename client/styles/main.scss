@@ -755,12 +755,12 @@ form {
   }
 }
 
-a.spot-view-creatorid, .map-view-userid {
+a.spot-view-creatorid, .map-view-userid, .search-view-creator {
   color: black;
   text-decoration: none;
 }
 
-a.spot-view-creatorid:hover, .map-view-userid:hover {
+a.spot-view-creatorid:hover, .map-view-userid:hover, .search-view-creator:hover {
   text-decoration: underline;
 }
 
@@ -769,7 +769,7 @@ select {
 }
 
 
-.map-view-userid {
+.map-view-userid, .search-view-creator {
   color: dodgerblue;
 }
 
@@ -786,3 +786,6 @@ input#start {
   width: 300px;
 }
 
+.spot-name-link:hover {
+  cursor: pointer;
+}
