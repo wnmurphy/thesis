@@ -203,7 +203,7 @@ var ProfileView = React.createClass({
           <tr>
             <td className="stat">{this.state.spotCount}</td>
             <td className="divider" />
-            <td className="stat">{this.state.followerCount}</td>
+            <td className="stat">{this.state.followers}</td>
           </tr>
           <tr>
             <td className="label">Spots<br />Created</td>
