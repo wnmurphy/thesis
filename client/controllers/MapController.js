@@ -269,11 +269,25 @@ var initMap = function (location, context, callback) {
 // Loop through spot data from server.
 // Generate a map marker and summary bubble for each spot.
 var createMarker = function(spot, animate, context) {
-  
+  var timeString;
+  // console.log("SPOT", spot);
+  // console.log("START", spot.start, typeof spot.start);
+  // console.log("END", spot.end, typeof spot.end);
+  var remaining = timeController.msToMinutes(Number(spot.start) + Number(spot.end) - new Date());
+  var duration = timeController.msToMinutes(Number(spot.end));
+  // console.log("REMAINING: ", remaining);
+  // console.log("DURATION: ", duration);
+  // console.log("IS REMAINING MORE THAN DURATION: ", remaining > duration);
+  if (remaining > 0) {
+    timeString = "in " + timeController.msToDuration(Number(spot.start) + Number(spot.end) - new Date());
+  } else {
+
+  }
+
   var contentString = '<div style="font-size: 14px"><strong>' + spot.name  + '</strong></div>' +
                       '<div style="font-size: 11px;"><strong>by <a href="/#/profile/' + spot.creatorId + '" class="map-view-userid">' + spot.creator + '</a>' + '</strong></div>' +
                       '<div style="font-size: 11px; padding-top: 2px"><i class="' + categories[spot.category] + '"></i> ' + spot.category + '</div>' +
-                      '<div><small><small>@ ' + timeController.msToTime(spot.start) + '</small></small></div>' +
+                      '<div><small><small>' + timeString + '</small></small></div>' +
                       '<div><small><small><a href="#/spot/' + spot.spotId +'">More Details</a></small></small></div>';
 
   var icon = {
