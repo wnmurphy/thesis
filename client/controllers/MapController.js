@@ -269,13 +269,13 @@ var initMap = function (location, context, callback) {
 // Loop through spot data from server.
 // Generate a map marker and summary bubble for each spot.
 var createMarker = function(spot, animate, context) {
-  
+
   var timeString;
 
   if (Number(spot.start) > new Date().getTime()) {
     timeString = "in " + timeController.msToDuration(Number(spot.start) + Number(spot.end) - new Date().getTime());
   } else {
-    timeString = timeController.msToDuration((new Date().getTime()) - Number(spot.end)) + " left";
+    timeString = timeController.msToDuration(Number(spot.end) + Number(spot.start) - new Date().getTime()) + " left";
   }
 
   var contentString = '<div style="font-size: 14px"><strong>' + spot.name  + '</strong></div>' +
