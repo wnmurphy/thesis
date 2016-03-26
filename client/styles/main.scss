@@ -31,6 +31,39 @@ body {
   }
 }
 
+.button {
+  display: flex;
+  padding: 5px 15px;
+  height: 2em;
+  max-width: 300px;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  text-transform: uppercase;
+  background-color: $primary-color;
+  margin: 10px 0px;
+  cursor: pointer;
+  text-decoration: none;
+  -webkit-transition: background-color 0.25s;
+          transition: background-color 0.25s;
+
+  &:hover {
+    background-color: $color-light;
+  }
+
+  &.small {
+    width: 60px;
+  }
+}
+
+.right {
+  float: right;
+}
+
+.left {
+  float: left;
+}
+
 // Makes circle buttons
 .circle {
   display: inline-flex;
@@ -344,9 +377,17 @@ form {
   font-size: 3em;
 }
 
+.chat-input {
+  width: calc(100% - 120px);
+  float: left;
+  font-size: 1em;
+  height: 2em;
+}
+
 .share-card-container, .createView-card-container, .chat-card-container{
-  position: fixed;
+  position: absolute;
   top: 0px;
+  left: 0px;
   height: 100%;
   width: 100%;
   -webkit-transition: all 0.5s;
@@ -381,40 +422,53 @@ form {
 }
 
 .chat-card {
-  display: block;
-  position: absolute;
+  position: relative;
   background-color: white;
   -webkit-transition: all 0.5s;
           transition: all 0.5s;
-  top: 100%;
   width: 100%;
   height: 100%;
-
+  margin-top: auto;
 }
 
 .chat-card-container {
+  display: none;
   opacity: 100;
   z-index: -1;
   width: 100%;
   height: 100%;
 
-
   &.show {
+    display: block;
     z-index: 500;
     .chat-card {
-      top: 0;
+      top: 0vh;
     }
   }
+}
+
+.spot-container {
+  height: 100%;
+  overflow-y: scroll;
 }
 
 .chat-container {
   overflow-y: scroll;
   -webkit-overflow-scrolling: touch;
-  height: calc(100% - 180px);
+  height: calc(100% - 62px);
 }
 
 .chat-form-container {
-  height: 150px;
+  height: 62px;
+  margin: 0px;
+  padding: 0px;
+}
+
+.chat-form {
+  display: flex;
+  align-items: center;
+  padding: 0px;
+  background-color: #e9e9e9;
 }
 
 .show-share-card {
@@ -682,6 +736,17 @@ form {
   &:hover {
     -webkit-transform: scale(1.05);
       transform: scale(1.05);
+  }
+}
+
+#search-form {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  input {
+    font-size: 1em;
+    height: 1.7em;
   }
 }
 

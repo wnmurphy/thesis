@@ -53,7 +53,7 @@ module.exports = function(app, express, io) {
   // POST to create a new user from SignupView.
   app.post('/api/signup', function(req, res) {
     var user = {
-      username: req.body.username,
+      username: req.body.username.toLowerCase(),
       password: req.body.password,
       email: req.body.email
     };
@@ -70,7 +70,7 @@ module.exports = function(app, express, io) {
   // POST to submit user credentials from LoginView.
   app.post('/api/login', function(req, res) {
     var user = {
-      username: req.body.username,
+      username: req.body.username.toLowerCase(),
       password: req.body.password
     };
     helpers.signin(user, function(result) {

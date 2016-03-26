@@ -110,8 +110,8 @@ var ProfileView = React.createClass({
     console.log(this.state.requireAuth);
     if (this.state.requireAuth) {
       login = <LoginRequired parent={this} />;
-    } 
-      
+    }
+
 
     // shows only when signed in
     if (globalState.userId === this.state.userId) {

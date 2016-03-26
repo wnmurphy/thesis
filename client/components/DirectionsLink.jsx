@@ -12,6 +12,6 @@ var DirectionsLink = React.createClass({
     var link = 'https://www.google.com/maps/dir/Current+Location/';
     link = link + this.props.location.latitude + ',' + this.props.location.longitude;
 
-    return <a href={link} target="_blank"><i className="material-icons">directions</i> Get directions</a>;
+    return <a href={link} className='button' target="_blank"><i className="material-icons">directions</i>&nbsp;Get directions</a>;
   }
 });
