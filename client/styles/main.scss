@@ -526,7 +526,7 @@ form {
   display: inline-block;
 }
 
-.follow-button, .save-button {
+.follow-button, .save-button, .save-spot-button {
   display: block;
   background-color: $primary-color;
   border-radius: 10px;
@@ -545,6 +545,11 @@ form {
   width: 150px;
   float: right;
   margin-right: 10px;
+}
+
+.save-spot-button {
+  width: 150px;
+  float: left;
 }
 
 .profile-bio {

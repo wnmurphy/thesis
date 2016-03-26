@@ -99,6 +99,18 @@ var SpotView = React.createClass({
     }
   },
 
+  saveSpot: function() {
+    if (localStorage.getItem('token')) {
+      SaveSpotController.saveSpot(this.state.spotId, function(spot) {
+        console.log(spot);
+      }, function(err) {
+        console.error(err);
+      });
+    } else {
+      //make user login
+    }
+  },
+
   render: function() {
 
     var chatContainerClass = "chat-card-container";
@@ -127,6 +139,7 @@ var SpotView = React.createClass({
           <h4>created by: <a href={this.state.creatorId} className="spot-view-creatorid">{this.state.spot.creator}</a></h4>
           <p>{this.state.spot.description}</p>
           <p>{this.state.spot.address}</p>
+          <div className='save-spot-button' onClick={this.saveSpot}>Save spot</div>
           <DirectionsLink location={this.state.spot.location} />
           <input type="button" value="show chat" onClick={this.toggleChat} />
         </div>

@@ -1,23 +1,20 @@
 /** @jsx React.DOM */
 
 var ProfileView = React.createClass({
-  getDefaultProps: function () {
-    return {
-      requireAuth: !window.location.hash.substring(10)
-    };
-  },
 
   getInitialState: function () {
     return this.updateState();
   },
 
   updateState: function () {
+    console.log('here ', !window.location.hash.substring(10));
     var state = {
       userId: window.location.hash.substring(10) || globalState.userId,
       shareClass: "share-card-container",
       buttonIcon: "fa fa-share-alt",
       sharing: false,
       editting: false,
+      requireAuth: !window.location.hash.substring(10)
     };
 
     var context = this;
@@ -64,7 +61,6 @@ var ProfileView = React.createClass({
   },
 
   followUser: function() {
-    console.log('1');
     FollowController.followUser(this.state.userId, function (data) {
       console.log(data);
     }, function (err) {
@@ -110,11 +106,12 @@ var ProfileView = React.createClass({
   render: function() {
 
     console.log("Rendering ProfileView");
-    if (this.props.requireAuth) {
-      var login = <LoginRequired parent={this} />;
-    } else {
-      var login = null;
-    }
+    var login = null;
+    console.log(this.state.requireAuth);
+    if (this.state.requireAuth) {
+      login = <LoginRequired parent={this} />;
+    } 
+      
 
     // shows only when signed in
     if (globalState.userId === this.state.userId) {

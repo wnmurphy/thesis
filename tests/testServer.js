@@ -177,9 +177,10 @@ describe("Persistent Spot and User Server", function() {
         console.error("Error getting Johnny's profile ", err);
       }
       body = JSON.parse(body);
+      console.log("test body: ", body);
       expect(res.statusCode).to.equal(200);
-      expect(body.userId).to.equal(999999999999);
-      expect(body.username).to.equal('Johnny');
+      expect(body.result.userId).to.equal(999999999999);
+      expect(body.result.username).to.equal('Johnny');
       done();
     });
   });

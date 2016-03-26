@@ -1,15 +1,15 @@
-var FollowController = {
-  followUser: function(followId, success, fail) {
+var SaveSpotController = {
+  saveSpot: function(spotId, success, fail) {
     $.ajax({
       method: 'POST',
-      url: '/api/followUser/',
+      url: '/api/saveSpot/',
       data: {
         "userId": localStorage.getItem('userId'),
-        "followUser": followId
+        "spotId": spotId
       },
       dataType: 'json',
       success: function (data) {
-        console.log("SUCCESSFULLY FOLLOWED USER =============>", data);
+        console.log("SUCCESSFULLY SAVED SPOT =============>", data);
         success(data);
       },
       error: function (error) {
