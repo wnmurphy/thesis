@@ -57,6 +57,7 @@ var ProfileController = {
   resizeImage: function (img, success) {
     console.log('resizing client side');
     var canvas = document.createElement('canvas');
+    canvas.className = 'hide';
     // canvas.className = 'hide';
     var width = 400, height = 400;
 
