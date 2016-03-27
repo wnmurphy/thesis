@@ -223,7 +223,7 @@ body {
 // ******************** MapView Button Stuff *************************** //
 .create-button-container, .collapse-button-container, .refresh-button-container,
 .center-button-container, .reset-button-container, .share-button-container,
-.filter-search {
+.about-button-container, .filter-search {
   -webkit-transition: all 1s;
           transition: all 1s;
 
@@ -251,12 +251,18 @@ body {
 
 .collapse-button-container,
 .refresh-button-container,
-.center-button-container {
+.center-button-container,
+.about-button-container {
   left: calc(#{$nav-height} * 0.5);
 }
 
+.about-button-container {
+  top: 100%;
+}
+
 .refresh-button-container,
-.center-button-container {
+.center-button-container,
+.about-button-container {
   opacity: 0;
   z-index: -1;
 }
@@ -277,6 +283,12 @@ body {
   z-index: 1000;
   -webkit-transform: rotate(0deg);
           transform: rotate(0deg);
+}
+
+.about-button-container-show {
+  z-index: 900;
+  opacity: 100;
+  top: calc(100% - #{$nav-height} * 2.5);
 }
 
 .collapse-button-container-show {

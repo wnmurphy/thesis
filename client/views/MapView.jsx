@@ -14,7 +14,8 @@ var MapView = React.createClass({
       collapseButtonContainer: "collapse-button-container",
       filterSearchClass: "filter-search",
       refreshButtonContainer: "refresh-button-container",
-      centerButtonContainer: "center-button-container"
+      centerButtonContainer: "center-button-container",
+      aboutButtonContainer: "about-button-container"
     };
   },
 
@@ -155,6 +156,11 @@ var MapView = React.createClass({
         </div>
         <div className={this.props.filterSearchClass + " " + this.props.filterSearchClass + this.state.showButtonClass}>
           <FilterSearch filterClass={this.state.filterClass} markers={this.state.markers} />
+        </div>
+        <div className={this.props.aboutButtonContainer + " " + this.props.aboutButtonContainer + this.state.showButtonClass}>
+          <a href="http://www.irl.events/" target="_blank" className={this.state.buttonClass}>
+            <i className="material-icons">info_outline</i>
+          </a>
         </div>
       </div>
     );
