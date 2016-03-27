@@ -18,7 +18,7 @@ var CreateView = React.createClass({
     var state = {};
     if (globalState.createState) {
       state = globalState.createState;
-    } 
+    }
     return state;
   },
 
@@ -66,7 +66,7 @@ var CreateView = React.createClass({
   sendSpot: function (event) {
     event.preventDefault();
     var context = this;
-    var duration = timeController.hoursToMS(this.state.hours) + timeController.minutesToMS(this.state.minutes); 
+    var duration = timeController.hoursToMS(this.state.hours) + timeController.minutesToMS(this.state.minutes);
     console.log('duration', duration);
     $.ajax({
       method: 'POST',
@@ -149,7 +149,7 @@ var CreateView = React.createClass({
       value: this.state.category,
       requestChange: this.selectChange
     };
-    
+
     return (
       <div>
         <div className="create-map-view-container">
@@ -163,7 +163,7 @@ var CreateView = React.createClass({
         <div>
           <form id="createSpotForm" onChange={this.handleChange} onSubmit={this.sendSpot}>
             <input type="text" id="address" placeholder="Location" onChange={this.changeAddress} value={this.state.address || ''} required />
-            <input type="text" id="name" placeholder="Title" defaultValue={this.state.name || ''} maxLength="50" required />
+            <input type="text" id="name" placeholder="Title" defaultValue={this.state.name || ''} maxLength="50" required autoComplete='off'/>
             <select valueLink={valueLink}>
               <option id="category">Select Category</option>
               <option id="category" value="General">&#xf069; General</option>
@@ -175,9 +175,9 @@ var CreateView = React.createClass({
               <option id="category" value="Nature & Outdoors">&#xf1bb; Nature & Outdoors</option>
               <option id="category" value="Politics">&#xf25b; Politics</option>
               <option id="category" value="Education">&#xf19d; Education</option>
-              
+
             </select>
-            <input type="text" id="description" placeholder="Description" defaultValue={this.state.description || ''} required />
+            <input type="text" id="description" placeholder="Description" defaultValue={this.state.description || ''} required autoComplete='off'/>
             <span className="time-input">Start Time</span>
             <input type="time" id="start" step="900" placeholder="Start" defaultValue={this.state.start || ''} required />
             <span className="time-input">Duration</span>
