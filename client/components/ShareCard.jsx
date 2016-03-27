@@ -1,8 +1,8 @@
 // Default values for contents (body) and subject of messages.
 var messageDefaults = {
-  contents: 'Check out Spots! www.spots.com',
-  subject: 'Check out Spots',
-  url: 'http://www.spots.com'
+  contents: 'Check out irl! www.irl.events',
+  subject: 'Check out irl',
+  url: 'www.irl.events'
 }
 
 
@@ -92,9 +92,20 @@ var ShareTwitter = React.createClass({
   getDefaultProps: function () {
     return {contents: messageDefaults.contents}
   },
+
+  getInitialState: function () {
+    var iOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+
+    if (iOS) {
+      return {href: 'twitter://post?message='};
+    } else {
+      return {href: 'https://twitter.com/intent/tweet?text='};
+    }
+  },
+
   render: function () {
     return (
-      <a href={'https://twitter.com/home?status='+this.props.contents} target="_blank" className="twitter">
+      <a href={this.state.href+this.props.contents} target="_blank" className="twitter">
         <i className="fa fa-twitter"></i>
       </a>
     );
@@ -109,6 +120,7 @@ var ShareCard = React.createClass({
   },
 
   render: function () {
+
     return (
       <div className='share-card'>
         <ShareSMS contents={this.props.shareProps.contents} />
