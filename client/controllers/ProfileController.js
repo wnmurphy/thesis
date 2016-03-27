@@ -40,12 +40,44 @@ var ProfileController = {
   sendImage: function (file, success) {
     console.log('file input', file);
     var reader = new FileReader();
+    var img = document.createElement('img');
+    img.className = 'hide';
 
     reader.onload = function (upload) {
-      success(upload.target.result);
-      ProfileController.updateProfile({img: upload.target.result});
+      img.src = upload.target.result;
+      ProfileController.resizeImage(img, function (imageDataUrl) {
+        success(imageDataUrl);
+        ProfileController.updateProfile({img: imageDataUrl});
+      });
     }
 
     reader.readAsDataURL(file);
+  },
+
+  resizeImage: function (img, success) {
+    console.log('resizing client side');
+    var canvas = document.createElement('canvas');
+    canvas.className = 'hide';
+    // canvas.className = 'hide';
+    var width = 400, height = 400;
+
+    if (img.width > img.height) {
+      width *= (img.width / img.height);
+    } else {
+      height *= (img.height / img.width);
+    }
+
+    canvas.height = 400;
+    canvas.width = 400;
+
+    var left = (400 - width) / 2;
+    var top = (400 - height) / 2;
+
+
+    var ctx = canvas.getContext('2d');
+    ctx.drawImage(img, left, top, width, height);
+
+    var imageDataUrl = canvas.toDataURL("image/jpeg");
+    success(imageDataUrl);
   }
 };
