@@ -83,7 +83,7 @@ var LoginCard = React.createClass({
     return (
       <div className='login-card'>
         <form onSubmit={this.handleSubmit} onChange={this.handleChange}>
-          <input name="username" type="text" placeholder="Username" required />
+          <input name="username" type="text" placeholder="Username" required autoComplete='off'/>
           <input name="password" type="password" placeholder="Password" required />
           <div className="button" onClick={this.handleSubmit}>Log In</div>
           <div className="button" onClick={this.toggleCard}>Create Account</div>
@@ -129,8 +129,8 @@ var SignupCard = React.createClass({
     return (
       <div className='login-card'>
         <form onSubmit={this.handleSubmit} onChange={this.handleChange}>
-          <input name="username" type="text" placeholder="Username" required />
-          <input name="email" type="email" placeholder="Email" required />
+          <input name="username" type="text" placeholder="Username" required autoComplete='off'/>
+          <input name="email" type="email" placeholder="Email" required autoComplete='off'/>
           <input name="password" type="password" placeholder="Password" required />
           <div className="button" onClick={this.handleSubmit}>Signup</div>
           <div className="button" onClick={this.toggleCard}>Existing Account</div>

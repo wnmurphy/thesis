@@ -86,7 +86,7 @@ var SearchView = React.createClass({
     return (
       <div className="search-view">
         <form id="search-form" onSubmit={this.handleSubmit}>
-          <input type="text" placeholder="Search" value={this.state.query} onChange={this.handleChange} />
+          <input type="text" placeholder="Search" value={this.state.query} onChange={this.handleChange} autoComplete='off'/>
           <div className='button' onClick={this.handleSubmit}>Search</div>
         </form>
         <h2 className="search-results-container"> {this.state.message ? this.state.message : null} </h2>
