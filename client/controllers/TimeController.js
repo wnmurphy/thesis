@@ -54,12 +54,12 @@ var timeController = {
 
   minutesToMS: function(minutes) {
     return minutes * 60000;
-  }, 
+  },
 
   msToDuration: function(ms) {
   var hourStr = " hour ";
   var convertMin, minutes, hours, minStr;
-  
+
     if(!Number.isInteger(ms / 3600000)) {
       minStr = " minutes";
       minutes = ms % 3600000;
@@ -78,7 +78,7 @@ var timeController = {
       }
     } else {
       hours = Math.floor(ms / 3600000);
-      
+
       if(hours > 1) {
         hourStr = " hours";
       }
@@ -94,5 +94,10 @@ var timeController = {
       timeString = timeController.msToDuration(Number(spot.end) + Number(spot.start) - new Date().getTime()) + " left";
     }
     return timeString;
+  },
+
+  timestampToTime: function (timestamp) {
+  	var time = new Date(timestamp).toLocaleTimeString();
+  	return time.substring(0, time.length - 6) + time.substring(time.length - 3);
   }
 }

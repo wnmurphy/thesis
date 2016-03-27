@@ -47,6 +47,8 @@ var AuthController = {
       success: function (data) {
         globalState.userId = data.userId;
         localStorage.setItem('token', JSON.stringify(data.token));
+        localStorage.setItem('userId', data.userId);
+        localStorage.setItem('username', data.username);
         AuthController.initAuth();
         success();
       },
