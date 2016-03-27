@@ -2,7 +2,7 @@
 var messageDefaults = {
   contents: 'Check out irl! www.irl.events',
   subject: 'Check out irl',
-  url: 'http://www.irl.events/'
+  url: 'www.irl.events'
 }
 
 
