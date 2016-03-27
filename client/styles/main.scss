@@ -693,6 +693,10 @@ form {
     -webkit-transform:translate(-30px, -2px);
            transform:translate(-30px, -2px);
   }
+
+  .message-footer {
+    float: right;
+  }
 }
 
 .chat-bubble {
@@ -726,10 +730,15 @@ form {
     border-bottom-right-radius: 10px;
     -webkit-transform:translate(-30px, -2px);
   }
+
+  .message-footer {
+    float: left;
+  }
 }
 
 .chat {
-  max-width: 450px;
+  width: calc(100% - 40px);
+  max-width: 600px;
   margin: 50px auto;
 
   div {
@@ -738,6 +747,18 @@ form {
     margin-bottom: 20px;
     line-height: 24px;
   }
+}
+
+.message-text {
+  margin-bottom: 0 !important;
+
+}
+
+.message-footer {
+  margin-bottom: 0 !important;
+  font-size: 0.7em;
+  font-weight: lighter;
+  font-style: italic;
 }
 
 .search-result{

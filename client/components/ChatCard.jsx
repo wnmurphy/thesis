@@ -34,6 +34,7 @@ var Chat = React.createClass({
     }
     socket.emit('messageSend', message);
     this.setState({message: ""});
+    scrollChat();
   },
 
   handleChange: function(event) {
@@ -46,13 +47,14 @@ var Chat = React.createClass({
 
     var messages = this.state.messages.map(function(message) {
       if (user === message.username) {
-        var bubble = "user-bubble";
+        var bubble = "user-bubble clear";
       } else {
-        var bubble = "chat-bubble";
+        var bubble = "chat-bubble clear";
       }
       return (
         <div className={bubble}>
-          <span>{message.timeStamp}: </span><span>{message.username} - </span><span>{message.text}</span>
+          <div className="message-text">{message.text}</div>
+          <div className="message-footer">{message.username} @{timeController.timestampToTime(message.timeStamp)}</div>
         </div>
       )
     }, this);
@@ -72,7 +74,7 @@ var Chat = React.createClass({
 
           <form className="chat-form" onSubmit={this.handleSubmit}>
 
-            <input type="text" className="chat-input" value={this.state.message} placeholder="speak yo mind, russell" name="message" onChange={this.handleChange} autoComplete='off'/>
+            <input type="text" className="chat-input" defaultValue={this.state.message} placeholder="speak yo mind, russell" name="message" onChange={this.handleChange} autoComplete='off'/>
 
             <div className="button small right" onClick={this.handleSubmit}>send</div>
           </form>
@@ -82,3 +84,9 @@ var Chat = React.createClass({
     );
   }
 });
+
+
+var scrollChat =  function () {
+  console.log($(".chat-container").height());
+  $(".chat-container").animate({ scrollTop: $('.chat-container').height() + 100}, 500);
+}
