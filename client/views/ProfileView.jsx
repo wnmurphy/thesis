@@ -133,7 +133,7 @@ var ProfileView = React.createClass({
 
     // handles how image, bio, and follow display
     if (this.state.signedIn) {
-      var followButton = null;
+      var followButton = (<div className="follow-button" onClick={AuthController.signOut}>Sign Out</div>);
       if(this.state.img) {
         var style = {
           'background-image': 'url(' + this.state.img + ')'
