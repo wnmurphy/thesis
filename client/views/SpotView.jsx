@@ -144,7 +144,7 @@ var SpotView = React.createClass({
           <p>{this.state.spot.description}</p>
           <p>{this.state.spot.address}</p>
             <DirectionsLink location={this.state.spot.location} />
-            <div className='button' onClick={this.saveSpot}><i className="material-icons">check_circle</i>&nbsp;Save spot</div>
+            <div className='button' onClick={this.checkAuth}><i className="material-icons">check_circle</i>&nbsp;Save spot</div>
             <div className='button' onClick={this.toggleChat}><i className="material-icons">message</i>&nbsp;show chat</div>
         </div>
         <div className={this.state.shareClass} onClick={this.toggleShare}>
