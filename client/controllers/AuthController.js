@@ -1,5 +1,5 @@
 var AuthController = {
-  initAuth: function () {
+  initAuth: function (callback) {
     AuthController.signedIn = false;
     globalState.userId = localStorage.getItem('userId');
     if (!globalState.userId) localStorage.removeItem('token');
@@ -12,9 +12,10 @@ var AuthController = {
     }
   },
 
-  signOut: function () {
+  signOut: function (callback) {
     localStorage.removeItem('token');
     AuthController.initAuth();
+    window.location.hash = '';
   },
 
   sendLogin: function (login, success, fail) {
