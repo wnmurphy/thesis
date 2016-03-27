@@ -137,7 +137,6 @@ var SpotView = React.createClass({
           </div>
           <h3>@{" " + timeController.msToTime(this.state.spot.start)}</h3>
           {end}
-          <p style={{'fontStyle': 'italic', 'fontSize': '14px'}}>{this.state.end}</p>
           <h4>created by: <a href={this.state.creatorId} className="spot-view-creatorid">{this.state.spot.creator}</a></h4>
           <p>{this.state.spot.description}</p>
           <p>{this.state.spot.address}</p>
