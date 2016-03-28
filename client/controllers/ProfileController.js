@@ -38,7 +38,6 @@ var ProfileController = {
   },
 
   sendImage: function (file, success) {
-    console.log('file input', file);
     var reader = new FileReader();
     var img = document.createElement('img');
     img.className = 'hide';
@@ -49,7 +48,7 @@ var ProfileController = {
         success(imageDataUrl);
         ProfileController.updateProfile({img: imageDataUrl});
       });
-    }
+    };
 
     reader.readAsDataURL(file);
   },
@@ -58,7 +57,6 @@ var ProfileController = {
     console.log('resizing client side');
     var canvas = document.createElement('canvas');
     canvas.className = 'hide';
-    // canvas.className = 'hide';
     var width = 400, height = 400;
 
     if (img.width > img.height) {
@@ -66,7 +64,7 @@ var ProfileController = {
     } else {
       height *= (img.height / img.width);
     }
-
+    
     canvas.height = 400;
     canvas.width = 400;
 
@@ -79,5 +77,24 @@ var ProfileController = {
 
     var imageDataUrl = canvas.toDataURL("image/jpeg");
     success(imageDataUrl);
+  }, 
+
+  followUser: function(followId, success, fail) {
+    $.ajax({
+      method: 'POST',
+      url: '/api/followUser/',
+      data: {
+        "userId": localStorage.getItem('userId'),
+        "followUser": followId
+      },
+      dataType: 'json',
+      success: function (data) {
+        console.log("SUCCESSFULLY FOLLOWED USER =============>", data);
+        success(data);
+      },
+      error: function (error) {
+        fail(error.responseText);
+      }
+    });
   }
 };

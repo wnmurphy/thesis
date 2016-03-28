@@ -871,12 +871,12 @@ form {
   }
 }
 
-a.spot-view-creatorid, .map-view-userid, .search-view-creator {
+a.spot-view-creatorid, .map-view-userid, .search-view-creator, .following, .follower {
   color: black;
   text-decoration: none;
 }
 
-a.spot-view-creatorid:hover, .map-view-userid:hover, .search-view-creator:hover {
+a.spot-view-creatorid:hover, .map-view-userid:hover, .search-view-creator:hover, .following:hover, .follower:hover {
   text-decoration: underline;
 }
 
@@ -905,3 +905,12 @@ input#start {
 .spot-name-link:hover {
   cursor: pointer;
 }
+
+.followers-header, .following-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: $color-dark;
+  color: white;
+}
+

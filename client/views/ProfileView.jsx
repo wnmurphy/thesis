@@ -7,7 +7,6 @@ var ProfileView = React.createClass({
   },
 
   updateState: function () {
-    console.log('here ', !window.location.hash.substring(10));
     var state = {
       userId: window.location.hash.substring(10) || globalState.userId,
       shareClass: "share-card-container",
@@ -61,7 +60,7 @@ var ProfileView = React.createClass({
   },
 
   followUser: function() {
-    FollowController.followUser(this.state.userId, function (data) {
+    ProfileController.followUser(this.state.userId, function (data) {
       console.log(data);
     }, function (err) {
       console.error(err);
@@ -111,7 +110,6 @@ var ProfileView = React.createClass({
     }
 
     var login = null;
-    console.log(this.state.requireAuth);
     if (this.state.requireAuth) {
       login = <LoginRequired parent={this} />;
     }
@@ -136,12 +134,37 @@ var ProfileView = React.createClass({
                   </div>);
 
     // handles how image, bio, and follow display
+    var checkFollowers = 'followers-container hide';
+    var checkFollowing = 'following-container hide';
+    var followingList = null;
+    var followersList = null;
     if (this.state.signedIn) {
       var followButton = (<div className="follow-button" onClick={AuthController.signOut}>Sign Out</div>);
+      if (this.state.followersList && this.state.followersList.length > 0) {
+        checkFollowers ='followers-container';
+      } 
+      if (this.state.followingList && this.state.followingList.length > 0) {
+        checkFollowing = 'following-container';
+      } 
+      //set var following
+      followingList = this.state.followingList.map(function (user) {
+        var curUrl = '/#/profile' + user.userId;
+        return (
+            <div><a href={curUrl} className="following">{user.username}</a></div>
+          );
+      });
+      //set var followers
+      followersList = this.state.followersList.map(function (user) {
+        var curUrl = '/#/profile' + user.userId;
+        return (
+            <div><a href={curUrl} className="follower">{user.username}</a></div>
+          );
+      });
+      var followButton = null;
       if(this.state.img) {
         var style = {
           'background-image': 'url(' + this.state.img + ')'
-        }
+        };
 
         var profileImage = <div className="profile-picture add clickable" style={style} onClick={this.handleFileInput} >
                             <input type="file" id="img" className="hide" onChange={this.handleChange} accept="image/*"/>
@@ -186,8 +209,6 @@ var ProfileView = React.createClass({
       var bio = <h3 className={bioClass} onClick={editable}>{this.state.bio}{editMsg}</h3>
     }
 
-
-
     return (
       <div className="profile-view">
         <div className="profile-header">
@@ -215,6 +236,14 @@ var ProfileView = React.createClass({
         {login}
         {shareButton}
         {editButton}
+        <div className={checkFollowing}>
+          <h3 className='following-header'>Following: </h3> 
+          <div>{followingList}</div>
+        </div>
+        <div className={checkFollowers}>
+          <h3 className='followers-header'>Followers: </h3> 
+          <div>{followersList}</div>
+        </div>
       </div>
     );
   }

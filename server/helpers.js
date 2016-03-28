@@ -351,7 +351,9 @@ module.exports = {
           bio: user.Items[0].bio || "This user has not created a bio yet.",
           spotCount: user.Items[0].spotCount || 0,
           followers: user.Items[0].followers.length || 0,
-          img: user.Items[0].img
+          followersList: user.Items[0].followers || [],
+          img: user.Items[0].img,
+          followingList: user.Items[0].following || []
         });
       }
       else {
