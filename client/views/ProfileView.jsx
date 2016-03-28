@@ -134,28 +134,30 @@ var ProfileView = React.createClass({
                   </div>);
 
     // handles how image, bio, and follow display
-    var checkFollowers = 'hide';
-    var checkFollowing = 'hide';
+    var checkFollowers = 'followers-container hide';
+    var checkFollowing = 'following-container hide';
     var followingList = null;
     var followersList = null;
     if (this.state.signedIn) {
       var followButton = (<div className="follow-button" onClick={AuthController.signOut}>Sign Out</div>);
       if (this.state.followersList && this.state.followersList.length > 0) {
-        checkFollowers ='';
+        checkFollowers ='followers-container';
       } 
       if (this.state.followingList && this.state.followingList.length > 0) {
-        checkFollowing = '';
+        checkFollowing = 'following-container';
       } 
       //set var following
       followingList = this.state.followingList.map(function (user) {
+        var curUrl = '/#/profile' + user.userId;
         return (
-            <div className="following">{user.username}</div>
+            <div><a href={curUrl} className="following">{user.username}</a></div>
           );
       });
       //set var followers
       followersList = this.state.followersList.map(function (user) {
+        var curUrl = '/#/profile' + user.userId;
         return (
-            <div className="follower">{user.username}</div>
+            <div><a href={curUrl} className="follower">{user.username}</a></div>
           );
       });
       var followButton = null;
@@ -235,11 +237,11 @@ var ProfileView = React.createClass({
         {shareButton}
         {editButton}
         <div className={checkFollowing}>
-          Following: 
+          <h3 className='following-header'>Following: </h3> 
           <div>{followingList}</div>
         </div>
         <div className={checkFollowers}>
-          Followers: 
+          <h3 className='followers-header'>Followers: </h3> 
           <div>{followersList}</div>
         </div>
       </div>
