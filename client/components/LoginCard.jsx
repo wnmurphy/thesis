@@ -82,6 +82,7 @@ var LoginCard = React.createClass({
     console.log("Rendering LoginView");
     return (
       <div className='login-card'>
+        <a className='close-login' href='/#/'>x</a>
         <form onSubmit={this.handleSubmit} onChange={this.handleChange}>
           <input name="username" type="text" placeholder="Username" required autoComplete='off'/>
           <input name="password" type="password" placeholder="Password" required />
@@ -128,6 +129,7 @@ var SignupCard = React.createClass({
     console.log("Rendering LoginView");
     return (
       <div className='login-card'>
+        <a className='close-login' href='/#/'>x</a>
         <form onSubmit={this.handleSubmit} onChange={this.handleChange}>
           <input name="username" type="text" placeholder="Username" required autoComplete='off'/>
           <input name="email" type="email" placeholder="Email" required autoComplete='off'/>
