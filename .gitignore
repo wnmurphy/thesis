@@ -12,6 +12,3 @@ client/lib
 tests/*.js
 !tests/testServer.js
 !tests/socket.io-1.4.5.js
-
-.floo
-.flooignore

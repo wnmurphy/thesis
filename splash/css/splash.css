@@ -98,18 +98,21 @@ h3.tagline {
   border-radius: 100%;
 }
 
-.tech {
-
-}
-
 .tech-name {
+  text-align: center;
+  font-size: 1.3em;
+  font-weight: 900;
+  margin-top: 15px;
+  margin-bottom: 25px;
+  height: 2em;
 }
 
 .tech-logo img{
+  display: flex;
+  justify-content: center;
   width: 80%;
   height: 80%;
 }
-
 
 .page-footer {
   background-color: rgb(144, 213, 181) !important;
@@ -123,4 +126,13 @@ h3.tagline {
   width: 100%;
   display: flex;
   justify-content: center;
+}
+
+.privacy-container {
+  padding: 20px 0px 20px 0px;
+}
+
+.privacy-container li {
+  margin-left: 5px;
+  list-style-type: circle;
 }
