@@ -177,7 +177,7 @@ module.exports = {
       } else {
         data.Items.forEach(function(result) {
           if(result.location && result.location.constructor === Object) {
-            if(context.distanceBetween(location, result.location) < 50) {
+            if(context.distanceBetween(location, result.location) < 25) {
               filteredDistSpots.push(result);
             }
           }

@@ -229,11 +229,12 @@ var initMap = function (location, context, callback) {
       latitude: this.center.lat(),
       longitude: this.center.lng()
     }
-    context.setState({center: center});
+    context.setState({center: center}, function() {
+      if (context.getSpots) {
+        context.getSpots();
+      }
+    });
     context.setState({selected: false});
-    if (context.getSpots) {
-      context.getSpots();
-    }
   });
 
   google.maps.event.addListener(map, 'zoom_changed', function(event) {
@@ -298,6 +299,7 @@ var createMarker = function(spot, animate, context) {
   // Create a new map marker for each spot.
   var spot = new google.maps.Marker({
     infoWindow: infoWindow,
+    optimized: false,
     icon: icon,
     position: new google.maps.LatLng(spot.location.latitude, spot.location.longitude),
     map: context.state.map,
@@ -327,11 +329,13 @@ var createMarker = function(spot, animate, context) {
   // When user clicks on spot, open summary bubble, load that spot's data, and center the map on the marker.
   google.maps.event.addListener(spot, 'click', function () {
     if (context.state.previous) {
-      context.state.previous.close();
+      context.state.previous.getInfoWinow().close();
+      context.state.previous.setIcon('/img/map/pin_test.png');
     }
     infoWindow.setContent(this.info);
     infoWindow.open(context.state.map, this);
-    context.setState({previous: this.getInfoWindow()});
+    this.setIcon('../img/map/marker_animated.gif')
+    context.setState({previous: this});
     context.setState({selected: this.getPosition()});
     context.state.map.offsetPan(this.getPosition(), 0, -55);
   })
@@ -406,7 +410,7 @@ var placeMarker = function(context, query, infoWindow, map, name) {
     query.name = name;
   }
   
-  context.state.marker.setIcon('/img/map/pin_test.png');
+  context.state.marker.setIcon('/img/map/marker_animated.gif');
   
   infoWindow.setContent('<div><strong>' + query.name + '</strong><br>' + street + '<br>' + locality + '</div>');
 

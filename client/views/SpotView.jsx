@@ -58,7 +58,8 @@ var SpotView = React.createClass({
         context.setState({creatorId: "/#/profile/" + data.creatorId});
         initMap(data.location, context, function(map, position, marker) {
           map.setOptions({zoomControl: false});
-          marker.setIcon('/img/map/pin_test.png');
+          marker.setOptions({optimized: false});
+          marker.setIcon('/img/map/marker_animated.gif');
         });
         var durationTime = timeController.msToDuration(Number(data.end));
         context.setState({end: durationTime});
