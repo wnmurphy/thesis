@@ -162,19 +162,19 @@ var CreateView = React.createClass({
         </div>
         <div>
           <form id="createSpotForm" onChange={this.handleChange} onSubmit={this.sendSpot}>
-            <input type="text" id="address" placeholder="Location" onChange={this.changeAddress} value={this.state.address || ''} required />
             <input type="text" id="name" placeholder="Title" defaultValue={this.state.name || ''} maxLength="50" required autoComplete='off'/>
+            <input type="text" id="address" placeholder="Location" onChange={this.changeAddress} value={this.state.address || ''} required />
             <select valueLink={valueLink}>
               <option id="category">Select Category</option>
-              <option id="category" value="General">&#xf069; General</option>
-              <option id="category" value="Food">&#xf0f5; Food</option>
-              <option id="category" value="Entertainment">&#xf145; Entertainment</option>
-              <option id="category" value="Health & Fitness">&#xf21e; Health & Fitness</option>
-              <option id="category" value="Arts & Culture">&#xf1fc; Arts & Culture</option>
-              <option id="category" value="Parties & Nightlife">&#xf000; Parties & Nightlife</option>
-              <option id="category" value="Nature & Outdoors">&#xf1bb; Nature & Outdoors</option>
-              <option id="category" value="Politics">&#xf25b; Politics</option>
-              <option id="category" value="Education">&#xf19d; Education</option>
+              <option id="category" value="General">General</option>
+              <option id="category" value="Food">Food</option>
+              <option id="category" value="Entertainment">Entertainment</option>
+              <option id="category" value="Health & Fitness">Health & Fitness</option>
+              <option id="category" value="Arts & Culture">Arts & Culture</option>
+              <option id="category" value="Parties & Nightlife">Parties & Nightlife</option>
+              <option id="category" value="Nature & Outdoors">Nature & Outdoors</option>
+              <option id="category" value="Politics">Politics</option>
+              <option id="category" value="Education">Education</option>
 
             </select>
             <input type="text" id="description" placeholder="Description" defaultValue={this.state.description || ''} required autoComplete='off'/>
@@ -185,7 +185,8 @@ var CreateView = React.createClass({
               <input type="number" className="duration-input" step="1" min="1" max="24" id="hours" placeholder="Hours" defaultValue={this.state.hours || ''} />
               <input type="number" className="duration-input" step="15" min="0" max="60" id="minutes" placeholder="Minutes" defaultValue={this.state.minutes || ''}/>
             </div>
-            <input type="submit" value="submit" />
+
+              <div className="button" onClick={this.handleSubmit}>Submit</div>
           </form>
         </div>
         <LoginRequired />
