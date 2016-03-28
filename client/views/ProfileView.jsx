@@ -106,6 +106,10 @@ var ProfileView = React.createClass({
   render: function() {
 
     console.log("Rendering ProfileView");
+    if (!window.location.hash.substring(10) !== this.state.requireAuth) {
+      this.setState(this.updateState());
+    }
+
     var login = null;
     console.log(this.state.requireAuth);
     if (this.state.requireAuth) {
