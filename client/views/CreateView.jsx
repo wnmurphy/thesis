@@ -29,6 +29,8 @@ var CreateView = React.createClass({
 
     marker.setIcon('/img/map/you_test.png');
 
+    marker.setOptions({optimized: false});
+    
     var context = this;
 
     var autocomplete = new google.maps.places.Autocomplete(document.getElementById('address'));

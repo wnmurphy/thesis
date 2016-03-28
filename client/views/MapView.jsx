@@ -88,7 +88,7 @@ var MapView = React.createClass({
         context.setState({spots: data});
         context.setState({refreshingClass: ""});
         sweepMarkers(context, function() {
-          context.initSpots(animate);
+          context.initSpots(false);
         })
       },
       error: function (error) {
