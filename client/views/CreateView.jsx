@@ -1,7 +1,9 @@
 /** @jsx React.DOM */
 
+// This component renders the page to create a new spot.
 var CreateView = React.createClass({
 
+  // Sets current user location and creates the map.
   componentDidMount: function() {
     var context = this;
     var setLocation = globalState.location;
@@ -22,7 +24,11 @@ var CreateView = React.createClass({
     return state;
   },
 
+  // Handles search for autocomplete location.
+  // Initiates a new map for CreateView.
+  // Sets up listener to update map and marker based on address input value.
   searchMap: function (map, position, marker) {
+
     google.maps.event.clearListeners(map, 'zoom_changed');
 
     map.setOptions({disableDefaultUI: true});
@@ -33,8 +39,10 @@ var CreateView = React.createClass({
     
     var context = this;
 
+    // Create a new Google Maps autocomplete object based on addess input field.
     var autocomplete = new google.maps.places.Autocomplete(document.getElementById('address'));
 
+    // Bind autocomplete object to current map.
     autocomplete.bindTo('bounds', map);
 
     var infowindow = new google.maps.InfoWindow({
@@ -46,6 +54,7 @@ var CreateView = React.createClass({
 
     this.setState({marker: marker}, function() {
 
+      // Listen for new address autocomplete value, and update map marker.
       google.maps.event.addListener(autocomplete, 'place_changed', function() {
 
         var place = autocomplete.getPlace();
@@ -65,6 +74,9 @@ var CreateView = React.createClass({
     });
   },
 
+  // POST new spot to server for storage in database.
+  // Calculates event duration.
+  // On success, emits socket event to notify other clients to update.
   sendSpot: function (event) {
     event.preventDefault();
     var context = this;
@@ -94,6 +106,7 @@ var CreateView = React.createClass({
     })
   },
 
+  // Converts device GPS coords into a street address.
   getAddress: function (event) {
     if (event) {
       event.preventDefault();
@@ -122,10 +135,12 @@ var CreateView = React.createClass({
     })
   },
 
+  // Updates event category when user changes category selector.
   selectChange: function(category) {
     this.setState({category: category});
   },
 
+  // Turns input field red when character limit is reached.
   handleChange: function (event) {
     var context = this;
     var newState = {};
@@ -141,12 +156,18 @@ var CreateView = React.createClass({
     this.setState(newState);
   },
 
+  // Updates address in state when location field is updated.
   changeAddress: function (event) {
     this.setState({address: event.target.value});
   },
 
+
   render: function () {
+    // Saves user input in case user navigates away from page.
     globalState.createState = this.state;
+
+    // Handles 2-way data binding for category drop-down selector.
+    // Uses it's own change handler (selectChange) instead of handleChange.
     var valueLink = {
       value: this.state.category,
       requestChange: this.selectChange
@@ -177,7 +198,6 @@ var CreateView = React.createClass({
               <option id="category" value="Nature & Outdoors">Nature & Outdoors</option>
               <option id="category" value="Politics">Politics</option>
               <option id="category" value="Education">Education</option>
-
             </select>
             <input type="text" id="description" placeholder="Description" defaultValue={this.state.description || ''} required autoComplete='off'/>
             <span className="time-input">Start Time</span>

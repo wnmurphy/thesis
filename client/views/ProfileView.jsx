@@ -1,25 +1,27 @@
 /** @jsx React.DOM */
 
+// This component renders a user profile.
 var ProfileView = React.createClass({
 
   getInitialState: function () {
     return this.updateState();
   },
 
+  // Retrieves profile information from server and stores in state.
   updateState: function () {
     var state = {
       userId: window.location.hash.substring(10) || globalState.userId,
       shareClass: "share-card-container",
       buttonIcon: "fa fa-share-alt",
       sharing: false,
-      editting: false,
+      editing: false,
       requireAuth: !window.location.hash.substring(10)
     };
 
     var context = this;
     ProfileController.getProfile(state.userId, function (profile) {
       context.setState(profile);
-      if(profile.username) {
+      if (profile.username) {
         MetaController.setOGP({
           title: profile.username + ' on irl',
           description: profile.bio,
@@ -37,14 +39,14 @@ var ProfileView = React.createClass({
     return state;
   },
 
+  // If user is not logged in, this saves the function in progress to run after login prompt.
   post: function () {
-    console.log("signIn triggered");
     this.setState({userId: globalState.userId}, function () {
-      console.log("callback triggered");
       this.setState(this.updateState());
     });
   },
 
+  // Toggles visibility of shareCard.
   toggleShare: function () {
     var sharing = !this.state.sharing;
     var newState = {sharing: sharing};
@@ -59,6 +61,7 @@ var ProfileView = React.createClass({
     this.setState(newState);
   },
 
+  // Add the userId of the currently displayed profile to current user's follow list.
   followUser: function() {
     ProfileController.followUser(this.state.userId, function (data) {
       console.log(data);
@@ -67,19 +70,21 @@ var ProfileView = React.createClass({
     });
   },
 
+  // Opens option to edit user profile photo and bio.
   toggleEdit: function () {
-    var editting = !this.state.editting;
-    console.log('toggled editting to', editting);
+    var editing = !this.state.editing;
     this.setState({
-      editting: editting
+      editing: editing
     });
   },
 
+  // Turn off editing mode and send updated profile info to the server.
   handleSubmit: function () {
     this.toggleEdit();
     ProfileController.updateProfile({bio: this.state.bio});
   },
 
+  // If profile photo is changed, convert it and send the file to the server.
   handleChange: function (event) {
     var context = this;
     var newState = {};
@@ -94,34 +99,37 @@ var ProfileView = React.createClass({
     }
   },
 
+  // ##(Josh) wut
   handleFileInput: function () {
     $('#img').click();
   },
 
+  // Retrieves user information from server after successful login.
   handleLogin: function () {
     this.setState(this.updateState());
   },
 
   render: function() {
 
-    console.log("Rendering ProfileView");
+    // Check whether you're on someone else's profile or your own.
     if (!window.location.hash.substring(10) !== this.state.requireAuth) {
       this.setState(this.updateState());
     }
 
+    // Open loginCard if you go to your own profile and aren't logged in.
     var login = null;
     if (this.state.requireAuth) {
       login = <LoginRequired parent={this} />;
     }
 
-
-    // shows only when signed in
+    // Display edit button if current profile is your own.
     if (globalState.userId === this.state.userId) {
       var editButton = <div id="edit-button" />;
     } else {
       var editButton = null
     }
 
+    // Create share button for sharing a profile.
     var shareButton =  (<div>
                     <div className={this.state.shareClass} onClick={this.toggleShare}>
                       <ShareCard shareProps={this.state.shareProps}/>
@@ -133,27 +141,30 @@ var ProfileView = React.createClass({
                     </div>
                   </div>);
 
-    // handles how image, bio, and follow display
+    // Handle conditional display of subscriptions, image, and bio if current profile is your own.
     var checkFollowers = 'followers-container hide';
     var checkFollowing = 'following-container hide';
     var followingList = null;
     var followersList = null;
+
     if (this.state.signedIn) {
       var followButton = (<div className="follow-button" onClick={AuthController.signOut}>Sign Out</div>);
       if (this.state.followersList && this.state.followersList.length > 0) {
         checkFollowers ='followers-container';
-      } 
+      }
       if (this.state.followingList && this.state.followingList.length > 0) {
         checkFollowing = 'following-container';
-      } 
-      //set var following
+      }
+
+      // Define list of users you're subscribed to.
       followingList = this.state.followingList.map(function (user) {
         var curUrl = '/#/profile' + user.userId;
         return (
             <div><a href={curUrl} className="following">{user.username}</a></div>
           );
       });
-      //set var followers
+
+      // Define list of users subscribed to you.
       followersList = this.state.followersList.map(function (user) {
         var curUrl = '/#/profile' + user.userId;
         return (
@@ -161,6 +172,8 @@ var ProfileView = React.createClass({
           );
       });
       var followButton = null;
+
+      // Retrieve user's profile image, otherwise render default.
       if(this.state.img) {
         var style = {
           'background-image': 'url(' + this.state.img + ')'
@@ -171,7 +184,7 @@ var ProfileView = React.createClass({
                             <div className="change-image-message">Change image</div>
                            </div>
       } else {
-        var profileImage = (<div className="no-profile-picture add clicakable" onClick={this.handleFileInput}>
+        var profileImage = (<div className="no-profile-picture add clickable" onClick={this.handleFileInput}>
                               <div>
                                 <i className="fa fa-plus" /><br />Add an image
                               </div>
@@ -189,8 +202,8 @@ var ProfileView = React.createClass({
       }
     }
 
-    // Handles editing bio
-    if (this.state.editting) {
+    // Handles editing mode for user bio.
+    if (this.state.editing) {
       var bio =
         <div className="bio-input-container">
           <input type="textbox" id='bio' className="bio-input" defaultValue={this.state.bio} onChange={this.handleChange}></input>
@@ -237,11 +250,11 @@ var ProfileView = React.createClass({
         {shareButton}
         {editButton}
         <div className={checkFollowing}>
-          <h3 className='following-header'>Following: </h3> 
+          <h3 className='following-header'>Following: </h3>
           <div>{followingList}</div>
         </div>
         <div className={checkFollowers}>
-          <h3 className='followers-header'>Followers: </h3> 
+          <h3 className='followers-header'>Followers: </h3>
           <div>{followersList}</div>
         </div>
       </div>
