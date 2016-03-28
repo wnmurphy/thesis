@@ -23,7 +23,7 @@ var categories = {
   "Nature & Outdoors": "fa fa-tree",
   Politics: "fa fa-hand-peace-o",
   Education: "fa fa-graduation-cap"
-}
+};
 
 var routes = (
   <Router history={browserHistory}>
@@ -32,8 +32,6 @@ var routes = (
     <Route path="/create" component={CreateView} />
     <Route path="/search" component={SearchView} />
     <Route path="/feed" component={FeedView} />
-    <Route path="/signup" component={SignupView} />
-    <Route path="/login" component={LoginView} />
     <Route path="/profile" component={ProfileView} />
     <Route path="/profile/:profileId" component={ProfileView} />
     <Route path="/share" component={ShareCard} />

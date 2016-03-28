@@ -1,5 +1,6 @@
 /** @jsx React.DOM */
 
+// This component renders the full-page view for more spot information.
 var SpotView = React.createClass({
 
   getInitialState: function() {
@@ -47,9 +48,7 @@ var SpotView = React.createClass({
       url: '/api' + context.state.spotHash,
       dataType: 'json',
       success: function (data) {
-        console.log("data: ", data);
         context.setState({spot: data});
-        console.log("SUCCESS: ", context.state.spot);
         MetaController.setOGP({
           title: context.state.spot.name,
           description: context.state.spot.description
@@ -100,6 +99,7 @@ var SpotView = React.createClass({
      });
     }
   },
+
   checkAuth: function() {
     if (localStorage.getItem('token')) {
       this.post();
@@ -110,7 +110,6 @@ var SpotView = React.createClass({
 
   post: function() {
     SaveSpotController.saveSpot(this.state.spotId, function(spot) {
-      console.log(spot);
     }, function(err) {
       console.error(err);
     });
@@ -120,7 +119,6 @@ var SpotView = React.createClass({
 
     var chatContainerClass = "chat-card-container";
 
-    console.log(this.state.spot.end);
     if (this.state.spot.end) {
       var end = <p style={{'font-style': 'italic', 'font-size': '14px'}}>{this.state.end}</p>
     } else {
@@ -156,7 +154,6 @@ var SpotView = React.createClass({
             <i className={this.state.buttonIcon}></i>
           </a>
         </div>
-
         <div className={chatContainerClass + this.state.showChat}>
           <Chat messages={this.state.messages} spotId={this.state.spotId}/>
         </div>
@@ -166,5 +163,4 @@ var SpotView = React.createClass({
       </div>
     );
   }
-
 });

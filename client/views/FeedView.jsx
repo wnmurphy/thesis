@@ -1,5 +1,6 @@
 /** @jsx React.DOM */
 
+// This component renders the user's feed.
 var FeedView = React.createClass({
   getInitialState: function() {
       return {
@@ -7,6 +8,9 @@ var FeedView = React.createClass({
         followedUsersSpots: []
       };
   },
+
+  // Retrieves the user's saved spots and spots from followed users.
+  // Stores results in state for rendering.
   componentDidMount: function() {
     var context = this;
     FeedController.getSpots(function(data){
@@ -25,10 +29,9 @@ var FeedView = React.createClass({
     });
   },
 
+  // For each saved spot or spot from followed user, build link to
+  // corresponding page and render an element for each.
   render: function() {
-    console.log("Rendering FeedView");
-    console.log("Saved spots: ", this.state.savedSpots);
-    console.log("Followed Users' Spots: ", this.state.followedUsersSpots);
     var savedSpots = this.state.savedSpots.map(function (spot) {
       var spotUrl = '#/spot/' + spot.spotId;
       var creatorUrl = '#/profile/' + spot.creatorId;
@@ -45,6 +48,7 @@ var FeedView = React.createClass({
         </div>
       );
     }, this);
+
     var followedUsersSpots = this.state.followedUsersSpots.map(function (spot) {
       var spotUrl = '#/spot/' + spot.spotId;
       var creatorUrl = '#/profile/' + spot.creatorId;

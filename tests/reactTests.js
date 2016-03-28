@@ -6,7 +6,7 @@ var renderer;
 
 // Unmount component after each test to clean up.
 afterEach(function(done) {
-    React.unmountComponentAtNode(document.body);       
+    React.unmountComponentAtNode(document.body);
     result = undefined;
     renderer = undefined;
     done();
@@ -27,7 +27,7 @@ afterEach(function(done) {
 // });
 
 describe('MapView', function () {
-  
+
   beforeEach(function(done){
     renderer = utils.createRenderer();
     renderer.render(React.createElement(MapView, null));
@@ -44,7 +44,7 @@ describe('MapView', function () {
   });
 
   it('renders on the DOM', function () {
-    expect(result.type).to.equal('div'); 
+    expect(result.type).to.equal('div');
   });
 
   describe('MapView divs', function(){
@@ -108,7 +108,7 @@ describe('CreateView', function () {
   });
 
   it('renders on the DOM', function () {
-    expect(result.type).to.equal('div'); 
+    expect(result.type).to.equal('div');
   });
 
   describe('CreateView divs', function(){
@@ -149,7 +149,7 @@ describe('SpotView', function () {
   });
 
   it('renders on the DOM', function () {
-    expect(result.type).to.equal('div'); 
+    expect(result.type).to.equal('div');
   });
 
   describe('SpotView divs', function(){
@@ -200,53 +200,7 @@ describe('FeedView', function () {
   });
 
   it('renders on the DOM', function () {
-    expect(result.type).to.equal('div'); 
-  });
-});
-
-
-describe('LoginView', function () {
-
-  beforeEach(function(done){
-    renderer = utils.createRenderer();
-    renderer.render(React.createElement(LoginView, null));
-    result = renderer.getRenderOutput();
-    done();
-  });
-
-  it('should exist', function () {
-    expect(LoginView).to.exist;
-  });
-
-  it('should be an function', function () {
-    expect(LoginView).to.be.an('function');
-  });
-
-  it('renders on the DOM', function () {
-    expect(result.type).to.equal('div'); 
-  });
-});
-
-
-describe('SignupView', function () {
-
-  beforeEach(function(done){
-    renderer = utils.createRenderer();
-    renderer.render(React.createElement(SignupView, null));
-    result = renderer.getRenderOutput();
-    done();
-  });
-
-  it('should exist', function () {
-    expect(SignupView).to.exist;
-  });
-
-  it('should be an function', function () {
-    expect(SignupView).to.be.an('function');
-  });
-
-  it('renders on the DOM', function () {
-    expect(result.type).to.equal('div'); 
+    expect(result.type).to.equal('div');
   });
 });
 
@@ -269,7 +223,7 @@ describe('SearchView', function () {
   });
 
   it('renders on the DOM', function () {
-    expect(result.type).to.equal('div'); 
+    expect(result.type).to.equal('div');
   });
 });
 
@@ -292,6 +246,6 @@ describe('ProfileView', function () {
   });
 
   it('renders on the DOM', function () {
-    expect(result.type).to.equal('div'); 
+    expect(result.type).to.equal('div');
   });
 });
