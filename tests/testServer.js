@@ -102,11 +102,13 @@ describe("Persistent Spot and User Server", function() {
                     console.log("finished");
                     count--;
                     if (count === 0) {
+                      console.log(1);
                       done();
                     }                  
                   });
                 });
               } else {
+                console.log(2);
                 done();
               }
             });
@@ -140,11 +142,13 @@ describe("Persistent Spot and User Server", function() {
                 console.log("finished");
                 count--;
                 if (count === 0) {
+                  console.log(3);
                   done();
                 }                  
               });
             });
           } else {
+            console.log(4);
             done();
           }
         });
@@ -305,14 +309,17 @@ describe("Persistent Spot and User Server", function() {
   });
   //==============helper function tests==============
   //fails due to location
-  xit("should create spots and be able to search for spots", function(done){
+  it("should create spots and be able to search for spots", function(done){
     helpers.createSpot({
       name: "test1", 
-      creator: 'Bob', 
+      creator: 'bob',
+      creatorId: 4, 
       category: 'entertainment',
       location: 'Minnesota',
       description: 'test createSpot',
-      start: '10'
+      start: '10',
+      addresss: 'fake',
+      end: 'never'
     }, function(){
       params = {
         TableName: "Spots",
@@ -331,11 +338,11 @@ describe("Persistent Spot and User Server", function() {
         else {
           var spot = data.Items[0];
           expect(spot.name).to.equal('test1');
-          expect(spot.creator).to.equal('Bob');
+          expect(spot.creator).to.equal('bob');
           expect(spot.location).to.equal('Minnesota');
-          helpers.search('Bo', function(results){
+          helpers.search('bo', function(results){
             expect(results.length).to.be.above(0);
-            expect(results[0].creator).to.contain('Bo');
+            expect(results[0].creator).to.contain('bo');
             done();
           }, function(err){
             console.error("Failed to search for spot", err);
