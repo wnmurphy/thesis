@@ -15,7 +15,6 @@ module.exports = function(app, express, io) {
       spot.creatorId = decoded.userId;
       spot.creator = decoded.username;
       helpers.createSpot(spot, function(newSpot) {
-        console.log("SPOT =================>", newSpot);
         res.send(newSpot);
       }, function(err) {
         res.send(err);
@@ -132,7 +131,7 @@ module.exports = function(app, express, io) {
       console.log("no token");
       res.send(404, 'user not signed in');
     }
-  })
+  });
 
   // GET to retrieve a spot's information by spotId.
   app.get('/api/spot/:id', function(req, res) {
@@ -188,9 +187,46 @@ module.exports = function(app, express, io) {
     // broadcast spotAdded event to trigger client-side map refresh.
     socket.on('newSpot', function(newSpot){
       socket.broadcast.emit('spotDrop', newSpot);
-      console.log("new spot: ", newSpot);
+      
+    // Live feed update when user's follower creates a new spot  
+      var followersArray = [];
+      var followers = newSpot.followers; 
+      var newSpotFollowers = [];
+      followers.forEach(function(follower) {
+        newSpotFollowers.push(follower.userId);
+      });
+
+      helpers.getFollowers(newSpot.followers, function(data) {
+
+        data.Items.forEach(function(users) {
+          if(!users.lastId) {
+            if(newSpotFollowers.indexOf(users.userId) !== -1) {
+              followersArray.push(users.socketId);
+            }  
+          }
+        });
+        
+
+        followersArray.forEach(function(user) {
+          var currSockets = io.sockets.clients();
+          var currentUsers = Object.keys(currSockets.connected);
+
+          if(currentUsers.indexOf(user) !== -1) {
+            io.sockets.connected[user].emit('updateFeed');
+          }
+
+        });
+       
+      });
+
     });
 
+    //update user's socket id everytime user logs in/sign up or refreshes page
+    socket.on('updateSocket', function(data) {
+      helpers.addSocketId({userid: data, socket_id: socket.id}, function(data) {
+        console.log('successfully updated user\'s socket id');
+      });
+    });
 
     /* Chat socket */
 
@@ -204,7 +240,7 @@ module.exports = function(app, express, io) {
       helpers.getMessagesFromDatabase(id, function(data) {
         io.sockets.connected[socket.id].emit('returnChat', data);
       });
-    })
+    });
   });
 
 };

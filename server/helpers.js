@@ -112,7 +112,30 @@ module.exports = {
                       console.error('error updating user\'s spotCount', err);
                       fail(err);
                     } else {
-                      success(newSpot);
+
+                      var userParams = {
+                        TableName: 'Users',
+                        FilterExpression: "#username in (:userid)",
+                        ExpressionAttributeNames:{
+                            "#username": "userId"  
+                        },
+                        ExpressionAttributeValues: {
+                            ":userid": spot.creatorId
+                        }
+                      };
+
+                      dbSchema.scan(userParams, function(err, data) {
+                        if(err) {
+                          console.error('error finding creator id ', err);
+                        } else {
+                          console.log('data', data.Items[0].followers);
+                          newSpot.followers = data.Items[0].followers;
+                          console.log('newSpot', newSpot);
+                          success(newSpot);
+                        }
+
+                      });
+                      
                     }
                   });
                 }
@@ -199,7 +222,7 @@ module.exports = {
       } else {
         data.Items.forEach(function(result) {
           if(result.location && result.location.constructor === Object) {
-            if(context.distanceBetween(location, result.location) < 25) {
+            if(context.distanceBetween(location, result.location) < 50) {
               filteredDistSpots.push(result);
             }
           }
@@ -273,7 +296,8 @@ module.exports = {
                   following: [],
                   savedSpots: [],
                   followers: [],
-                  spotCount: 0
+                  spotCount: 0,
+                  socketId: 'test'
                 }
               };
 
@@ -373,9 +397,7 @@ module.exports = {
           bio: user.Items[0].bio || "This user has not created a bio yet.",
           spotCount: user.Items[0].spotCount || 0,
           followers: user.Items[0].followers.length || 0,
-          followersList: user.Items[0].followers || [],
-          img: user.Items[0].img,
-          followingList: user.Items[0].following || []
+          img: user.Items[0].img
         });
       }
       else {
@@ -471,7 +493,6 @@ module.exports = {
         return console.error('Error writing message to spot', err);
       }
       else {
-        console.log("POST MESSAGE TO DATABASE ==================>", data);
         return data;
       }
     });
@@ -543,7 +564,6 @@ module.exports = {
 
     // Convert distance (m) to distance (mi).
     distance = distance * 0.000621371;
-    console.log('distance between', distance);
     return distance;
   },
 
@@ -692,6 +712,8 @@ module.exports = {
             }
           }
           console.log("found? ", found);
+          console.log('userrrrrrrrrr', user.Items[0].following);
+          console.log('followwww', follow);
           if (!found) {
             params = {
               TableName: 'Users',
@@ -702,6 +724,7 @@ module.exports = {
               }
             };
             //update user's 'following' array to include this new user
+            console.log('user socket id', user.Items[0]);
             dbSchema.update(params, function(err, data) {
               if (err) {
                 console.error(err);
@@ -717,7 +740,7 @@ module.exports = {
                     '#followers': 'followers'
                   },
                   ExpressionAttributeValues: {
-                    ':followers': [{'userId': user.Items[0].userId, 'username': user.Items[0].username}]
+                    ':followers': [{'userId': user.Items[0].userId, 'username': user.Items[0].username, 'socketId': user.Items[0].socketId}]
                   }
                 };
                 //update followers property of user being followed
@@ -775,6 +798,44 @@ module.exports = {
       //error handling
       } else {
         fail('server error, too many users found');
+      }
+    });
+  },
+  addSocketId: function(data, callback) {
+    var params = {
+      TableName: 'Users',
+      Key: {
+        userId: Number(data.userid)
+      },
+      UpdateExpression: 'SET #field =(:value)',
+      ExpressionAttributeNames: {
+        '#field': 'socketId'
+      },
+      ExpressionAttributeValues: {
+        ':value': data.socket_id
+      }
+    };
+
+    dbSchema.update(params, function(err, data) {
+      console.log('data after updating socketid', data);
+      if (err) {
+        console.error('error updating user socket id ', err);
+      } else {
+        callback(data);
+      }
+    });
+  },
+
+  getFollowers: function(data, callback) {
+    var params = {
+      TableName: "Users"
+    };
+
+    dbSchema.scan(params, function(err, data) {
+      if(err) {
+        console.error(err);
+      } else {
+        callback(data);
       }
     });
   }

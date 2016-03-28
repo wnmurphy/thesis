@@ -8,7 +8,12 @@ var socket = io.connect();
 
 socket.on('connect', function(){
   socket.emit('hello');
+  
+  if(localStorage.getItem('userId')) {
+    socket.emit('updateSocket', localStorage.getItem('userId'));
+  }
 });
+
 
 var globalState = {};
 

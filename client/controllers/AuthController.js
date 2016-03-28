@@ -39,6 +39,7 @@ var AuthController = {
         localStorage.setItem('token', JSON.stringify(data.token));
         localStorage.setItem('userId', data.userId);
         localStorage.setItem('username', data.username);
+        socket.emit('updateSocket', data.userId);
         AuthController.initAuth();
         success();
       },
@@ -65,6 +66,7 @@ var AuthController = {
         localStorage.setItem('token', JSON.stringify(data.token));
         localStorage.setItem('userId', data.userId);
         localStorage.setItem('username', data.username);
+        socket.emit('updateSocket', data.userId);
         AuthController.initAuth();
         success();
       },
