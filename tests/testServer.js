@@ -64,56 +64,62 @@ describe("Persistent Spot and User Server", function() {
       }
     };
     dbSchema.scan(params, function(err, data) {
+      if (err) {console.error(err);}
       //if any spots were found with name of 'test1', delete each of them
       if (data.Count > 0) {
-        data.Items.forEach(function(spot) {
-          var id = spot.spotId;
-          params = {
-            TableName: 'Spots',
+        var deleteSpot = function(list) {
+          var params = {
+            TableName: "Spots",
             Key: {
-              spotId: id
+              spotId: list[0].spotId
             }
           };
           dbSchema.delete(params, function(err, data) {
-            if (err) {console.error("Error deleting Johnny's spot ", err);}
-            params = {
-              TableName: 'Users',
-              FilterExpression: "#email = (:email)",
-              ExpressionAttributeNames:{
-                  "#email": "email"
-              },
-              ExpressionAttributeValues: {
-                  ":email": 'test@gmail.com'
-              }
-            };
-            dbSchema.scan(params, function(err, data) {
-              if (data.Count > 0) {
-                var count = data.Count;
-                data.Items.forEach(function(user) {
-                  var id = user.userId;
-                  params = {
-                    TableName: 'Users',
-                    Key: {
-                      userId: id
-                    }
+            list.shift();
+            if (list.length) {
+              deleteSpot(list);
+            } else {
+              params = {
+                TableName: 'Users',
+                FilterExpression: "#email = (:email)",
+                ExpressionAttributeNames:{
+                    "#email": "email"
+                },
+                ExpressionAttributeValues: {
+                    ":email": 'test@gmail.com'
+                }
+              };
+              dbSchema.scan(params, function(err, data) {
+                if (err) {console.error(err);}
+                if (data.Count > 0) {
+                  var deleteUser = function(userList) {
+                    params = {
+                      TableName: 'Users',
+                      Key: {
+                        userId: userList[0].userId
+                      }
+                    };
+                    dbSchema.delete(params, function(err, data) {
+                      if (err) {console.error("Error deleting test users ", err);}
+                      else {
+                        userList.shift();
+                        if (userList.length) {
+                          deleteUser(userList);
+                        } else {
+                          done();
+                        }
+                      }
+                    });
                   };
-                  dbSchema.delete(params, function(err, data) {
-                    if (err) {console.error("Error deleting test users ", err);}
-                    console.log("finished");
-                    count--;
-                    if (count === 0) {
-                      console.log(1);
-                      done();
-                    }                  
-                  });
-                });
-              } else {
-                console.log(2);
-                done();
-              }
-            });
+                  deleteUser(data.Items);
+                } else {
+                  done();
+                }
+              });
+            }
           });
-        });
+        };
+        deleteSpot(data.Items);
       } else {
         params = {
           TableName: 'Users',
@@ -126,29 +132,29 @@ describe("Persistent Spot and User Server", function() {
           }
         };
         dbSchema.scan(params, function(err, data) {
+          if (err) {console.error(err);}
           if (data.Count > 0) {
-            var count = data.Count;
-            var results = data.Items;
-            data.Items.forEach(function(user) {
-              var id = user.userId;
+            deleteUser(data.Items);
+            var deleteUser = function(userList) {
               params = {
                 TableName: 'Users',
                 Key: {
-                  userId: id
+                  userId: userList[0].userId
                 }
               };
               dbSchema.delete(params, function(err, data) {
                 if (err) {console.error("Error deleting test users ", err);}
-                console.log("finished");
-                count--;
-                if (count === 0) {
-                  console.log(3);
-                  done();
-                }                  
+                else {
+                  userList.shift();
+                  if (userList.length) {
+                    deleteUser(userList);
+                  } else {
+                    done();
+                  }
+                }
               });
-            });
+            };
           } else {
-            console.log(4);
             done();
           }
         });

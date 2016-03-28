@@ -619,7 +619,7 @@ module.exports = {
         });
       };
       if (spots.Items.length) {
-        deleteSpots(spots.Items);
+        deleteSpot(spots.Items);
       } else {
         console.log("Database has been cleaned");
       }
