@@ -7,7 +7,6 @@ var ProfileView = React.createClass({
   },
 
   updateState: function () {
-    console.log('here ', !window.location.hash.substring(10));
     var state = {
       userId: window.location.hash.substring(10) || globalState.userId,
       shareClass: "share-card-container",
@@ -111,7 +110,6 @@ var ProfileView = React.createClass({
     }
 
     var login = null;
-    console.log(this.state.requireAuth);
     if (this.state.requireAuth) {
       login = <LoginRequired parent={this} />;
     }
@@ -136,12 +134,35 @@ var ProfileView = React.createClass({
                   </div>);
 
     // handles how image, bio, and follow display
+    var checkFollowers = 'hide';
+    var checkFollowing = 'hide';
+    var followingList = null;
+    var followersList = null;
     if (this.state.signedIn) {
       var followButton = (<div className="follow-button" onClick={AuthController.signOut}>Sign Out</div>);
+      if (this.state.followersList && this.state.followersList.length > 0) {
+        checkFollowers ='';
+      } 
+      if (this.state.followingList && this.state.followingList.length > 0) {
+        checkFollowing = '';
+      } 
+      //set var following
+      followingList = this.state.followingList.map(function (user) {
+        return (
+            <div className="following">{user.username}</div>
+          );
+      });
+      //set var followers
+      followersList = this.state.followersList.map(function (user) {
+        return (
+            <div className="follower">{user.username}</div>
+          );
+      });
+      var followButton = null;
       if(this.state.img) {
         var style = {
           'background-image': 'url(' + this.state.img + ')'
-        }
+        };
 
         var profileImage = <div className="profile-picture add clickable" style={style} onClick={this.handleFileInput} >
                             <input type="file" id="img" className="hide" onChange={this.handleChange} accept="image/*"/>
@@ -186,8 +207,6 @@ var ProfileView = React.createClass({
       var bio = <h3 className={bioClass} onClick={editable}>{this.state.bio}{editMsg}</h3>
     }
 
-
-
     return (
       <div className="profile-view">
         <div className="profile-header">
@@ -215,6 +234,14 @@ var ProfileView = React.createClass({
         {login}
         {shareButton}
         {editButton}
+        <div className={checkFollowing}>
+          Following: 
+          <div>{followingList}</div>
+        </div>
+        <div className={checkFollowers}>
+          Followers: 
+          <div>{followersList}</div>
+        </div>
       </div>
     );
   }
