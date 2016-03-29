@@ -1,13 +1,35 @@
 var aws = require('aws-sdk');
 var bcrypt = require('bcrypt-nodejs');
 var jwt = require('jsonwebtoken');
+var env = require('node-env-file');
+var pe, accessKeyId, secretAccessKey, region, endpoint;
+
+if(!process.env.TRAVIS) {
+  pe = env(__dirname + '../../.env');
+}
+
+
+if(process.env.accessKeyId) {
+  accessKeyId = pe.accessKeyId;
+  secretAccessKey = pe.secretAccessKey;
+  endpoint = "dynamodb.us-east-1.amazonaws.com";
+  region = "us-east-1";
+}
+else {
+  accessKeyId = "fakeAccessKey";
+  secretAccessKey = "fakeSecretAccessKey";
+  endpoint = "http://localhost:8000";
+  region = "fakeRegion";
+}
 
 aws.config.update({
-  accessKeyId: "fakeAccessKey",
-  secretAccessKey: "fakeSecretAccessKey",
-  region: "fakeRegion",
-  endpoint: new aws.Endpoint('http://localhost:8000')
+  accessKeyId: accessKeyId,
+  secretAccessKey: secretAccessKey,
+  region: region,
+  endpoint: new aws.Endpoint(endpoint)
 });
+
+
 var dbSchema = new aws.DynamoDB.DocumentClient();
 
 var secret = process.env.secret || "dummySecretToKeepOurRealSecretActuallyASecret";
@@ -86,11 +108,35 @@ module.exports = {
                     }
                   };
                   dbSchema.update(params, function(err, data) {
+                    console.log('spot creator id', spot.creatorId);
                     if (err) {
                       console.error('error updating user\'s spotCount', err);
                       fail(err);
                     } else {
-                      success(newSpot);
+                      var userParams = {
+                        TableName: 'Users',
+                        FilterExpression: "#username in (:userid)",
+                        ExpressionAttributeNames:{
+                            "#username": "userId"
+                                                
+                        },
+                        ExpressionAttributeValues: {
+                            ":userid": spot.creatorId
+                        }
+                      };
+
+
+                      dbSchema.scan(userParams, function(err, data) {
+                        console.log('dataaaaa', data);
+                        if(err) {
+                          console.error('error finding user id when creating spot', err);
+                        } else {
+                          newSpot.followers = data.Items[0].followers;
+                          success(newSpot);
+                        }
+
+                      });
+                      
                     }
                   });
                 }
@@ -251,7 +297,8 @@ module.exports = {
                   following: [],
                   savedSpots: [],
                   followers: [],
-                  spotCount: 0
+                  spotCount: 0,
+                  socketId: 'socketId'
                 }
               };
 
@@ -695,7 +742,7 @@ module.exports = {
                     '#followers': 'followers'
                   },
                   ExpressionAttributeValues: {
-                    ':followers': [{'userId': user.Items[0].userId, 'username': user.Items[0].username}]
+                    ':followers': [{'userId': user.Items[0].userId, 'username': user.Items[0].username, 'socketId': user.Items[0].socketId}]
                   }
                 };
                 //update followers property of user being followed
@@ -753,6 +800,45 @@ module.exports = {
       //error handling
       } else {
         fail('server error, too many users found');
+      }
+    });
+  },
+
+  addSocketId: function(data, callback) {
+    var params = {
+      TableName: 'Users',
+      Key: {
+        userId: Number(data.userid)
+      },
+      UpdateExpression: 'SET #field =(:value)',
+      ExpressionAttributeNames: {
+        '#field': 'socketId'
+      },
+      ExpressionAttributeValues: {
+        ':value': data.socket_id
+      }
+    };
+
+    dbSchema.update(params, function(err, data) {
+      console.log('data after updating socketid', data);
+      if (err) {
+        console.error('error updating user socket id ', err);
+      } else {
+        callback(data);
+      }
+    });
+  },
+
+  getFollowers: function(data, callback) {
+    var params = {
+      TableName: "Users"
+    };
+
+    dbSchema.scan(params, function(err, data) {
+      if(err) {
+        console.error(err);
+      } else {
+        callback(data);
       }
     });
   }
