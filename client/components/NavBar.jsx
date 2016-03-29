@@ -52,7 +52,7 @@ var NavBar = React.createClass({
          <a href="#/"><i className="material-icons">track_changes</i></a>
          <a href="#/search"><i className="material-icons">search</i></a>
          <a href="#/feed" onClick={this.updateFeed}>
-          <i className="material-icons feed-icon">list</i>
+          {!this.state.feedUpdate ? <i className="material-icons">list</i> : <i className="material-icons feed-icon">list</i>}
           {this.state.feedUpdate ? <i className={this.state.icon}></i> : null}
          </a>
          <a href="#/profile"><i className="material-icons">person</i></a>
