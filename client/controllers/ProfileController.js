@@ -42,8 +42,9 @@ var ProfileController = {
     var reader = new FileReader();
     var img = document.createElement('img');
     img.className = 'hide';
-
+    console.log('loading image');
     reader.onload = function (upload) {
+      console.log('image loading');
       img.src = upload.target.result;
       ProfileController.resizeImage(img, function (imageDataUrl) {
         success(imageDataUrl);
@@ -55,6 +56,7 @@ var ProfileController = {
   },
 
   resizeImage: function (img, success) {
+    console.log('asdfsadfsdafsadfsadf resize')
     var canvas = document.createElement('canvas');
     canvas.className = 'hide';
     var width = 400, height = 400;
