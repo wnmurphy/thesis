@@ -39,10 +39,10 @@ var MapView = React.createClass({
       createMarker(newSpot, true, context);
     });
 
-    socket.on('updateFeed', function (follower) {
-      console.log('does it come hereeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee');
-      alert('live feed?');
-    })
+    // socket.on('updateFeed', function (follower) {
+    //   console.log('does it come hereeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee');
+    //   alert('live feed?');
+    // })
 
     // Check whether location has been set globally.
     // If not, get location and initialize map with nearby spots.
