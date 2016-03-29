@@ -1,6 +1,7 @@
+// This controller retrieves user's current location from device.
 var getLocation = function (callback, context) {
     var currentLocation = {};
-    
+
     navigator.geolocation.getCurrentPosition(function(position){
       currentLocation.latitude = position.coords.latitude;
       currentLocation.longitude = position.coords.longitude;

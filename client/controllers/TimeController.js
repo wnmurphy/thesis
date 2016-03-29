@@ -1,3 +1,4 @@
+// Get and format current time.
 var getTime = function() {
   var date = new Date();
   var hours = date.getHours().toString();
@@ -11,9 +12,10 @@ var getTime = function() {
   return hours + minutes;
 };
 
+// Handles conversion of times to/from human-readable formats.
 var timeController = {
 
-  // takes a time string as input and returns a date object for that time today
+  // Takes a time string as input and returns a date object for that time today.
   timeToDate: function (time) {
     var now = new Date();
     var month = now.getMonth() + 1,
@@ -36,15 +38,21 @@ var timeController = {
   msToTime: function (ms) {
     if (typeof ms === "string") ms = Number(ms);
     var date = new Date(ms);
-    var output = [date.getHours()]
-    if (date.getMinutes()) output.push(':' + ('0' + date.getMinutes()).slice(-2));
+    var output = [date.getHours()];
+    if (date.getMinutes()) {
+      output.push(':' + ('0' + date.getMinutes()).slice(-2));
+    }
     if (output[0] < 12) {
       output.push(' AM');
     } else {
       output.push(' PM');
     }
-    if (output[0] > 12) output[0] -= 12;
-    if (output[0] === 0) output[0] = 12;
+    if (output[0] > 12) {
+      output[0] -= 12;
+    }
+    if (output[0] === 0) {
+      output[0] = 12;
+    }
     return output.join('');
   },
 
@@ -57,8 +65,8 @@ var timeController = {
   },
 
   msToDuration: function(ms) {
-  var hourStr = " hour ";
-  var convertMin, minutes, hours, minStr;
+    var hourStr = " hour ";
+    var convertMin, minutes, hours, minStr;
 
     if(!Number.isInteger(ms / 3600000)) {
       minStr = " minutes";

@@ -1,5 +1,4 @@
-/** @jsx React.DOM */
-
+// This component creates a full-page chat for each spot.
 var Chat = React.createClass({
   getInitialState: function () {
     return {
@@ -7,9 +6,11 @@ var Chat = React.createClass({
       messages: []
     };
   },
+
   componentWillReceiveProps: function () {
     this.setState({messages: this.props.messages});
   },
+
   componentDidMount: function () {
     var context = this;
     socket.on('newMessage', function(message) {
@@ -20,6 +21,7 @@ var Chat = React.createClass({
       }
     })
   },
+
   handleSubmit: function(event) {
     event.preventDefault();
 
@@ -75,16 +77,13 @@ var Chat = React.createClass({
           <form className="chat-form" onSubmit={this.handleSubmit}>
 
             <input type="text" className="chat-input" defaultValue={this.state.message} placeholder="speak yo mind, russell" name="message" onChange={this.handleChange} autoComplete='off'/>
-
             <div className="button small right" onClick={this.handleSubmit}>send</div>
           </form>
-
         </div>
       </div>
     );
   }
 });
-
 
 var scrollChat =  function () {
   console.log($(".chat-container").height());

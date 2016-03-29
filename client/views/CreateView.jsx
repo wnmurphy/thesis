@@ -1,5 +1,3 @@
-/** @jsx React.DOM */
-
 // This component renders the page to create a new spot.
 var CreateView = React.createClass({
 
@@ -36,7 +34,7 @@ var CreateView = React.createClass({
     marker.setIcon('/img/map/you_test.png');
 
     marker.setOptions({optimized: false});
-    
+
     var context = this;
 
     // Create a new Google Maps autocomplete object based on addess input field.

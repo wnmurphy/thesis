@@ -1,5 +1,4 @@
-/** @jsx React.DOM */
-
+// Renders views for login and signup dialogs.
 var LoginRequired = React.createClass({
   getDefaultProps: function () {
     // post runs when user is already signed in or after successful signin

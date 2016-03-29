@@ -1,3 +1,4 @@
+// This component builds a new directions query for Google Maps.
 var DirectionsLink = React.createClass({
   getDefaultProps: function () {
     return {
@@ -5,7 +6,7 @@ var DirectionsLink = React.createClass({
         latitude: 0,
         longitude: 0
       }
-    }
+    };
   },
 
   render: function (){

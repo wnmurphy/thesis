@@ -1,5 +1,3 @@
-/** @jsx React.DOM */
-
 // This component renders the full-page view for more spot information.
 var SpotView = React.createClass({
 

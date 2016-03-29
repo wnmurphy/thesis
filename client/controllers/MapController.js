@@ -176,7 +176,7 @@ var style = [
       { "gamma": "0.79" }
     ]
   }
-]
+];
 
 // Create a Google Map element.
 // Takes current user location, component as context to render within, and callback.
@@ -188,7 +188,7 @@ var initMap = function (location, context, callback) {
       return;
     }
     set.apply(this, arguments);
-  }
+  };
   // Create a Google maps LatLng object on location parameter.
   var position = new google.maps.LatLng(location.latitude, location.longitude);
 
@@ -228,7 +228,7 @@ var initMap = function (location, context, callback) {
     var center = {
       latitude: this.center.lat(),
       longitude: this.center.lng()
-    }
+    };
     context.setState({center: center}, function() {
       if (context.getSpots) {
         context.getSpots();
@@ -265,7 +265,7 @@ var initMap = function (location, context, callback) {
   context.setState({marker: marker});
 
   callback(map, position, marker, location);
-}
+};
 
 // Loop through spot data from server.
 // Generate a map marker and summary bubble for each spot.
@@ -294,7 +294,7 @@ var createMarker = function(spot, animate, context) {
     animation = google.maps.Animation.DROP;
   } else {
     animation = null;
-  };
+  }
 
   // Create a new map marker for each spot.
   var spot = new google.maps.Marker({
@@ -334,18 +334,18 @@ var createMarker = function(spot, animate, context) {
     }
     infoWindow.setContent(this.info);
     infoWindow.open(context.state.map, this);
-    this.setIcon('../img/map/marker_animated.gif')
+    this.setIcon('../img/map/marker_animated.gif');
     context.setState({previous: this});
     context.setState({selected: this.getPosition()});
     context.state.map.offsetPan(this.getPosition(), 0, -55);
-  })
+  });
 
   // When a user clicks to close the info window, set the selected state to be center of the map.
   google.maps.event.addListener(infoWindow,'closeclick', function () {
     var center = context.state.map.getCenter();
     context.setState({selected: center});
   });
-}
+};
 
 var sweepMarkers = function(context, callback) {
   context.state.markers.forEach(function(marker, index, object) {
@@ -354,19 +354,19 @@ var sweepMarkers = function(context, callback) {
       if(context.state.spots[i].spotId.toString() === marker.getId().toString()) {
         var cache = context.state.spots;
         cache.splice(context.state.spots[i], 1);
-        context.setState({spots: cache})
+        context.setState({spots: cache});
         match = true;
       }
-    };
+    }
     if (!match) {
       marker.setVisible(false);
       var cache = context.state.markers;
       cache.splice(context.state.markers[index], 1);
-      context.setState({markers: cache})
-    };
+      context.setState({markers: cache});
+    }
   });
   callback();
-}
+};
 
 var placeMarker = function(context, query, infoWindow, map, name) {
 
@@ -404,16 +404,15 @@ var placeMarker = function(context, query, infoWindow, map, name) {
     if (component === placeName) {
       query.name = "Spot";
     }
-  } 
+  }
 
   if (name) {
     query.name = name;
   }
-  
+
   context.state.marker.setIcon('/img/map/marker_animated.gif');
   
   infoWindow.setContent('<div><strong>' + query.name + '</strong><br>' + street + '<br>' + locality + '</div>');
 
   infoWindow.open(map, context.state.marker);
-
-}
+};
