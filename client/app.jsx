@@ -44,3 +44,4 @@ AuthController.initAuth();
 
 ReactDOM.render(routes, document.getElementById('app-container'));
 ReactDOM.render(<NavBar />, document.getElementById('nav-container'));
+// ReactDOM.render(<ScreenSizeWarning />, document.getElementById('display-warning'));
