@@ -7,7 +7,6 @@ module.exports = function(app, express, io) {
     res.sendFile('../../client/index.html');
   });
 
-
   // POST to create a new spot from CreateView.
   app.post('/api/create', function(req, res) {
     var spot = req.body;
@@ -15,7 +14,6 @@ module.exports = function(app, express, io) {
       spot.creatorId = decoded.userId;
       spot.creator = decoded.username;
       helpers.createSpot(spot, function(newSpot) {
-        console.log("SPOT =================>", newSpot);
         res.send(newSpot);
       }, function(err) {
         res.send(err);
@@ -24,8 +22,6 @@ module.exports = function(app, express, io) {
       res.send(404, message);
     });
   });
-
-
 
   // POST to request search results for a specific spot from SearchView.
   app.post('/api/search', function(req, res) {
@@ -37,18 +33,15 @@ module.exports = function(app, express, io) {
     });
   });
 
-
   // GET to request all spots for either MapView or FeedView.
   app.get('/api/map', function(req, res) {
     var location = req.query.location;
-    helpers.getSpots(location, function(results) { //null was location
+    helpers.getSpots(location, function(results) {
       res.json(results);
     }, function(err) {
       res.send(404);
     });
-
   });
-
 
   // POST to create a new user from SignupView.
   app.post('/api/signup', function(req, res) {
@@ -59,13 +52,11 @@ module.exports = function(app, express, io) {
     };
 
     helpers.signup(user, function(result) {
-      //redirect to main page?
       res.json(result);
     }, function(message) {
       res.send(404, message);
     });
   });
-
 
   // POST to submit user credentials from LoginView.
   app.post('/api/login', function(req, res) {
@@ -75,7 +66,6 @@ module.exports = function(app, express, io) {
     };
     helpers.signin(user, function(result) {
       res.json(result);
-      //res.direct('/#/mainpage', result)
     }, function(message) {
       res.send(404, message);
     });
@@ -113,7 +103,7 @@ module.exports = function(app, express, io) {
     }
   });
 
-  // PUT to update user's profile
+  // PUT to update the user's profile.
   app.put('/api/profile', function (req, res){
     if (req.headers.token) {
       helpers.checkToken(JSON.parse(req.headers.token), function (decoded) {
@@ -145,7 +135,7 @@ module.exports = function(app, express, io) {
     });
   });
 
-  //GET to retrieve user's feed data
+  //GET to retrieve the user's feed data.
   app.get('/api/feed/:id', function(req, res) {
     var id = Number(req.params.id);
 
@@ -156,7 +146,7 @@ module.exports = function(app, express, io) {
     });
   });
 
-  //post to follow a user
+  // POST to add another user to your follow list.
   app.post('/api/followUser', function(req, res) {
     var userId = req.body.userId;
     var followUser = req.body.followUser;
@@ -167,7 +157,7 @@ module.exports = function(app, express, io) {
     });
   });
 
-  //post to save a users spot
+  // POST to save a user's new spot.
   app.post('/api/saveSpot', function(req, res) {
     var userId = req.body.userId;
     var spotId = req.body.spotId;
@@ -178,8 +168,7 @@ module.exports = function(app, express, io) {
     });
   });
 
-  // Sockets
-
+  // Socket.io logic for MapView (marker updates), SpotView (chat), and FeedView (feed updates).
   io.sockets.on('connection', function(socket) {
 
     /* Spot socket */
@@ -189,9 +178,10 @@ module.exports = function(app, express, io) {
     socket.on('newSpot', function(newSpot){
       socket.broadcast.emit('spotDrop', newSpot);
       console.log('newspot', newSpot);
-    // Live feed update when user's follower creates a new spot  
+
+      // Update live feed when a user you're subscribed to creates a new spot.
       var followersArray = [];
-      var followers = newSpot.followers; 
+      var followers = newSpot.followers;
       var newSpotFollowers = [];
       followers.forEach(function(follower) {
         newSpotFollowers.push(follower.userId);
@@ -203,10 +193,9 @@ module.exports = function(app, express, io) {
           if(!users.lastId) {
             if(newSpotFollowers.indexOf(users.userId) !== -1) {
               followersArray.push(users.socketId);
-            }  
+            }
           }
         });
-        
 
         followersArray.forEach(function(user) {
           var currSockets = io.sockets.clients();
@@ -216,22 +205,18 @@ module.exports = function(app, express, io) {
           if(currentUsers.indexOf(user) !== -1) {
             io.sockets.connected[user].emit('updateFeed');
           }
-
         });
-       
       });
-
     });
 
-    //update user's socket id everytime user logs in/sign up or refreshes page
+    // Updates the user's socket id everytime they log in, sign up, or refresh page.
     socket.on('updateSocket', function(data) {
       helpers.addSocketId({userid: data, socket_id: socket.id}, function(data) {
         console.log('successfully updated user\'s socket id');
       });
     });
 
-
-    /* Chat socket */
+    /* Chat socket events */
 
     // Listen for whenever a chat message is sent.
     socket.on('messageSend', function(message){
@@ -239,11 +224,11 @@ module.exports = function(app, express, io) {
       io.emit('newMessage', {username: message.username, text: message.text, spotId: message.spotId, timeStamp: message.timeStamp});
     });
 
+    // Listen for request to populate a spot's chat window, retrieve and return messages.
     socket.on('populateChat', function(id) {
       helpers.getMessagesFromDatabase(id, function(data) {
         io.sockets.connected[socket.id].emit('returnChat', data);
       });
     });
   });
-
 };
