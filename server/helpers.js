@@ -4,11 +4,12 @@ var jwt = require('jsonwebtoken');
 var env = require('node-env-file');
 var pe, accessKeyId, secretAccessKey, region, endpoint;
 
+// Set environment depending on whether we're using Travis.
 if(!process.env.TRAVIS) {
   pe = env(__dirname + '../../.env');
 }
 
-
+// Set up authentication basics, depending on whether we're in production or deployment.
 if(process.env.accessKeyId) {
   accessKeyId = pe.accessKeyId;
   secretAccessKey = pe.secretAccessKey;
@@ -34,22 +35,20 @@ var dbSchema = new aws.DynamoDB.DocumentClient();
 
 var secret = process.env.secret || "dummySecretToKeepOurRealSecretActuallyASecret";
 
-
 module.exports = {
 
+  // Create a new spot in the db.
   createSpot: function(spot, success, fail) {
-
     var params = {
       TableName : "Spots",
       Key: {spotId: 0}
     };
-    //use 'lastId' property of item of spotId: 0 to determine spotId of new spot
+
     dbSchema.get(params, function(err, data) {
       if (err) {
         console.error("Unable to query. Error:", JSON.stringify(err, null, 2));
       } else {
         spot.spotId = data.Item.lastId + 1;
-
         params = {
           TableName: "Spots",
           Item: {
@@ -57,15 +56,16 @@ module.exports = {
             lastId: spot.spotId
           }
         };
-        //update 'lastId' property of spotId: 0 for next new spot
+
         dbSchema.put(params, function(err, data) {
           if(err) {
             console.error('Error updating data item', err);
           }
           else {
             console.log('Updated data item successfully');
+
+            // If we have all the info we need, create the new spot.
             if(spot.name && spot.creator && spot.creatorId && spot.category && spot.location && spot.description && spot.start) {
-              //if all necessary info is present, create the new spot
               params = {
               TableName: 'Spots',
               Item: {
@@ -93,7 +93,8 @@ module.exports = {
                   fail(err);
                 }
                 else {
-                  //if successful, increment user's spotCount by 1
+
+                  // If write to db is successful, increment user's spotCount.
                   var params = {
                     TableName: 'Users',
                     Key: {
@@ -118,25 +119,21 @@ module.exports = {
                         FilterExpression: "#username in (:userid)",
                         ExpressionAttributeNames:{
                             "#username": "userId"
-                                                
+
                         },
                         ExpressionAttributeValues: {
                             ":userid": spot.creatorId
                         }
                       };
 
-
                       dbSchema.scan(userParams, function(err, data) {
-                        console.log('dataaaaa', data);
                         if(err) {
                           console.error('error finding user id when creating spot', err);
                         } else {
                           newSpot.followers = data.Items[0].followers;
                           success(newSpot);
                         }
-
                       });
-                      
                     }
                   });
                 }
@@ -151,10 +148,10 @@ module.exports = {
     });
   },
 
+  // Search takes a string and two callbacks.
+  // Search string: username, user email, name, creator, description.
   search: function(search, success, fail) {
-    //search is a string
-    //username, user email
-    //name, creator, description
+
     // Make incoming search string lowercase to make search case-insensitive.
     search = search.toLowerCase();
 
@@ -215,7 +212,8 @@ module.exports = {
     };
     var context = this;
     var filteredDistSpots = [];
-    //find all spots
+
+    // Find all spots in db.
     dbSchema.scan(params, function(err, data) {
       if (err) {
         console.error("Unable to query get spots. Error:", JSON.stringify(err, null, 2));
@@ -249,12 +247,12 @@ module.exports = {
       }
     };
     dbSchema.scan(params, function(err, data) {
-
       if(err) {
         console.error('Error signing up user', err);
         fail("Internal server error. Please try again.");
       }
-      //if user does not exist, increment user lastId
+
+      // If user does not exist, increment user lastId.
       else if(data.Count === 0) {
         var params = {
           TableName : "Users",
@@ -363,7 +361,6 @@ module.exports = {
             }
           }
         });
-
       }
       else {
         fail('multiple users with username');
@@ -371,6 +368,7 @@ module.exports = {
     });
   },
 
+  // Retrieve a user profile from db.
   getProfile: function(id, success, fail) {
     var params = {
       TableName: "Users",
@@ -385,7 +383,6 @@ module.exports = {
 
     dbSchema.scan(params, function(err, user) {
       if(err) {
-        console.error('Error handling user sign in', err);
         fail(err);
       }
       else if(user.Count === 0) {
@@ -409,6 +406,7 @@ module.exports = {
     });
   },
 
+  // Update information in the user's profile.
   updateProfile: function (userId, update, success, fail) {
     var field, value;
     for (var key in update) {
@@ -424,7 +422,7 @@ module.exports = {
       ExpressionAttributeNames: {
         '#field': field
       },
-      ExpressionAttributeValues: { // a map of substitutions for all attribute values
+      ExpressionAttributeValues: {
         ':value': value
       }
     };
@@ -438,8 +436,8 @@ module.exports = {
     });
   },
 
+  // Retrieve information for a single spot.
   getSpot: function(id, success, fail) {
-
     var params = {
       TableName: "Spots",
       FilterExpression: "#spotname = (:id)",
@@ -467,9 +465,9 @@ module.exports = {
     });
   },
 
+  // Writes a new message to spots.spotId.messages
+  // Called by socket event.
   postMessageToDatabase: function(spotId, user, message, timeStamp){
-    // Writes message to spots.spotId.messages
-    // Called by socket event
 
     // Identify the correct spot in database.
     var params = {
@@ -490,21 +488,20 @@ module.exports = {
       }
     };
 
-    // Push a new message to the messages array for that spot.
+    // Pushes a new message to the messages array for that spot.
     dbSchema.update(params, function(err, data) {
       if(err) {
         return console.error('Error writing message to spot', err);
       }
       else {
-        console.log("POST MESSAGE TO DATABASE ==================>", data);
         return data;
       }
     });
   },
 
+  // Retrieves all messages in spots.spotId.
+  // Called by AJAX call to server.
   getMessagesFromDatabase: function(spotId, callback){
-    // Retrieves all messages in spots.spotId
-    // Called by AJAX call to server
 
     // Identify the correct spot in database.
     var params = {
@@ -532,6 +529,7 @@ module.exports = {
     });
   },
 
+  // Calculates the distance between two sets of GPS coordinates.
   distanceBetween: function(point1, point2){
 
     // Polyfill radian conversion if not present.
@@ -544,7 +542,7 @@ module.exports = {
     // Earth's radius in meters.
     var R = 6371000;
 
-    // Make names shorter.
+    // Make names shorter and coerce to numbers.
     var lat1 = Number(point1.latitude);
     var lng1 = Number(point1.longitude);
     var lat2 = Number(point2.latitude);
@@ -582,9 +580,10 @@ module.exports = {
     });
   },
 
+  // Removes spots from database on server load.
   spotCleaner: function() {
-    //date is current time
-    var date = new Date() - 24*60*60;
+
+    var date = new Date() - 24 * 60 * 60;
 
     var params = {
       TableName: 'Spots',
@@ -625,8 +624,9 @@ module.exports = {
       }
     });
   },
+
+  // Add a spot to the user's saved spot list.
   saveSpot: function(userId, spotId, success, fail) {
-    //get user
     var params = {
       TableName: "Users",
       FilterExpression: "#userId = (:userId)",
@@ -641,9 +641,9 @@ module.exports = {
       if (err) {
         console.error(err);
         fail('error getting user');
-      //should only find 1 user
       } else if (user.Count === 1) {
-        //if user has not already saved that spot
+
+        // If user has not already saved that spot
         if (user.Items[0].savedSpots.indexOf(Number(spotId)) === -1) {
           params = {
             TableName: 'Users',
@@ -653,7 +653,8 @@ module.exports = {
               ':spotId': [parseInt(spotId)]
             }
           };
-          //update user's 'savedSpots' array to include this new spotId
+
+          // Update user's 'savedSpots' array to include this new spotId.
           dbSchema.update(params, function(err, data) {
             if (err) {
               console.error(err);
@@ -669,9 +670,9 @@ module.exports = {
         fail('failed to get correct user');
       }
     });
-
-
   },
+
+  // Add user to your follow list in db.
   followUser: function(userId, followUser, success, fail) {
     var params = {
       TableName: "Users",
@@ -683,12 +684,11 @@ module.exports = {
         ":userId": parseInt(userId)
       }
     };
-    //find user
+    // Find the current user.
     dbSchema.scan(params, function (err, user) {
       if (err) {
         console.error(err);
         fail('error getting user');
-      //should only find 1 user
       } else if (user.Count === 1) {
         var params = {
           TableName: "Users",
@@ -700,16 +700,17 @@ module.exports = {
             ":userId": parseInt(followUser)
           }
         };
-        //find user that the user is trying to follow
+
+        // Find user that the user wants to follow.
         dbSchema.scan(params, function (err, follow) {
-          //if user has not already followed that user
+
+          // If user has not already followed that user
           console.log("Should be Bell: ", user.Items[0].username);
           console.log("Should be Michelle : ", follow.Items[0].username);
           console.log("Bell is following: ", user.Items[0].following);
           var found = false;
           for (var i = 0; i < user.Items[0].following.length; i++) {
             console.log(user.Items[0].following[i].userId, ' = ', follow.Items[0].userId);
-            //using type conversion to check equality
             if (user.Items[0].following[i].userId == follow.Items[0].userId) {
               console.log("switch found");
               found = true;
@@ -726,7 +727,8 @@ module.exports = {
                 ':followUser': [{'userId': followUser, 'username': follow.Items[0].username}]
               }
             };
-            //update user's 'following' array to include this new user
+
+            // Update user's 'following' array to include this new user.
             dbSchema.update(params, function(err, data) {
               if (err) {
                 console.error(err);
@@ -745,7 +747,8 @@ module.exports = {
                     ':followers': [{'userId': user.Items[0].userId, 'username': user.Items[0].username, 'socketId': user.Items[0].socketId}]
                   }
                 };
-                //update followers property of user being followed
+
+                // Update 'followers' property for the followed user.
                 dbSchema.update(params, function(err, follower) {
                   if (err) {
                     console.error(err);
@@ -765,6 +768,8 @@ module.exports = {
       }
     });
   },
+
+  // Loads feed information from db.
   getFeed: function(id, success, fail) {
     var results = {savedSpots: [], followedUsersSpots: []};
     var params = {
@@ -777,27 +782,26 @@ module.exports = {
         ':userId': id
       }
     };
-    //get user
+
+    // Find current user.
     dbSchema.scan(params, function(err, user) {
       if (err) {console.error(err);}
       if (user.Count === 1) {
-        //if user has any saved spotId's, call function to find the spots and save them to results
+        // If user has any saved spotIds, find the spots and save them to results.
         if (user.Items[0].savedSpots && user.Items[0].savedSpots.length > 0) {
           getSavedSpots(user.Items[0].savedSpots, user.Items[0], results, success);
         } else {
-          //if not, move on to finding followed user's spots
+          // If not, move on to finding followed user's spots.
           if (user.Items[0].following && user.Items[0].following.length) {
-            //if user is following any other users, call function to find all their spots and save them to results
+            // If user is following any other users, find all their spots and save them to results.
             getFollowedUserSpots(user.Items[0].following, results, success);
           } else {
-            //if user is not following anyone, send back results
+            // If user is not following anyone, send back results.
             success(results);
           }
         }
-      //error handling
       } else if (user.Count === 0) {
         fail('no user found');
-      //error handling
       } else {
         fail('server error, too many users found');
       }
@@ -844,6 +848,7 @@ module.exports = {
   }
 };
 
+// Retrieve any spots the user has saved.
 var getSavedSpots = function(savedIds, user, results, success) {
   var params = {
     TableName: "Spots",
@@ -863,7 +868,6 @@ var getSavedSpots = function(savedIds, user, results, success) {
     if (savedIds.length) {
       getSavedSpots(savedIds, user, results, success);
     } else {
-      //find followed users spots
       if (user.following && user.following.length) {
         getFollowedUserSpots(user.following, results, success);
       } else {
@@ -872,6 +876,8 @@ var getSavedSpots = function(savedIds, user, results, success) {
     }
   });
 };
+
+// Retrieve any spots from user's subscriptions.
 var getFollowedUserSpots = function(users, results, success) {
   var params = {
     TableName: 'Spots',
@@ -896,6 +902,8 @@ var getFollowedUserSpots = function(users, results, success) {
     }
   });
 };
+
+/* Encryption and token helpers. */
 
 var hash = function (password, callback) {
   bcrypt.genSalt(10, function (err, salt) {
