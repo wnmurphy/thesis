@@ -10,6 +10,14 @@ var FeedView = React.createClass({
   // Retrieves the user's saved spots and spots from followed users.
   // Stores results in state for rendering.
   componentDidMount: function() {
+    if (localStorage.getItem('token')) {
+      this.getSpots();
+    } 
+  },
+  post: function() {
+    this.getSpots();
+  },
+  getSpots: function() {
     var context = this;
     FeedController.getSpots(function(data){
       if (data.savedSpots.length) {
@@ -21,6 +29,7 @@ var FeedView = React.createClass({
       if (data.followedUsersSpots.length) {
         context.setState({followedUsersSpots: data.followedUsersSpots});
       }
+      console.log("success");
     }, function(err) {
       console.log(err);
     });
@@ -65,7 +74,7 @@ var FeedView = React.createClass({
 
     return (
       <div>
-        <LoginRequired />
+        <LoginRequired parent={this}/>
         <div className={this.state.savedContainerClass}>
           <h3 className='feed-saved-spot-header'>Saved Spots</h3>
           <div className='feed-saved-spot-container'>{savedSpots}</div>

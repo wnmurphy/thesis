@@ -64,54 +64,62 @@ describe("Persistent Spot and User Server", function() {
       }
     };
     dbSchema.scan(params, function(err, data) {
+      if (err) {console.error(err);}
       //if any spots were found with name of 'test1', delete each of them
       if (data.Count > 0) {
-        data.Items.forEach(function(spot) {
-          var id = spot.spotId;
-          params = {
-            TableName: 'Spots',
+        var deleteSpot = function(list) {
+          var params = {
+            TableName: "Spots",
             Key: {
-              spotId: id
+              spotId: list[0].spotId
             }
           };
           dbSchema.delete(params, function(err, data) {
-            if (err) {console.error("Error deleting Johnny's spot ", err);}
-            params = {
-              TableName: 'Users',
-              FilterExpression: "#email = (:email)",
-              ExpressionAttributeNames:{
-                  "#email": "email"
-              },
-              ExpressionAttributeValues: {
-                  ":email": 'test@gmail.com'
-              }
-            };
-            dbSchema.scan(params, function(err, data) {
-              if (data.Count > 0) {
-                var count = data.Count;
-                data.Items.forEach(function(user) {
-                  var id = user.userId;
-                  params = {
-                    TableName: 'Users',
-                    Key: {
-                      userId: id
-                    }
+            list.shift();
+            if (list.length) {
+              deleteSpot(list);
+            } else {
+              params = {
+                TableName: 'Users',
+                FilterExpression: "#email = (:email)",
+                ExpressionAttributeNames:{
+                    "#email": "email"
+                },
+                ExpressionAttributeValues: {
+                    ":email": 'test@gmail.com'
+                }
+              };
+              dbSchema.scan(params, function(err, data) {
+                if (err) {console.error(err);}
+                if (data.Count > 0) {
+                  var deleteUser = function(userList) {
+                    params = {
+                      TableName: 'Users',
+                      Key: {
+                        userId: userList[0].userId
+                      }
+                    };
+                    dbSchema.delete(params, function(err, data) {
+                      if (err) {console.error("Error deleting test users ", err);}
+                      else {
+                        userList.shift();
+                        if (userList.length) {
+                          deleteUser(userList);
+                        } else {
+                          done();
+                        }
+                      }
+                    });
                   };
-                  dbSchema.delete(params, function(err, data) {
-                    if (err) {console.error("Error deleting test users ", err);}
-                    console.log("finished");
-                    count--;
-                    if (count === 0) {
-                      done();
-                    }                  
-                  });
-                });
-              } else {
-                done();
-              }
-            });
+                  deleteUser(data.Items);
+                } else {
+                  done();
+                }
+              });
+            }
           });
-        });
+        };
+        deleteSpot(data.Items);
       } else {
         params = {
           TableName: 'Users',
@@ -124,26 +132,28 @@ describe("Persistent Spot and User Server", function() {
           }
         };
         dbSchema.scan(params, function(err, data) {
+          if (err) {console.error(err);}
           if (data.Count > 0) {
-            var count = data.Count;
-            var results = data.Items;
-            data.Items.forEach(function(user) {
-              var id = user.userId;
+            deleteUser(data.Items);
+            var deleteUser = function(userList) {
               params = {
                 TableName: 'Users',
                 Key: {
-                  userId: id
+                  userId: userList[0].userId
                 }
               };
               dbSchema.delete(params, function(err, data) {
                 if (err) {console.error("Error deleting test users ", err);}
-                console.log("finished");
-                count--;
-                if (count === 0) {
-                  done();
-                }                  
+                else {
+                  userList.shift();
+                  if (userList.length) {
+                    deleteUser(userList);
+                  } else {
+                    done();
+                  }
+                }
               });
-            });
+            };
           } else {
             done();
           }
@@ -305,14 +315,17 @@ describe("Persistent Spot and User Server", function() {
   });
   //==============helper function tests==============
   //fails due to location
-  xit("should create spots and be able to search for spots", function(done){
+  it("should create spots and be able to search for spots", function(done){
     helpers.createSpot({
       name: "test1", 
-      creator: 'Bob', 
+      creator: 'bob',
+      creatorId: 4, 
       category: 'entertainment',
       location: 'Minnesota',
       description: 'test createSpot',
-      start: '10'
+      start: '10',
+      addresss: 'fake',
+      end: 'never'
     }, function(){
       params = {
         TableName: "Spots",
@@ -331,11 +344,11 @@ describe("Persistent Spot and User Server", function() {
         else {
           var spot = data.Items[0];
           expect(spot.name).to.equal('test1');
-          expect(spot.creator).to.equal('Bob');
+          expect(spot.creator).to.equal('bob');
           expect(spot.location).to.equal('Minnesota');
-          helpers.search('Bo', function(results){
+          helpers.search('bo', function(results){
             expect(results.length).to.be.above(0);
-            expect(results[0].creator).to.contain('Bo');
+            expect(results[0].creator).to.contain('bo');
             done();
           }, function(err){
             console.error("Failed to search for spot", err);
