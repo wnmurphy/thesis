@@ -598,7 +598,6 @@ module.exports = {
     dbSchema.scan(params, function(err, spots) {
       if (err) {console.error(err);}
       var deleteSpot = function(list) {
-        console.log('list: ', list);
         var params = {
           TableName: "Spots",
           Key: {spotId: list[0].spotId}
