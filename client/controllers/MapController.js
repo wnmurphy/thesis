@@ -329,7 +329,7 @@ var createMarker = function(spot, animate, context) {
   // When user clicks on spot, open summary bubble, load that spot's data, and center the map on the marker.
   google.maps.event.addListener(spot, 'click', function () {
     if (context.state.previous) {
-      context.state.previous.getInfoWinow().close();
+      context.state.previous.getInfoWindow().close();
       context.state.previous.setIcon('/img/map/pin_test.png');
     }
     infoWindow.setContent(this.info);

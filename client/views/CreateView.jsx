@@ -182,7 +182,7 @@ var CreateView = React.createClass({
           </a>
         </div>
         <div>
-          <form id="createSpotForm" onChange={this.handleChange} onSubmit={this.sendSpot}>
+          <form id="createSpotForm" onChange={this.handleChange}>
             <input type="text" id="name" placeholder="Title" defaultValue={this.state.name || ''} maxLength="50" required autoComplete='off'/>
             <input type="text" id="address" placeholder="Location" onChange={this.changeAddress} value={this.state.address || ''} required />
             <select valueLink={valueLink}>
@@ -206,7 +206,7 @@ var CreateView = React.createClass({
               <input type="number" className="duration-input" step="15" min="0" max="60" id="minutes" placeholder="Minutes" defaultValue={this.state.minutes || ''}/>
             </div>
 
-              <div className="button" onClick={this.handleSubmit}>Submit</div>
+              <div className="button" onClick={this.sendSpot}>Submit</div>
           </form>
         </div>
         <LoginRequired />
