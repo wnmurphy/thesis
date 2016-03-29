@@ -1,5 +1,4 @@
-/** @jsx React.DOM */
-
+// This component handles searching for spots and users.
 var SearchView = React.createClass({
 
   getInitialState: function () {

@@ -1,16 +1,16 @@
+// This controller handles client-server interaction for profile logic.
+
 var ProfileController = {
+  // GET profile information from server.
   getProfile: function (id, success, fail) {
-    // Should be sending an ajax call to the server.
     if (id) {
       $.ajax({
         method: 'GET',
         url: '/api/profile/' + id,
         dataType: 'json',
         success: function (data) {
-          console.log('data: ', data);
           var user = data.result;
           user.signedIn = data.currentUser;
-          console.log('user: ', user);
           success(user);
         },
         error: function (error) {
@@ -22,8 +22,8 @@ var ProfileController = {
     }
   },
 
+  // PUT updated profile information on server.
   updateProfile: function (profile) {
-    console.log(profile);
     $.ajax({
       method: 'PUT',
       url: '/api/profile',
@@ -37,6 +37,7 @@ var ProfileController = {
     });
   },
 
+  // Scans incoming image to binary, calls resizeImage, calls update profile to send to server.
   sendImage: function (file, success) {
     var reader = new FileReader();
     var img = document.createElement('img');
@@ -54,7 +55,6 @@ var ProfileController = {
   },
 
   resizeImage: function (img, success) {
-    console.log('resizing client side');
     var canvas = document.createElement('canvas');
     canvas.className = 'hide';
     var width = 400, height = 400;
@@ -64,21 +64,21 @@ var ProfileController = {
     } else {
       height *= (img.height / img.width);
     }
-    
+
     canvas.height = 400;
     canvas.width = 400;
 
     var left = (400 - width) / 2;
     var top = (400 - height) / 2;
 
-
     var ctx = canvas.getContext('2d');
     ctx.drawImage(img, left, top, width, height);
 
     var imageDataUrl = canvas.toDataURL("image/jpeg");
     success(imageDataUrl);
-  }, 
+  },
 
+  // Send POST request to update list of followed users.
   followUser: function(followId, success, fail) {
     $.ajax({
       method: 'POST',
@@ -89,7 +89,6 @@ var ProfileController = {
       },
       dataType: 'json',
       success: function (data) {
-        console.log("SUCCESSFULLY FOLLOWED USER =============>", data);
         success(data);
       },
       error: function (error) {

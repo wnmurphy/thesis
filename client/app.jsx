@@ -1,4 +1,3 @@
-/** @jsx React.DOM */
 var Router = window.ReactRouter.Router;
 var Route = window.ReactRouter.Route;
 var Link = window.ReactRouter.Link;

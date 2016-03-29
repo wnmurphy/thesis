@@ -1,5 +1,3 @@
-/** @jsx React.DOM */
-
 // This component renders a user profile.
 var ProfileView = React.createClass({
 
@@ -99,9 +97,9 @@ var ProfileView = React.createClass({
     }
   },
 
-  // ##(Josh) wut
+  // Enables opening the file upload dialog by clicking on the image.
   handleFileInput: function () {
-    $('#img').click();
+    $('#img-input').click();
   },
 
   // Retrieves user information from server after successful login.
@@ -180,7 +178,7 @@ var ProfileView = React.createClass({
         };
 
         var profileImage = <div className="profile-picture add clickable" style={style} onClick={this.handleFileInput} >
-                            <input type="file" id="img" className="hide" onChange={this.handleChange} accept="image/*"/>
+                            <input type="file" id="img-input" className="hide" onChange={this.handleChange} accept="image/*"/>
                             <div className="change-image-message">Change image</div>
                            </div>
       } else {
@@ -188,7 +186,7 @@ var ProfileView = React.createClass({
                               <div>
                                 <i className="fa fa-plus" /><br />Add an image
                               </div>
-                              <input type="file" id="img" className="hide" onChange={this.handleChange} accept="image/*"/>
+                              <input type="file" id="img-input" className="hide" onChange={this.handleChange} accept="image/*"/>
                             </div>);
       }
     } else {

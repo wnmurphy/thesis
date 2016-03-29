@@ -1,5 +1,3 @@
-/** @jsx React.DOM */
-
 // This component renders the user's feed.
 var FeedView = React.createClass({
   getInitialState: function() {
@@ -14,7 +12,6 @@ var FeedView = React.createClass({
   componentDidMount: function() {
     var context = this;
     FeedController.getSpots(function(data){
-      console.log('data: ', data);
       if (data.savedSpots.length) {
         context.setState({savedSpots: data.savedSpots});
         context.setState({savedContainerClass: ''});

@@ -1,13 +1,7 @@
+// Renders bottom nav menu.
 var NavButton = React.createClass({
   getInitialState: function () {
     var linkClass = '';
-    
-    // sets initial state for active
-    // turned off until it can handle switching location
-
-    // if (window.location.hash === this.props.href) {
-    //   return {linkClass: 'active'};
-    // }
     return {};
   },
 

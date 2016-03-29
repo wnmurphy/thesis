@@ -1,5 +1,3 @@
-/** @jsx React.DOM */
-
 // Load react.js from index.html for browser environment, or npm for test environment.
 var React = React || require('react');
 

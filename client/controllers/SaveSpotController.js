@@ -1,3 +1,4 @@
+// Handles saving spots to your feed.
 var SaveSpotController = {
   saveSpot: function(spotId, success, fail) {
     $.ajax({
@@ -9,7 +10,6 @@ var SaveSpotController = {
       },
       dataType: 'json',
       success: function (data) {
-        console.log("SUCCESSFULLY SAVED SPOT =============>", data);
         success(data);
       },
       error: function (error) {

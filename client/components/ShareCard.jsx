@@ -1,14 +1,13 @@
-// Default values for contents (body) and subject of messages.
+// Set default values for contents (body) and subject of messages.
 var messageDefaults = {
   contents: 'Check out irl! www.irl.events',
   subject: 'Check out irl',
   url: 'www.irl.events'
-}
+};
 
-
-// Fully functional on iOS and Android in built in browser.
+// Loads SMS share option if device is iOS or Android.
+// Fully functional on iOS and Android in built-in browser.
 // Not tested in 3rd-party browsers yet.
-// Doesn't load anything if not on iOS or Android.
 var ShareSMS = React.createClass({
   getDefaultProps: function () {
     return {contents: messageDefaults.contents};
@@ -41,7 +40,7 @@ var ShareSMS = React.createClass({
   }
 });
 
-// Fully functional.
+// Share via email.
 var ShareEmail = React.createClass({
   getDefaultProps: function () {
     return {
@@ -59,7 +58,7 @@ var ShareEmail = React.createClass({
   }
 });
 
-// Shares to Google+. Can only share link, no caption.
+// Share via Google+. Can only share link, no caption.
 var ShareGoogle = React.createClass({
   getDefaultProps: function () {
     return {url: messageDefaults.url}
@@ -73,7 +72,7 @@ var ShareGoogle = React.createClass({
   }
 });
 
-// Shares to facebook. Can only share link, no caption.
+// Shares via facebook. Can only share link, no caption.
 var ShareFacebook = React.createClass({
   getDefaultProps: function () {
     return {url: messageDefaults.url}
@@ -87,7 +86,7 @@ var ShareFacebook = React.createClass({
   }
 });
 
-// Shares to twitter, no problem.
+// Shares via twitter.
 var ShareTwitter = React.createClass({
   getDefaultProps: function () {
     return {contents: messageDefaults.contents}

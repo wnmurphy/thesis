@@ -1,5 +1,4 @@
-/** @jsx React.DOM */
-
+// Displays a message on the page.
 var Toast = React.createClass({
   render: function () {
     if(this.props.message) {
