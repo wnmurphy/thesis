@@ -24,7 +24,7 @@ describe("Persistent Spot and User Server", function() {
         name: "test1", 
         creator: 'Johnny', 
         category: 'entertainment',
-        location: 'Arizona',
+        location: {"latitude":"44.974893","longitude":"-93.40843999999998"},
         description: 'test createSpot',
         description_lc: 'test createSpot',
         start: '10'
@@ -134,7 +134,6 @@ describe("Persistent Spot and User Server", function() {
         dbSchema.scan(params, function(err, data) {
           if (err) {console.error(err);}
           if (data.Count > 0) {
-            deleteUser(data.Items);
             var deleteUser = function(userList) {
               params = {
                 TableName: 'Users',
@@ -154,6 +153,7 @@ describe("Persistent Spot and User Server", function() {
                 }
               });
             };
+            deleteUser(data.Items);
           } else {
             done();
           }
@@ -363,7 +363,6 @@ describe("Persistent Spot and User Server", function() {
       done();
     });
   });
-  //fails due to secret issue
   it('should sign users up and be able to search for users', function(done) {
     helpers.signup({
       username: 'Bob',
@@ -389,8 +388,8 @@ describe("Persistent Spot and User Server", function() {
     });
   });
   //fails due to location
-  xit('should be able to get spots', function(done) {
-    helpers.getSpots(null, function(array){
+  it('should be able to get spots', function(done) {
+    helpers.getSpots({"latitude":"44.974893","longitude":"-93.40843999999998"}, function(array){
       expect(array).to.be.an('array');
       expect(array.length).to.be.above(0);
       done();
