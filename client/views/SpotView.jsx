@@ -52,6 +52,7 @@ var SpotView = React.createClass({
           description: context.state.spot.description
         });
         context.setState({loading: false});
+        context.setState({profileId: data.creatorId});
         context.setState({creatorId: "/#/profile/" + data.creatorId});
         initMap(data.location, context, function(map, position, marker) {
           map.setOptions({zoomControl: false});
@@ -129,15 +130,9 @@ var SpotView = React.createClass({
           <div id="map"></div>
         </div>
         <div className='spot-view-container'>
-          <div className="spot-name-container">
-            <div className='category-icon-container'>
-              <i className={categories[this.state.spot.category] || categories.General}></i>
-            </div>
-            <span className='spot-name'>{this.state.spot.name}</span>
-          </div>
-          <h3>@{" " + timeController.msToTime(this.state.spot.start)}</h3>
-          {end}
-          <h4>created by: <a href={this.state.creatorId} className="spot-view-creatorid">{this.state.spot.creator}</a></h4>
+          <p style={{'text-align': 'center', 'font-size': '24'}}>{this.state.spot.name}</p>
+          <p style={{'text-align': 'center'}}>{timeController.stringifyTime(this.state.spot)}</p>
+          <p style={{'text-align': 'center'}}><small>Created by <a href={this.state.creatorId} className="spot-view-creatorid">{this.state.spot.creator}</a></small></p>
           <p>{this.state.spot.description}</p>
           <p>{this.state.spot.address}</p>
             <DirectionsLink location={this.state.spot.location} />
