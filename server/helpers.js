@@ -583,7 +583,7 @@ module.exports = {
   // Removes spots from database on server load.
   spotCleaner: function() {
 
-    var date = new Date() - 24 * 60 * 60;
+    var date = String(new Date() - 24 * 60 * 60);
 
     var params = {
       TableName: 'Spots',
@@ -600,20 +600,14 @@ module.exports = {
       var deleteSpot = function(list) {
         var params = {
           TableName: "Spots",
-          FilterExpression: "#spotId = (:spotId)",
-          ExpressionAttributeNames: {
-            "#spotId": "spotId"
-          },
-          ExpressionAttributeValues: {
-            ":spotId": list[0].spotId
-          }
+          Key: {spotId: list[0].spotId}
         };
         dbSchema.delete(params, function(err, data) {
           list.shift();
           if (list.length) {
             deleteSpot(list);
           } else {
-            console.log("Database has been cleaned");
+            console.log("Spots deleted. Database has been cleaned");
           }
         });
       };
