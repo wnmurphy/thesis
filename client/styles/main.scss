@@ -963,12 +963,10 @@ input#start {
   color: white;
 }
 
-
 .feed-icon {
   position: relative;
   left: 0.3em;
 }
-
 
 .feed-update {
   position: relative;
@@ -976,3 +974,15 @@ input#start {
   top: -0.5em;
   font-size: 0.9em;
 }
+
+.spot-view-profile-picture {
+  border-radius: 100%;
+  width: 75px;
+  height: 75px;
+  margin: 15px;
+  overflow: hidden;
+  background-size: cover;
+  display: block;
+  margin: 0 auto;
+}
+
