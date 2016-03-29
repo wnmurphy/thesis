@@ -1,11 +1,7 @@
-<<<<<<< bee4cc876636f82818d7c19bf088536b62603449
 // This component renders the page to create a new spot.
-=======
-/** @jsx React.DOM */
-
->>>>>>> (feat) live feed update
 var CreateView = React.createClass({
 
+  // Sets current user location and creates the map.
   componentDidMount: function() {
     var context = this;
     var setLocation = globalState.location;
@@ -26,20 +22,25 @@ var CreateView = React.createClass({
     return state;
   },
 
+  // Handles search for autocomplete location.
+  // Initiates a new map for CreateView.
+  // Sets up listener to update map and marker based on address input value.
   searchMap: function (map, position, marker) {
+
     google.maps.event.clearListeners(map, 'zoom_changed');
 
     map.setOptions({disableDefaultUI: true});
 
     marker.setIcon('/img/map/you_test.png');
 
-
     marker.setOptions({optimized: false});
 
     var context = this;
 
+    // Create a new Google Maps autocomplete object based on addess input field.
     var autocomplete = new google.maps.places.Autocomplete(document.getElementById('address'));
 
+    // Bind autocomplete object to current map.
     autocomplete.bindTo('bounds', map);
 
     var infowindow = new google.maps.InfoWindow({
@@ -51,6 +52,7 @@ var CreateView = React.createClass({
 
     this.setState({marker: marker}, function() {
 
+      // Listen for new address autocomplete value, and update map marker.
       google.maps.event.addListener(autocomplete, 'place_changed', function() {
 
         var place = autocomplete.getPlace();
@@ -70,6 +72,9 @@ var CreateView = React.createClass({
     });
   },
 
+  // POST new spot to server for storage in database.
+  // Calculates event duration.
+  // On success, emits socket event to notify other clients to update.
   sendSpot: function (event) {
     event.preventDefault();
     var context = this;
@@ -99,6 +104,7 @@ var CreateView = React.createClass({
     })
   },
 
+  // Converts device GPS coords into a street address.
   getAddress: function (event) {
     if (event) {
       event.preventDefault();
@@ -127,10 +133,12 @@ var CreateView = React.createClass({
     })
   },
 
+  // Updates event category when user changes category selector.
   selectChange: function(category) {
     this.setState({category: category});
   },
 
+  // Turns input field red when character limit is reached.
   handleChange: function (event) {
     var context = this;
     var newState = {};
@@ -146,12 +154,18 @@ var CreateView = React.createClass({
     this.setState(newState);
   },
 
+  // Updates address in state when location field is updated.
   changeAddress: function (event) {
     this.setState({address: event.target.value});
   },
 
+
   render: function () {
+    // Saves user input in case user navigates away from page.
     globalState.createState = this.state;
+
+    // Handles 2-way data binding for category drop-down selector.
+    // Uses it's own change handler (selectChange) instead of handleChange.
     var valueLink = {
       value: this.state.category,
       requestChange: this.selectChange
@@ -172,27 +186,31 @@ var CreateView = React.createClass({
             <input type="text" id="name" placeholder="Title" defaultValue={this.state.name || ''} maxLength="50" required autoComplete='off'/>
             <input type="text" id="address" placeholder="Location" onChange={this.changeAddress} value={this.state.address || ''} required />
             <input type="text" id="name" placeholder="Title" defaultValue={this.state.name || ''} maxLength="50" required autoComplete='off'/>
+            <input type="text" id="address" placeholder="Location" onChange={this.changeAddress} value={this.state.address || ''} required />
             <select valueLink={valueLink}>
               <option id="category">Select Category</option>
-              <option id="category" value="General">&#xf069; General</option>
-              <option id="category" value="Food">&#xf0f5; Food</option>
-              <option id="category" value="Entertainment">&#xf145; Entertainment</option>
-              <option id="category" value="Health & Fitness">&#xf21e; Health & Fitness</option>
-              <option id="category" value="Arts & Culture">&#xf1fc; Arts & Culture</option>
-              <option id="category" value="Parties & Nightlife">&#xf000; Parties & Nightlife</option>
-              <option id="category" value="Nature & Outdoors">&#xf1bb; Nature & Outdoors</option>
-              <option id="category" value="Politics">&#xf25b; Politics</option>
-              <option id="category" value="Education">&#xf19d; Education</option>
-
+              <option id="category" value="General">General</option>
+              <option id="category" value="Food">Food</option>
+              <option id="category" value="Entertainment">Entertainment</option>
+              <option id="category" value="Health & Fitness">Health & Fitness</option>
+              <option id="category" value="Arts & Culture">Arts & Culture</option>
+              <option id="category" value="Parties & Nightlife">Parties & Nightlife</option>
+              <option id="category" value="Nature & Outdoors">Nature & Outdoors</option>
+              <option id="category" value="Politics">Politics</option>
+              <option id="category" value="Education">Education</option>
             </select>
             <input type="text" id="description" placeholder="Description" defaultValue={this.state.description || ''} required autoComplete='off'/>
             <span className="time-input">Start Time</span>
             <input type="time" id="start" step="900" placeholder="Start" defaultValue={this.state.start || ''} required />
             <span className="time-input">Duration</span>
             <div className="duration-input-container">
-              <input type="number" className="duration-input" step="1" min="1" max="24" id="hours" placeholder="Hours" defaultValue={this.state.hours || 0} />
-              <input type="number" className="duration-input" step="15" min="0" max="60" id="minutes" placeholder="Minutes" defaultValue={this.state.minutes || 0}/>
+              <input type="number" className="duration-input" step="1" min="1" max="24" id="hours" placeholder="Hours" defaultValue={this.state.hours || ''} />
+              <input type="number" className="duration-input" step="15" min="0" max="60" id="minutes" placeholder="Minutes" defaultValue={this.state.minutes || ''}/>
             </div>
+<<<<<<< 3fb1f1e9de4ff69cf70179778d3c207836eec446
+=======
+
+>>>>>>> add all files due to conflicts issues not solving correctly
               <div className="button" onClick={this.sendSpot}>Submit</div>
           </form>
         </div>

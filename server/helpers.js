@@ -1,35 +1,13 @@
 var aws = require('aws-sdk');
 var bcrypt = require('bcrypt-nodejs');
 var jwt = require('jsonwebtoken');
-var env = require('node-env-file');
-var pe, accessKeyId, secretAccessKey, region, endpoint;
-
-
-if(!process.env.TRAVIS) {
-  pe = env(__dirname + '../../.env');
-}
-
-if(process.env.accessKeyId) {
-  accessKeyId = pe.accessKeyId;
-  secretAccessKey = pe.secretAccessKey;
-  endpoint = "dynamodb.us-east-1.amazonaws.com";
-  region = "us-east-1";
-}
-else {
-  accessKeyId = "fakeAccessKey";
-  secretAccessKey = "fakeSecretAccessKey";
-  endpoint = "http://localhost:8000";
-  region = "fakeRegion";
-}
-
 
 aws.config.update({
-  accessKeyId: accessKeyId,
-  secretAccessKey: secretAccessKey,
-  region: region,
-  endpoint: new aws.Endpoint(endpoint)
+  accessKeyId: "fakeAccessKey",
+  secretAccessKey: "fakeSecretAccessKey",
+  region: "fakeRegion",
+  endpoint: new aws.Endpoint('http://localhost:8000')
 });
-
 var dbSchema = new aws.DynamoDB.DocumentClient();
 
 var secret = process.env.secret || "dummySecretToKeepOurRealSecretActuallyASecret";
@@ -108,29 +86,30 @@ module.exports = {
                     }
                   };
                   dbSchema.update(params, function(err, data) {
+                    console.log('spot creator id', spot.creatorId);
                     if (err) {
                       console.error('error updating user\'s spotCount', err);
                       fail(err);
                     } else {
-
                       var userParams = {
                         TableName: 'Users',
                         FilterExpression: "#username in (:userid)",
                         ExpressionAttributeNames:{
-                            "#username": "userId"  
+                            "#username": "userId"
+                                                
                         },
                         ExpressionAttributeValues: {
                             ":userid": spot.creatorId
                         }
                       };
 
+
                       dbSchema.scan(userParams, function(err, data) {
+                        console.log('dataaaaa', data);
                         if(err) {
-                          console.error('error finding creator id ', err);
+                          console.error('error finding user id when creating spot', err);
                         } else {
-                          console.log('data', data.Items[0].followers);
                           newSpot.followers = data.Items[0].followers;
-                          console.log('newSpot', newSpot);
                           success(newSpot);
                         }
 
@@ -222,7 +201,7 @@ module.exports = {
       } else {
         data.Items.forEach(function(result) {
           if(result.location && result.location.constructor === Object) {
-            if(context.distanceBetween(location, result.location) < 50) {
+            if(context.distanceBetween(location, result.location) < 25) {
               filteredDistSpots.push(result);
             }
           }
@@ -297,7 +276,7 @@ module.exports = {
                   savedSpots: [],
                   followers: [],
                   spotCount: 0,
-                  socketId: 'test'
+                  socketId: 'socketId'
                 }
               };
 
@@ -397,7 +376,9 @@ module.exports = {
           bio: user.Items[0].bio || "This user has not created a bio yet.",
           spotCount: user.Items[0].spotCount || 0,
           followers: user.Items[0].followers.length || 0,
-          img: user.Items[0].img
+          followersList: user.Items[0].followers || [],
+          img: user.Items[0].img,
+          followingList: user.Items[0].following || []
         });
       }
       else {
@@ -493,6 +474,7 @@ module.exports = {
         return console.error('Error writing message to spot', err);
       }
       else {
+        console.log("POST MESSAGE TO DATABASE ==================>", data);
         return data;
       }
     });
@@ -564,6 +546,7 @@ module.exports = {
 
     // Convert distance (m) to distance (mi).
     distance = distance * 0.000621371;
+    console.log('distance between', distance);
     return distance;
   },
 
@@ -712,8 +695,6 @@ module.exports = {
             }
           }
           console.log("found? ", found);
-          console.log('userrrrrrrrrr', user.Items[0].following);
-          console.log('followwww', follow);
           if (!found) {
             params = {
               TableName: 'Users',
@@ -724,7 +705,6 @@ module.exports = {
               }
             };
             //update user's 'following' array to include this new user
-            console.log('user socket id', user.Items[0]);
             dbSchema.update(params, function(err, data) {
               if (err) {
                 console.error(err);
@@ -801,6 +781,7 @@ module.exports = {
       }
     });
   },
+
   addSocketId: function(data, callback) {
     var params = {
       TableName: 'Users',

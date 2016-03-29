@@ -15,6 +15,7 @@ module.exports = function(app, express, io) {
       spot.creatorId = decoded.userId;
       spot.creator = decoded.username;
       helpers.createSpot(spot, function(newSpot) {
+        console.log("SPOT =================>", newSpot);
         res.send(newSpot);
       }, function(err) {
         res.send(err);
@@ -187,7 +188,7 @@ module.exports = function(app, express, io) {
     // broadcast spotAdded event to trigger client-side map refresh.
     socket.on('newSpot', function(newSpot){
       socket.broadcast.emit('spotDrop', newSpot);
-      
+      console.log('newspot', newSpot);
     // Live feed update when user's follower creates a new spot  
       var followersArray = [];
       var followers = newSpot.followers; 
@@ -197,7 +198,7 @@ module.exports = function(app, express, io) {
       });
 
       helpers.getFollowers(newSpot.followers, function(data) {
-
+        console.log('dataaaaaaa', data);
         data.Items.forEach(function(users) {
           if(!users.lastId) {
             if(newSpotFollowers.indexOf(users.userId) !== -1) {
@@ -210,7 +211,8 @@ module.exports = function(app, express, io) {
         followersArray.forEach(function(user) {
           var currSockets = io.sockets.clients();
           var currentUsers = Object.keys(currSockets.connected);
-
+          console.log('currentusers', currentUsers);
+          console.log('newSpotFollowers', newSpotFollowers);
           if(currentUsers.indexOf(user) !== -1) {
             io.sockets.connected[user].emit('updateFeed');
           }
@@ -228,6 +230,7 @@ module.exports = function(app, express, io) {
       });
     });
 
+
     /* Chat socket */
 
     // Listen for whenever a chat message is sent.
@@ -240,7 +243,7 @@ module.exports = function(app, express, io) {
       helpers.getMessagesFromDatabase(id, function(data) {
         io.sockets.connected[socket.id].emit('returnChat', data);
       });
-    });
+    })
   });
 
 };

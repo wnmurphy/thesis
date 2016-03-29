@@ -120,4 +120,4 @@ db.listTables(function(err, data) {
   console.log(data);
 });
 
-module.exports = dbSchema;
+module.exports.db = db;

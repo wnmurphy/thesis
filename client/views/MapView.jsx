@@ -43,6 +43,7 @@ var MapView = React.createClass({
       console.log('does it come hereeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee');
       alert('live feed?');
     })
+
     // Check whether location has been set globally.
     // If not, get location and initialize map with nearby spots.
     // Otherwise, just initialize the map.

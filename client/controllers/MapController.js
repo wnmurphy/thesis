@@ -330,6 +330,7 @@ var createMarker = function(spot, animate, context) {
   google.maps.event.addListener(spot, 'click', function () {
     if (context.state.previous) {
       context.state.previous.getInfoWindow().close();
+
       context.state.previous.setIcon('/img/map/pin_test.png');
     }
     infoWindow.setContent(this.info);
