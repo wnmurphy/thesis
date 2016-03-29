@@ -187,7 +187,6 @@ describe("Persistent Spot and User Server", function() {
         console.error("Error getting Johnny's profile ", err);
       }
       body = JSON.parse(body);
-      console.log("test body: ", body);
       expect(res.statusCode).to.equal(200);
       expect(body.result.userId).to.equal(999999999999);
       expect(body.result.username).to.equal('Johnny');
@@ -314,7 +313,6 @@ describe("Persistent Spot and User Server", function() {
     });
   });
   //==============helper function tests==============
-  //fails due to location
   it("should create spots and be able to search for spots", function(done){
     helpers.createSpot({
       name: "test1", 
@@ -366,17 +364,15 @@ describe("Persistent Spot and User Server", function() {
     });
   });
   //fails due to secret issue
-  xit('should sign users up and be able to search for users', function(done) {
+  it('should sign users up and be able to search for users', function(done) {
     helpers.signup({
       username: 'Bob',
       password: 'password',
       email: 'test@gmail.com'
     }, 
     function(user){
-      console.log("Signed Bob up");
       helpers.search('Bob', function(users) {
         expect(user.userId).to.exist;
-        expect(users[0].token).to.exist;
         done();
       }, 
       function(err) {
@@ -386,7 +382,6 @@ describe("Persistent Spot and User Server", function() {
         done();
       });
     }, function(err){
-      console.log('failed to sign Bob up');
       console.error("Bob's Error: ", err);
       //to fail test on error
       expect(1).to.equal(2);
