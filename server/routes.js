@@ -243,7 +243,7 @@ module.exports = function(app, express, io) {
       helpers.getMessagesFromDatabase(id, function(data) {
         io.sockets.connected[socket.id].emit('returnChat', data);
       });
-    })
+    });
   });
 
 };

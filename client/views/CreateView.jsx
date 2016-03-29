@@ -185,8 +185,6 @@ var CreateView = React.createClass({
           <form id="createSpotForm" onChange={this.handleChange}>
             <input type="text" id="name" placeholder="Title" defaultValue={this.state.name || ''} maxLength="50" required autoComplete='off'/>
             <input type="text" id="address" placeholder="Location" onChange={this.changeAddress} value={this.state.address || ''} required />
-            <input type="text" id="name" placeholder="Title" defaultValue={this.state.name || ''} maxLength="50" required autoComplete='off'/>
-            <input type="text" id="address" placeholder="Location" onChange={this.changeAddress} value={this.state.address || ''} required />
             <select valueLink={valueLink}>
               <option id="category">Select Category</option>
               <option id="category" value="General">General</option>
