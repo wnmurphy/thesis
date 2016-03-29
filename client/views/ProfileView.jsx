@@ -164,7 +164,7 @@ var ProfileView = React.createClass({
 
       // Define list of users you're subscribed to.
       followingList = this.state.followingList.map(function (user) {
-        var curUrl = '/#/profile' + user.userId;
+        var curUrl = '/#/profile/' + user.userId;
         return (
             <div><a href={curUrl} className="following">{user.username}</a></div>
           );
@@ -172,7 +172,7 @@ var ProfileView = React.createClass({
 
       // Define list of users subscribed to you.
       followersList = this.state.followersList.map(function (user) {
-        var curUrl = '/#/profile' + user.userId;
+        var curUrl = '/#/profile/' + user.userId;
         return (
             <div><a href={curUrl} className="follower">{user.username}</a></div>
           );
