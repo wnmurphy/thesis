@@ -38,7 +38,7 @@ var NavBar = React.createClass({
          <a href="#/"><i className="material-icons">track_changes</i></a>
          <a href="#/search"><i className="material-icons">search</i></a>
          <a href="#/feed" onClick={this.updateFeed}><i className="material-icons">list</i>
-         {this.state.feedUpdate ? <i className="material-icons feed-update">priority_high</i> : null}
+         {this.state.feedUpdate ? <i className="fa fa-exclamation-circle fa-2x feed-update"></i> : null}
          
 
          </a>
