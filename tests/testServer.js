@@ -415,7 +415,6 @@ describe("Persistent Spot and User Server", function() {
       done();
     });
   });
-  //fails due to password hashing
   it('should get user\' profile', function(done) {
     helpers.getProfile(999999999999, function(profile){
       expect(profile.userId).to.exist;
