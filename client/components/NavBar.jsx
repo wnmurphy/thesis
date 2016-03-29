@@ -17,15 +17,29 @@ var NavButton = React.createClass({
 var NavBar = React.createClass({
   getInitialState: function() {
     return {
-      feedUpdate: false        
+      feedUpdate: false       
     };
   },
 
   componentDidMount: function () {
     var context = this;
     socket.on('updateFeed', function (follower) {
-      context.setState({feedUpdate: true}); 
-    })      
+      context.setState({feedUpdate: true, icon: "fa fa-bell feed-update"}); 
+    });
+
+    // socket.on('newMessage', function(message) {
+    //   console.log('new message', message);
+    //   if(message.username !== localStorage.getItem('username')) {
+    //     context.setState({feedUpdate: true, 
+    //                       icon: "fa fa-comment-o fa-2x feed-update",
+    //                       uri: '#/spot/' + message.spotId
+    //                     })
+    //   }
+      
+    // });  
+
+    
+    // <i className="fa fa-bell feed-update"></i>
   },
 
   updateFeed: function() {
@@ -37,10 +51,9 @@ var NavBar = React.createClass({
       <div>
          <a href="#/"><i className="material-icons">track_changes</i></a>
          <a href="#/search"><i className="material-icons">search</i></a>
-         <a href="#/feed" onClick={this.updateFeed}><i className="material-icons">list</i>
-         {this.state.feedUpdate ? <i className="fa fa-exclamation-circle fa-2x feed-update"></i> : null}
-         
-
+         <a href="#/feed" onClick={this.updateFeed}>
+          <i className="material-icons feed-icon">list</i>
+          {this.state.feedUpdate ? <i className={this.state.icon}></i> : null}
          </a>
          <a href="#/profile"><i className="material-icons">person</i></a>
       </div>

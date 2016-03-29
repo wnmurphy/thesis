@@ -927,6 +927,15 @@ input#start {
   color: white;
 }
 
-.feed-update {
-  color: #D66259;
+.feed-icon {
+  position: relative;
+  left: 0.4em;
 }
+
+.feed-update {
+  position: relative;
+  color: #2B4F71;
+  top: -0.5em;
+  font-size: 0.9em;
+}
+
