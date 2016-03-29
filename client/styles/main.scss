@@ -511,13 +511,26 @@ form {
 // }
 
 .toast {
+  position: absolute;
+  top: calc(100% - #{$nav-height});
+  left: 0;
+  width: calc(100% - 52px);
   background-color: rgba(0,0,0,0.2);
   margin: 5px;
-  padding: 5px;
+  padding: 5px 20px;
   text-align: center;
+  opacity: 0;
+  -webkit-transition: opacity 0.5s;
+  transition: opacity 0.5s;
+  border-radius: 5px;
+  z-index: 3000;
 
   &.error {
-    color: #f00;
+    
+  }
+
+  &.show {
+    opacity: 100;
   }
 }
 

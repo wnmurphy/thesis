@@ -64,18 +64,16 @@ var ProfileView = React.createClass({
     var context = this;
     ProfileController.followUser(this.state.userId, function (data) {
       context.setState({toastMessage: 'Following User'});
-      setTimeout(function () {
-        context.setState({toastMessage: ''})
-      }, 1000);
       console.log(data);
     }, function (err) {
       context.setState({toastMessage: 'Already Following'});
-      setTimeout(function () {
-        context.setState({toastMessage: ''})
-      }, 1000);
       console.error(err);
     });
-
+    setTimeout(function() {
+      context.setState({toastMessage: ''}, function() {
+        console.log('toastMessage changed');
+      });
+    }, 5000);
   },
 
   // Opens option to edit user profile photo and bio.
@@ -166,7 +164,7 @@ var ProfileView = React.createClass({
 
       // Define list of users you're subscribed to.
       followingList = this.state.followingList.map(function (user) {
-        var curUrl = '/#/profile' + user.userId;
+        var curUrl = '/#/profile/' + user.userId;
         return (
             <div><a href={curUrl} className="following">{user.username}</a></div>
           );
@@ -174,7 +172,7 @@ var ProfileView = React.createClass({
 
       // Define list of users subscribed to you.
       followersList = this.state.followersList.map(function (user) {
-        var curUrl = '/#/profile' + user.userId;
+        var curUrl = '/#/profile/' + user.userId;
         return (
             <div><a href={curUrl} className="follower">{user.username}</a></div>
           );
@@ -232,6 +230,7 @@ var ProfileView = React.createClass({
 
     return (
       <div className="profile-view">
+        {this.state.toastMessage ? <Toast message={this.state.toastMessage} /> : null}
         <div className="profile-header">
           {profileImage}
           <div>
@@ -240,7 +239,6 @@ var ProfileView = React.createClass({
             </div>
             {followButton}
           </div>
-          <div>{this.state.toastMessage ? <Toast message={this.state.toastMessage}/> : null}</div>
         </div>
         {bio}
         <table className="profile-stats">
