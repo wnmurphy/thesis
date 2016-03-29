@@ -165,7 +165,6 @@ describe("Persistent Spot and User Server", function() {
   it('should return a 200 when getting a spot', function(done) {
     request({
       method: "GET",
-      // uri: "http://localhost:8080/api/spot/999999999999"
       uri: serverURI + "/api/spot/999999999999"
     }, function (err, res, body){
       if (err) {
@@ -214,7 +213,6 @@ describe("Persistent Spot and User Server", function() {
   it('should be able to serve the main page', function(done) {
     request({
       method: "GET",
-      // uri: "http://localhost:8080/"
       uri: serverURI
     }, function (err, res, body){
       if (err) {
@@ -223,29 +221,6 @@ describe("Persistent Spot and User Server", function() {
       expect(res.statusCode).to.equal(200);
       expect(body).to.be.not.empty;
       expect(body).to.contain('<div');
-      done();
-    });
-  });
-  //fails due to authentication
-  xit('should return a 200 when creating a new spot', function(done) {
-    request({
-      method: "POST",
-      uri: "http://localhost:8080/api/create",
-      json: {
-        name: "test1", 
-        creator: 'Johnny', 
-        category: 'entertainment',
-        location: 'Montana',
-        description: 'test createSpot',
-        description_lc: 'test createSpot',
-        start: '10'
-      }
-    }, function(err, res, body){
-      if (err) {
-        console.error("Error creating new spot ", err);
-      }
-      expect(res.statusCode).to.equal(200);
-      expect(body).to.be.empty;
       done();
     });
   });
@@ -262,20 +237,6 @@ describe("Persistent Spot and User Server", function() {
       }
       expect(res.statusCode).to.equal(200);
       expect(body).to.be.not.empty;
-      done();
-    });
-  });
-  //fails due to location
-  xit('should return a 200 when getting spots', function(done) {
-    request({
-      method: "GET",
-      uri: "http://localhost:8080/api/map"
-    }, function (err, res, body){
-      if (err) {
-        console.error("Error getting spots ", err);
-      }
-      expect(res.statusCode).to.equal(200);
-      expect(body.length).to.be.above(0);
       done();
     });
   });
@@ -394,22 +355,6 @@ describe("Persistent Spot and User Server", function() {
       done();
     }, function(err){
       console.error('Error getting spots', err);
-      //to fail test on error
-      expect(1).to.equal(2);
-      done();
-    });
-  });
-  //fails due to authentication
-  xit('should sign in a user', function(done) {
-    helpers.signin({
-      username: 'Johnny',
-      password: 'password',
-    }, function(user){
-      expect(user.Items[0].password).to.equal('password');
-      expect(user.Items[0].username).to.equal('Johnny');
-      done();
-    }, function(err){
-      console.error("Error signing in Johnny", err);
       //to fail test on error
       expect(1).to.equal(2);
       done();
