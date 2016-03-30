@@ -132,6 +132,8 @@ module.exports = function(app, express, io) {
       helpers.getProfile(result.creatorId, function(profile) {
         result.img = profile.img;
         res.json(result);
+      }, function(error) {
+        res.send(404, err);
       })
     }, function(err) {
       res.send(404, err);
