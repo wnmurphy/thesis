@@ -78,8 +78,9 @@ var CreateView = React.createClass({
   sendSpot: function (event) {
     event.preventDefault();
     var context = this;
-    var duration = timeController.hoursToMS(this.state.hours) + timeController.minutesToMS(this.state.minutes);
-    console.log('duration', duration);
+    if(this.state.hours || this.state.minutes) {
+      var duration = timeController.hoursToMS(this.state.hours) + timeController.minutesToMS(this.state.minutes);
+    }
     $.ajax({
       method: 'POST',
       url: '/api/create',
@@ -99,7 +100,6 @@ var CreateView = React.createClass({
         window.location = '/#/';
       },
       error: function (error) {
-        console.log(error);
       }
     })
   },

@@ -274,7 +274,7 @@ var createMarker = function(spot, animate, context) {
   var contentString = '<div style="font-size: 14px"><strong>' + spot.name  + '</strong></div>' +
                       '<div style="font-size: 11px;"><strong>by <a href="/#/profile/' + spot.creatorId + '" class="map-view-userid">' + spot.creator + '</a>' + '</strong></div>' +
                       '<div style="font-size: 11px; padding-top: 2px"><i class="' + categories[spot.category] + '"></i> ' + spot.category + '</div>' +
-                      '<div><small><small>' + timeController.stringifyTime(spot) + '</small></small></div>' +
+                      '<div><small><small>' + timeController.stringifyTime(spot.start, spot.end) + '</small></small></div>' +
                       '<div><small><small><a href="#/spot/' + spot.spotId +'">More Details</a></small></small></div>';
 
   var icon = {
@@ -412,7 +412,7 @@ var placeMarker = function(context, query, infoWindow, map, name) {
   }
 
   context.state.marker.setIcon('/img/map/marker_animated.gif');
-  
+
   infoWindow.setContent('<div><strong>' + query.name + '</strong><br>' + street + '<br>' + locality + '</div>');
 
   infoWindow.open(map, context.state.marker);
