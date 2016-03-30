@@ -623,6 +623,7 @@ form {
   margin: 15px;
   -webkit-transition: all 0.25s;
           transition: all 0.25s;
+  margin: 0 auto;
 
   div {
     text-align: center;
@@ -641,7 +642,10 @@ form {
 }
 
 .profile-name {
-  display: inline-block;
+  margin-top: 20px;
+  text-align: center;
+  display: block;
+  margin: 0 auto;
 }
 
 .follow-button, .save-button, .save-spot-button {
