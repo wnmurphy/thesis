@@ -1,34 +1,40 @@
 enable sudo: required
 language: node_js
 node_js:
-  - '5.5.0'
-before_install:
-   - sudo add-apt-repository ppa:ubuntu-toolchain-r/test -y
-   - sudo apt-get update -q
-   - sudo apt-get install gcc-4.8 -y
-   - echo "Installing libvips..."
-   - sudo add-apt-repository -y ppa:lovell/precise-backport-vips
-   - sudo apt-get update
-   - sudo apt-get install -y libvips-dev
-   - echo "Completed libvips installation."
+- 5.5.0
 before_script:
-  - bower install
-  - wget http://dynamodb-local.s3-website-us-west-2.amazonaws.com/dynamodb_local_latest.tar.gz -O /tmp/dynamodb_local_latest.tar.gz
-  - tar -xzf /tmp/dynamodb_local_latest.tar.gz -C /tmp
-  - java -Djava.library.path=/tmp/DynamoDBLocal_lib -jar /tmp/DynamoDBLocal.jar -inMemory &
-  - sleep 2
-  - node db/db.js
-  - npm install -g nodemon
-  - npm start &
-  - sleep 5
+- bower install
+- wget http://dynamodb-local.s3-website-us-west-2.amazonaws.com/dynamodb_local_latest.tar.gz
+  -O /tmp/dynamodb_local_latest.tar.gz
+- tar -xzf /tmp/dynamodb_local_latest.tar.gz -C /tmp
+- java -Djava.library.path=/tmp/DynamoDBLocal_lib -jar /tmp/DynamoDBLocal.jar -inMemory
+  &
+- sleep 2
+- node db/db.js
+- npm install -g nodemon
+- npm start &
+- sleep 5
 script: npm test
 env:
+  matrix:
   - CXX=g++-4.8
+  global:
+  - secure: IsPk3YDsJl4M3F9nz671POAdcaaD1QDfWYCflEtZ57scCmhMGQ6/Ntnn5r6LjGBkz2lktYLrssehynUcIPlv5rdGFjf+X3JdenLzzM5RyDJTXMRDYcpRtpWIyac5XB1LRiOH10lp2cP4E54JVpQF3O6z6LIqwAaY9kXBiL+mlQsXIRvjdgzxzHg2wTNs3CFKtVnvdRg79sYA76dzeq7n2IV02ww3ddYI6YaJ00ITIobS4jBWhXgXFUNheCZLvG4+QDNwNCVnse7cghyIXHLVko0SSKWDOyq/rXuhoJWbFUXoY5qZL6Zyc/aTDyVlw7bR1EIFNYOLk59QSrlG+MwgMrCYGCPxzFDA6F+IAbYouyfiFHH2zZV21iWlds+9a/PsfBVKnBYlVRIThotVeFfiZ/oXDHzt73JRHz0gd3etBWYknj5Psoa3/OnxKySlmvwbgsJGayX8IySl+/GYZj4xuyVoXRjlaBGHKA7PjjnejH7PB6MyXtLBoXWTbLS7k1QG6w5ssjQ9NpIYZ5F/DwCPJfQjjhkK97NXi1c4HdEQe7ekDTm7bzuVBDwvmKVvd4U7msVDxFai0MJOCiiWZ3KMLEinYj0OOlTxM6x3kzzLxr+QU50HMIqxwZ6qoq2a780vd8YTCHNSwf6wYeKpUPin2sTDWaJhUHld75CW2MROk1I=
+  - secure: EYJ6M+itqXysKlacZiqtXY88VRijjR8/eR2UgDSZf6XHptgyPHpdNimJYIDopBXDFdf/2KDqTqZgcUpE5PEblZ2v3FbNbSb+v1yePVjtsZouLkZpk53XMl1RM0UPJiMb6NaVlQUkpd/ubGCt2JKs4NIt+h2PMiHGvDB9C6RRNbgJ7c+V7OETvy3ATA18t9ixZR6YKg7e57h6+2cXanHZS3MB4/UwtyTxbKMgXtbFRnK6WNbIM2bG9+Bl1PzVK6cEDGaXW42HZaC8BVhb4E3sVh+3cloPhUrbOudNQOedugVoEQlRWkxWO19owNjAux6HhRVdxt6kh1IkErJ9Qv8Yyk4pG6exuSmKJw0lk5syDrV8z1r7Zg72MtzMIlkPlJ/SD+EQSBlF+gD+4oZ2962d8uK9Hu+CVQ96P08eih1t81NctTOCm4nB42modRPbN3Y+CBufBK8xQNNP8D/egahlpLCqqLNgC41T/IG5Dr/n8m6oIi56i6sbuwd3lRuld0Wqx3cE7WPbS2fSvYchZtVWu0jPJv2l7PPmCOaCHIoSAv6tsFPlK0sB/JbCpXqZhe6U+lHiKlQtgDHsHZ7NiY/6c4tQSRIuv00Dt5KG/PowepOsOjT4TtXNeVasXZhEpOidR4IOFOA41N+8Ph7zEAwZgDXr0VVTkiS0daT3Z7nA8RI=
 addons:
   hosts:
-    - dynamodb-local
-  apt:
-      sources:
-        - ubuntu-toolchain-r-test
-      packages:
-        - g++-4.8
+  - dynamodb-local
+deploy:
+  - provider: elasticbeanstalk
+    app: thesis-dev
+    env: thesisDev-env 
+    bucket_name: elasticbeanstalk-us-east-1-362369051826
+    region: us-east-1
+    access_key_id:
+      secure: IsPk3YDsJl4M3F9nz671POAdcaaD1QDfWYCflEtZ57scCmhMGQ6/Ntnn5r6LjGBkz2lktYLrssehynUcIPlv5rdGFjf+X3JdenLzzM5RyDJTXMRDYcpRtpWIyac5XB1LRiOH10lp2cP4E54JVpQF3O6z6LIqwAaY9kXBiL+mlQsXIRvjdgzxzHg2wTNs3CFKtVnvdRg79sYA76dzeq7n2IV02ww3ddYI6YaJ00ITIobS4jBWhXgXFUNheCZLvG4+QDNwNCVnse7cghyIXHLVko0SSKWDOyq/rXuhoJWbFUXoY5qZL6Zyc/aTDyVlw7bR1EIFNYOLk59QSrlG+MwgMrCYGCPxzFDA6F+IAbYouyfiFHH2zZV21iWlds+9a/PsfBVKnBYlVRIThotVeFfiZ/oXDHzt73JRHz0gd3etBWYknj5Psoa3/OnxKySlmvwbgsJGayX8IySl+/GYZj4xuyVoXRjlaBGHKA7PjjnejH7PB6MyXtLBoXWTbLS7k1QG6w5ssjQ9NpIYZ5F/DwCPJfQjjhkK97NXi1c4HdEQe7ekDTm7bzuVBDwvmKVvd4U7msVDxFai0MJOCiiWZ3KMLEinYj0OOlTxM6x3kzzLxr+QU50HMIqxwZ6qoq2a780vd8YTCHNSwf6wYeKpUPin2sTDWaJhUHld75CW2MROk1I=
+    secret_access_key:
+      secure: EYJ6M+itqXysKlacZiqtXY88VRijjR8/eR2UgDSZf6XHptgyPHpdNimJYIDopBXDFdf/2KDqTqZgcUpE5PEblZ2v3FbNbSb+v1yePVjtsZouLkZpk53XMl1RM0UPJiMb6NaVlQUkpd/ubGCt2JKs4NIt+h2PMiHGvDB9C6RRNbgJ7c+V7OETvy3ATA18t9ixZR6YKg7e57h6+2cXanHZS3MB4/UwtyTxbKMgXtbFRnK6WNbIM2bG9+Bl1PzVK6cEDGaXW42HZaC8BVhb4E3sVh+3cloPhUrbOudNQOedugVoEQlRWkxWO19owNjAux6HhRVdxt6kh1IkErJ9Qv8Yyk4pG6exuSmKJw0lk5syDrV8z1r7Zg72MtzMIlkPlJ/SD+EQSBlF+gD+4oZ2962d8uK9Hu+CVQ96P08eih1t81NctTOCm4nB42modRPbN3Y+CBufBK8xQNNP8D/egahlpLCqqLNgC41T/IG5Dr/n8m6oIi56i6sbuwd3lRuld0Wqx3cE7WPbS2fSvYchZtVWu0jPJv2l7PPmCOaCHIoSAv6tsFPlK0sB/JbCpXqZhe6U+lHiKlQtgDHsHZ7NiY/6c4tQSRIuv00Dt5KG/PowepOsOjT4TtXNeVasXZhEpOidR4IOFOA41N+8Ph7zEAwZgDXr0VVTkiS0daT3Z7nA8RI=
+    on:
+    repo: https://github.com/hrr12MYLTR/thesis.git # Deploy only using my user repo for now
+    branches: master
+    
