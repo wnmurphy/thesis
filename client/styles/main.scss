@@ -101,7 +101,7 @@ body {
 }
 
 #app-container {
-  background-color: #EFF0F1;
+  background-color: #fff;
   position: fixed;
   left: 0;
   top: 0;
@@ -400,7 +400,7 @@ form {
 
 .spot-view-container {
   padding: 0 3em;
-  background-color: #EFF0F1;
+  background-color: #fff;
 }
 
 .category-icon-container, .spot-name-container{
@@ -992,7 +992,7 @@ input#start {
 .spot-view-address {
   box-shadow: 1px 2px #CCCCCC;
   position: relative;
-  background-color: rgb(255, 255, 255);
+  background-color: rgba(255, 255, 255, 0.8);
   text-align: center;
   vertical-align: middle;
   width: auto;
