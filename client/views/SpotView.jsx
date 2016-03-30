@@ -58,11 +58,12 @@ var SpotView = React.createClass({
           marker.setOptions({optimized: false});
           marker.setIcon('/img/map/marker_animated.gif');
         });
-        var durationTime = timeController.msToDuration(Number(data.end));
-        context.setState({end: durationTime});
+        if(data.end) {
+          var durationTime = timeController.msToDuration(Number(data.end));
+          context.setState({end: durationTime});
+        }
       },
       error: function (error) {
-        console.log("ERROR: ", error);
         context.setState({loading: false});
       }
     });
@@ -109,7 +110,6 @@ var SpotView = React.createClass({
   post: function() {
     SaveSpotController.saveSpot(this.state.spotId, function(spot) {
     }, function(err) {
-      console.error(err);
     });
   },
 
@@ -117,7 +117,7 @@ var SpotView = React.createClass({
 
     var chatContainerClass = "chat-card-container";
 
-    if (this.state.spot.end) {
+    if (this.state.end) {
       var end = <p style={{'font-style': 'italic', 'font-size': '14px'}}>{this.state.end}</p>
     } else {
       var end = null;

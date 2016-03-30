@@ -28,7 +28,6 @@ var timeController = {
 
   timeToMS: function (time) {
     if (time) {
-      console.log(timeController.timeToDate(time).getTime());
       return timeController.timeToDate(time).getTime();
     } else {
       return undefined;
@@ -94,12 +93,14 @@ var timeController = {
     }
   },
 
-  stringifyTime: function(spot) {
+  stringifyTime: function(start, end) {
     var timeString = "";
-    if (Number(spot.start) > new Date().getTime()) {
-      timeString = "in " + timeController.msToDuration(Number(spot.start) + Number(spot.end) - new Date().getTime());
+    if (Number(start) > new Date().getTime() - 1) {
+      timeString = "in " + timeController.msToDuration(Number(start) - new Date());
+    } else if (end) {
+      timeString = timeController.msToDuration(Number(end) + Number(start) - new Date()) + " left";
     } else {
-      timeString = timeController.msToDuration(Number(spot.end) + Number(spot.start) - new Date().getTime()) + " left";
+      timeString = timeController.msToDuration(new Date() - Number(start)) + " ago";
     }
     return timeString;
   },
