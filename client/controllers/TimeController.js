@@ -99,12 +99,12 @@ var timeController = {
       if (flag) {
         timeString = "Happening ";
       }
-      timeString = "in " + timeController.msToDuration(Number(start) - new Date());
+      timeString = "in " + timeController.msToDuration(Number(spot.start) - new Date());
     } else if (spot.end) {
       if (flag) {
         timeString = "Ending in ";
       }
-      timeString = timeController.msToDuration(Number(end) + Number(start) - new Date());
+      timeString = timeController.msToDuration(Number(spot.end) + Number(spot.start) - new Date());
       if (!flag) {
         timeString += " left";
       }
@@ -112,7 +112,7 @@ var timeController = {
       if (flag) {
         timeString = "Started ";
       }
-      timeString = timeController.msToDuration(new Date() - Number(start)) + " ago";
+      timeString = timeController.msToDuration(new Date() - Number(spot.start)) + " ago";
     }
     return timeString;
   },
