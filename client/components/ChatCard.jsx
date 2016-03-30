@@ -55,13 +55,13 @@ var Chat = React.createClass({
       }
       var self = <div className={bubble}>
                     <div className="message-text">{message.text}</div>
-                    <div className="message-footer">{message.username} @{timeController.timestampToTime(message.timeStamp)}</div>
+                    <div className="message-footer">{message.username} {timeController.timestampToTime(message.timeStamp)}</div>
                   </div>;
 
       return (
         <div className={bubble}>
           <div className="message-text">{message.text}</div>
-          <div className="message-footer">{message.username} @{timeController.timestampToTime(message.timeStamp)}</div>
+          <div className="message-footer">{message.username} {timeController.timestampToTime(message.timeStamp)}</div>
         </div>
       )
     }, this);
