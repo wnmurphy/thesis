@@ -146,8 +146,8 @@ var SpotView = React.createClass({
         <div className='spot-view-container'>
           <p style={{color: '#122931', margin: '10px', 'textAlign': 'center', 'fontSize': '24'}}>{this.state.spot.name}</p>
           <p style={{color: '#122931', 'marginTop': '2.5px', 'textAlign': 'center'}}>{timeController.stringifyTime(this.state.spot, true)}</p>
-          <div className='spot-view-profile-picture' style={{'backgroundImage': 'url(' + this.state.spot.img + ')'}}></div>
-          <p style={{color: '#4A5053', margin: '1px', 'textAlign': 'center'}}><small>Created by <a style={{color: '#4A5053'}} href={this.state.creatorId} className="spot-view-creatorid">{this.state.spot.creator}</a></small></p>
+          <a href={this.state.creatorId}><div className='spot-view-profile-picture' style={{'backgroundImage': 'url(' + this.state.spot.img + ')'}}></div></a>
+          <p style={{color: '#4A5053', margin: '1px', 'textAlign': 'center'}}><small>Created by {this.state.spot.creator}</small></p>
           <p style={{'paddingTop': '7.5px', 'fontSize': '1.5em', color: '#4A5053', margin: '1px', 'textAlign': 'center'}}><i className={categories[this.state.spot.category]}></i></p>
           <p style={{color: '#122931', 'marginTop': '15px', 'textAlign': 'center'}}>About This Spot</p>
           <div className='description-container' style={{display: 'block', width: '350px', 'maxWidth': '100%', margin: '0 auto'}}>

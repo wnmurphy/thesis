@@ -271,11 +271,11 @@ var initMap = function (location, context, callback) {
 // Generate a map marker and summary bubble for each spot.
 var createMarker = function(spot, animate, context) {
 
-  var contentString = '<div style="font-size: 14px"><strong>' + spot.name  + '</strong></div>' +
+  var contentString = '<div style="font-size: 14px"><strong><a style="color: black; text-decoration: none" href="#/spot/' + spot.spotId +'">' + spot.name  + '</a></strong></div>' +
                       '<div style="font-size: 11px;"><strong>by <a href="/#/profile/' + spot.creatorId + '" class="map-view-userid">' + spot.creator + '</a>' + '</strong></div>' +
                       '<div style="font-size: 11px; padding-top: 2px"><i class="' + categories[spot.category] + '"></i> ' + spot.category + '</div>' +
                       '<div><small><small>' + timeController.stringifyTime(spot) + '</small></small></div>' +
-                      '<div><small><small><a href="#/spot/' + spot.spotId +'">More Details</a></small></small></div>';
+                      '<div><small><small><a style="color: black; text-decoration: none" href="#/spot/' + spot.spotId +'">More Details</a></small></small></div>';
 
   var icon = {
     url: '../img/map/pin_test.png'
