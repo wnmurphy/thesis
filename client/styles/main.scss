@@ -108,6 +108,7 @@ body {
   height: $app-view-height;
   width: 100vw;
   overflow-y: scroll;
+  overflow-x: hidden;
   -webkit-overflow-scrolling: touch;
 }
 
@@ -118,6 +119,7 @@ body {
   top: $app-view-height;
   left: 0;
   width: 100vw;
+  overflow-x: hidden;
 
   a {
     display: inline-flex;
@@ -270,7 +272,7 @@ body {
     -webkit-transition: all 0.3s;
             transition: all 0.3s;
 
-    
+
   }
 }
 
