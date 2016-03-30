@@ -27,6 +27,7 @@ describe("Persistent Spot and User Server", function() {
         location: {"latitude":"44.974893","longitude":"-93.40843999999998"},
         description: 'test createSpot',
         description_lc: 'test createSpot',
+        creatorId: 1,
         start: '10'
       }
     };

@@ -52,6 +52,7 @@ var SpotView = React.createClass({
           description: context.state.spot.description
         });
         context.setState({loading: false});
+        context.setState({profileId: data.creatorId});
         context.setState({creatorId: "/#/profile/" + data.creatorId});
         initMap(data.location, context, function(map, position, marker) {
           map.setOptions({zoomControl: false});
@@ -126,23 +127,27 @@ var SpotView = React.createClass({
     return (
       <div className="spot-container">
         <div className="create-map-view-container">
-          <div id="map"></div>
+          <div id="map">
+          </div>
+          <div className="spot-view-address">
+            <p>{this.state.spot.address}</p>
+          </div>
         </div>
         <div className='spot-view-container'>
-          <div className="spot-name-container">
-            <div className='category-icon-container'>
-              <i className={categories[this.state.spot.category] || categories.General}></i>
-            </div>
-            <span className='spot-name'>{this.state.spot.name}</span>
+          <p style={{color: '#122931', 'background-color': '#EFF0F1', margin: '10px', 'text-align': 'center', 'font-size': '24'}}>{this.state.spot.name}</p>
+          <p style={{color: '#122931', 'margin-top': '2.5px', 'text-align': 'center'}}>{timeController.stringifyTime(this.state.spot, true)}</p>
+          <div className='spot-view-profile-picture' style={{'background-image': 'url(' + this.state.spot.img + ')'}}></div>
+          <p style={{color: '#4A5053', margin: '1px', 'text-align': 'center'}}><small>Created by <a style={{color: '#4A5053'}} href={this.state.creatorId} className="spot-view-creatorid">{this.state.spot.creator}</a></small></p>
+          <p style={{'padding-top': '7.5px', 'font-size': '1.5em', color: '#4A5053', margin: '1px', 'text-align': 'center'}}><i className={categories[this.state.spot.category]}></i></p>
+          <p style={{color: '#122931', 'margin-top': '15px', 'text-align': 'center'}}>About This Spot</p>
+          <div className='description-container' style={{display: 'block', width: '350px', 'max-width': '100%', margin: '0 auto'}}>
+            <p style={{color: '#8B9596', 'text-align': 'justify'}}>{this.state.spot.description}</p>
           </div>
-          <h3>@{" " + timeController.msToTime(this.state.spot.start)}</h3>
-          {end}
-          <h4>created by: <a href={this.state.creatorId} className="spot-view-creatorid">{this.state.spot.creator}</a></h4>
-          <p>{this.state.spot.description}</p>
-          <p>{this.state.spot.address}</p>
-            <DirectionsLink location={this.state.spot.location} />
-            <div className='button' onClick={this.checkAuth}><i className="material-icons">check_circle</i>&nbsp;Save spot</div>
-            <div className='button' onClick={this.toggleChat}><i className="material-icons">message</i>&nbsp;show chat</div>
+            <div className='button-container' style={{display: 'block', width: '300px', margin: '0 auto'}}>
+              <DirectionsLink location={this.state.spot.location} />
+              <div className='button' onClick={this.checkAuth}><i className="material-icons">check_circle</i>&nbsp;Save spot</div>
+              <div className='button' onClick={this.toggleChat}><i className="material-icons">message</i>&nbsp;show chat</div>
+            </div>
         </div>
         <div className={this.state.shareClass} onClick={this.toggleShare}>
           <ShareCard shareProps={this.state.shareProps}/>

@@ -93,14 +93,29 @@ var timeController = {
     }
   },
 
-  stringifyTime: function(start, end) {
+  stringifyTime: function(spot, flag) {
     var timeString = "";
-    if (Number(start) > new Date().getTime() - 1) {
-      timeString = "in " + timeController.msToDuration(Number(start) - new Date());
-    } else if (end) {
-      timeString = timeController.msToDuration(Number(end) + Number(start) - new Date()) + " left";
+    if (spot.start && Number(spot.start) > new Date().getTime()) {
+      if (flag) {
+        timeString += "Happening ";
+      }
+      timeString += "in " + timeController.msToDuration(Number(spot.start) - new Date());
+    } else if (spot.end) {
+      if (flag) {
+        timeString += "Ending in ";
+      }
+      timeString += timeController.msToDuration(Number(spot.end) + Number(spot.start) - new Date());
+      if (!flag) {
+        timeString += " left";
+      }
     } else {
-      timeString = timeController.msToDuration(new Date() - Number(start)) + " ago";
+      if (!spot.start) {
+        return "";
+      }
+      if (flag) {
+        timeString += "Started ";
+      }
+      timeString += timeController.msToDuration(new Date() - Number(spot.start)) + " ago";
     }
     return timeString;
   },
