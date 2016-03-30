@@ -64,6 +64,19 @@ body {
   float: left;
 }
 
+.center {
+  text-align: center;
+}
+
+.warning-buttons {
+  display: flex;
+  justify-content: center;
+  .button {
+    margin: 5px;
+    width: 200px;
+  }
+}
+
 // Makes circle buttons
 .circle {
   display: inline-flex;
@@ -131,6 +144,25 @@ body {
     }
 
   }
+}
+
+.screen-warning {
+  position: absolute;
+  display: flex;
+  z-index: 2000;
+  width: 100vw;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+  background-color: white;
+  opacity: 100;
+}
+
+.dismissed {
+  -webkit-transition: all 0.5s;
+          transition: all 0.5s;
+  opacity: 0;
+  z-index: -1;
 }
 
 .share-card {
@@ -527,7 +559,7 @@ form {
   z-index: 3000;
 
   &.error {
-    
+
   }
 
   &.show {
@@ -941,4 +973,3 @@ input#start {
   top: -0.5em;
   font-size: 0.9em;
 }
-
