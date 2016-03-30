@@ -140,10 +140,6 @@ body {
       height: 38px !important;
     }
 
-    &:hover {
-      background-color: $color-light;
-    }
-
   }
 }
 
@@ -274,9 +270,7 @@ body {
     -webkit-transition: all 0.3s;
             transition: all 0.3s;
 
-    &:hover {
-      background-color: $secondary-light;
-    }
+    
   }
 }
 
