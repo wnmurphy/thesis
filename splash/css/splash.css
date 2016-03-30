@@ -110,14 +110,11 @@ h3.tagline {
   height: 2em;
 }
 
-.tech-logo {
+.square {
   display: flex;
+  align-items: center;
   justify-content: center;
-}
-
-.tech-logo img{
- height: 80%;
- width: 80%;
+  padding: 0px 20px;
 }
 
 .page-footer {
