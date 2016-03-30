@@ -93,14 +93,14 @@ var timeController = {
     }
   },
 
-  stringifyTime: function(start, end, flag) {
+  stringifyTime: function(spot, flag) {
     var timeString = "";
-    if (Number(start) > new Date().getTime()) {
+    if (Number(spot.start) > new Date().getTime()) {
       if (flag) {
         timeString = "Happening ";
       }
       timeString = "in " + timeController.msToDuration(Number(start) - new Date());
-    } else if (end) {
+    } else if (spot.end) {
       if (flag) {
         timeString = "Ending in ";
       }
