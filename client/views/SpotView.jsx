@@ -17,7 +17,8 @@ var SpotView = React.createClass({
       sharing: false,
       showChat: "",
       messages: [],
-      login: 'hide'
+      login: 'hide',
+      saving: false
     };
   },
 
@@ -101,17 +102,22 @@ var SpotView = React.createClass({
   },
 
   checkAuth: function() {
+    //async issue to call this.post after setting state for saving to true
     if (localStorage.getItem('token')) {
-      this.post();
+      this.setState({saving: true}, this.post);
     } else {
-      this.setState({login: 'show'});
+      this.setState({login: 'show', saving: true});
     }
   },
 
   post: function() {
-    SaveSpotController.saveSpot(this.state.spotId, function(spot) {
-    }, function(err) {
-    });
+    //save spots only runs when user clicks save spot from DOM
+    if(this.state.saving) {
+      SaveSpotController.saveSpot(this.state.spotId, function(spot) {
+      }, function(err) {
+        console.error(err);
+      });
+    }
   },
 
   render: function() {

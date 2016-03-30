@@ -175,7 +175,7 @@ var ProfileView = React.createClass({
             <div><a href={curUrl} className="follower">{user.username}</a></div>
           );
       });
-      var followButton = null;
+      
 
       // Retrieve user's profile image, otherwise render default.
       if(this.state.img) {
