@@ -95,7 +95,7 @@ var timeController = {
 
   stringifyTime: function(spot, flag) {
     var timeString = "";
-    if (Number(spot.start) > new Date().getTime()) {
+    if (spot.start && Number(spot.start) > new Date().getTime()) {
       if (flag) {
         timeString += "Happening ";
       }
@@ -109,6 +109,9 @@ var timeController = {
         timeString += " left";
       }
     } else {
+      if (!spot.start) {
+        return "";
+      }
       if (flag) {
         timeString += "Started ";
       }
