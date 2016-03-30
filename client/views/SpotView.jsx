@@ -112,12 +112,16 @@ var SpotView = React.createClass({
 
   post: function() {
     //save spots only runs when user clicks save spot from DOM
+    var context = this;
     if(this.state.saving) {
       SaveSpotController.saveSpot(this.state.spotId, function(spot) {
+        context.setState({toastMessage: 'Spot Saved'});
       }, function(err) {
+        context.setState({toastMessage: 'Spot Already Saved'});
         console.error(err);
       });
     }
+
   },
 
   render: function() {
@@ -153,6 +157,7 @@ var SpotView = React.createClass({
               <DirectionsLink location={this.state.spot.location} />
               <div className='button' onClick={this.checkAuth}><i className="material-icons">check_circle</i>&nbsp;Save spot</div>
               <div className='button' onClick={this.toggleChat}><i className="material-icons">message</i>&nbsp;show chat</div>
+              <Toast message={this.state.toastMessage} />
             </div>
         </div>
         <div className={this.state.shareClass} onClick={this.toggleShare}>
