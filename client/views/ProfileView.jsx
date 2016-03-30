@@ -253,11 +253,11 @@ var ProfileView = React.createClass({
         {editButton}
         <div className={checkFollowing}>
           <h3 className='following-header'>Following: </h3>
-          <div>{followingList}</div>
+          <div className='follow-list'>{followingList}</div>
         </div>
         <div className={checkFollowers}>
           <h3 className='followers-header'>Followers: </h3>
-          <div>{followersList}</div>
+          <div className='follow-list'>{followersList}</div>
         </div>
         <div style={{display: 'block', width: '300px', maxWidth: '100%', margin: '0 auto', marginTop: '50px'}}>{followButton}</div>
       </div>
