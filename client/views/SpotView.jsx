@@ -143,7 +143,7 @@ var SpotView = React.createClass({
           <div className='description-container' style={{display: 'block', width: '350px', 'max-width': '100%', margin: '0 auto'}}>
             <p style={{color: '#8B9596', 'text-align': 'justify'}}>{this.state.spot.description}</p>
           </div>
-            <div className='button-container' style={{display: 'block', width: '300px', margin: '0 auto'}}>
+            <div className='button-container' style={{display: 'block', width: '300px', 'max-width': '100%', margin: '0 auto'}}>
               <DirectionsLink location={this.state.spot.location} />
               <div className='button' onClick={this.checkAuth}><i className="material-icons">check_circle</i>&nbsp;Save spot</div>
               <div className='button' onClick={this.toggleChat}><i className="material-icons">message</i>&nbsp;show chat</div>
