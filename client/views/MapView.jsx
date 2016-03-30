@@ -188,6 +188,7 @@ var FilterSearch = React.createClass({
       filter: ''
     }
   },
+
   handleChange: function (event) {
     var search = new RegExp(event.target.value, 'gi');
     this.props.markers.forEach(function(marker) {
@@ -198,8 +199,8 @@ var FilterSearch = React.createClass({
         marker.setVisible(false);
       }
     });
-
   },
+  
   render: function () {
     return (
       <div style={{width: 'calc(100vw / 2)', opacity: '0.75'}}>

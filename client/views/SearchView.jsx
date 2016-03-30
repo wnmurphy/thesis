@@ -75,7 +75,7 @@ var SearchView = React.createClass({
               </div>
               <span className='spot-name'><a className='spot-name-link' onClick={this.spotRedirect.bind(this, result.spotId)}>{result.name}</a></span>
             </div>
-            <div> @ {timeController.msToTime(result.start)} by <a href={creatorIdLink} className="search-view-creator">{result.creator}</a></div>
+            <div>  {timeController.stringifyTime(result)} by <a href={creatorIdLink} className="search-view-creator">{result.creator}</a></div>
           </div>
           );
       }
