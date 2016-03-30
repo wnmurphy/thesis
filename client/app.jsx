@@ -37,12 +37,9 @@ var routes = (
     <Route path="/feed" component={FeedView} />
     <Route path="/profile" component={ProfileView} />
     <Route path="/profile/:profileId" component={ProfileView} />
-    <Route path="/share" component={ShareCard} />
   </Router>
 );
 
 AuthController.initAuth();
-
 ReactDOM.render(routes, document.getElementById('app-container'));
 ReactDOM.render(<NavBar />, document.getElementById('nav-container'));
-// ReactDOM.render(<ScreenSizeWarning />, document.getElementById('display-warning'));

@@ -58,33 +58,33 @@ describe('MapView', function () {
     });
 
     it('contains a div with a id of map', function () {
-      expect(result.props.children[0].type).to.equal('div');
-      expect(result.props.children[0].props.id).to.equal('map');
+      expect(result.props.children[1].type).to.equal('div');
+      expect(result.props.children[1].props.id).to.equal('map');
     });
 
     it('contains a div with a className of create-button-container', function () {
-      expect(result.props.children[1].type).to.equal('div');
-      expect(result.props.children[1].props.className).to.contain('create-button-container');
+      expect(result.props.children[2].type).to.equal('div');
+      expect(result.props.children[2].props.className).to.contain('create-button-container');
     });
 
     it('contains a div with a className of collapse-button-container', function () {
-      expect(result.props.children[2].type).to.equal('div');
-      expect(result.props.children[2].props.className).to.contain('collapse-button-container');
+      expect(result.props.children[3].type).to.equal('div');
+      expect(result.props.children[3].props.className).to.contain('collapse-button-container');
     });
 
     it('contains a div with a className of refresh-button-container', function () {
-      expect(result.props.children[3].type).to.equal('div');
-      expect(result.props.children[3].props.className).to.contain('refresh-button-container');
+      expect(result.props.children[4].type).to.equal('div');
+      expect(result.props.children[4].props.className).to.contain('refresh-button-container');
     });
 
     it('contains a div with a className of center-button-container', function () {
-      expect(result.props.children[4].type).to.equal('div');
-      expect(result.props.children[4].props.className).to.contain('center-button-container');
+      expect(result.props.children[5].type).to.equal('div');
+      expect(result.props.children[5].props.className).to.contain('center-button-container');
     });
 
     it('contains a div with a className of filter-search', function () {
-      expect(result.props.children[5].type).to.equal('div');
-      expect(result.props.children[5].props.className).to.contain('filter-search');
+      expect(result.props.children[6].type).to.equal('div');
+      expect(result.props.children[6].props.className).to.contain('filter-search');
     });
   });
 });

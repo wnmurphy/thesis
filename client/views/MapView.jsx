@@ -129,6 +129,7 @@ var MapView = React.createClass({
   render: function () {
     return (
       <div className="map-view-container">
+        <ScreenSizeWarning />
         <div id="map">
           {this.state.showScreen ? <LoadScreen /> : null}
         </div>
