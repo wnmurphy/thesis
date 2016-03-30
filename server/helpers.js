@@ -393,7 +393,8 @@ module.exports = {
           followers: user.Items[0].followers.length || 0,
           followersList: user.Items[0].followers || [],
           img: user.Items[0].img,
-          followingList: user.Items[0].following || []
+          followingList: user.Items[0].following || [],
+          following: user.Items[0].following.length || 0
         });
       }
       else {

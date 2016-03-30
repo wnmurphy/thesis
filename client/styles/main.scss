@@ -581,11 +581,12 @@ form {
 
 .profile-picture {
   border-radius: 100%;
-  width: 150px;
-  height: 150px;
+  width: 175px;
+  height: 175px;
   margin: 15px;
   overflow: hidden;
   background-size: cover;
+  margin: 0 auto;
 
   .change-image-message {
     display: flex;
@@ -618,8 +619,8 @@ form {
   justify-content: center;
   border-radius: 100%;
   background-color: #c2c2c2;
-  width: 150px;
-  height: 150px;
+  width: 175px;
+  height: 175px;
   margin: 15px;
   -webkit-transition: all 0.25s;
           transition: all 0.25s;
@@ -664,7 +665,7 @@ form {
 }
 
 .save-button {
-  width: 150px;
+  width: 40px;
   float: right;
   margin-right: 10px;
 }
@@ -684,6 +685,7 @@ form {
 }
 
 .profile-bio {
+  text-align: center;
   padding: 10px;
 }
 
