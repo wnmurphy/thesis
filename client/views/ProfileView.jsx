@@ -152,7 +152,7 @@ var ProfileView = React.createClass({
     var followersList = null;
 
     if (this.state.signedIn) {
-      var followButton = (<div className="follow-button" onClick={AuthController.signOut}>Sign Out</div>);
+      var followButton = (<div className="button" onClick={AuthController.signOut}>Sign Out</div>);
       if (this.state.followersList && this.state.followersList.length > 0) {
         checkFollowers ='followers-container';
       }
@@ -175,7 +175,6 @@ var ProfileView = React.createClass({
             <div><a href={curUrl} className="follower">{user.username}</a></div>
           );
       });
-      
 
       // Retrieve user's profile image, otherwise render default.
       if(this.state.img) {
@@ -196,7 +195,7 @@ var ProfileView = React.createClass({
                             </div>);
       }
     } else {
-      var followButton = (<div className="follow-button" onClick={this.followUser}>Follow {this.state.username}</div>);
+      var followButton = (<div className="button" onClick={this.followUser}>Follow {this.state.username}</div>);
       if(this.state.img) {
         var profileImage = <div className="profile-picture" style={style} />
       } else {
@@ -211,7 +210,7 @@ var ProfileView = React.createClass({
       var bio =
         <div className="bio-input-container">
           <input type="textbox" id='bio' className="bio-input" defaultValue={this.state.bio} onChange={this.handleChange}></input>
-          <div className="save-button" onClick={this.handleSubmit}>Save changes</div>
+          <div className="save-button" onClick={this.handleSubmit}>Save</div>
         </div>
     } else {
       if (this.state.signedIn) {
@@ -230,14 +229,9 @@ var ProfileView = React.createClass({
       <div className="profile-view">
         {this.state.toastMessage ? <Toast message={this.state.toastMessage} /> : null}
         <div className="profile-header">
-          {profileImage}
-          <div>
-            <div className="profile-name">
-              <h1>{this.state.username}</h1>
-            </div>
-            {followButton}
-          </div>
+          <div style={{display: "block", margin: "0 auto", marginTop: "20px"}}>{profileImage}</div>
         </div>
+        <div className="profile-name"><p style={{padding: "2.5px", fontSize: "24px"}}>{this.state.username}</p></div>
         {bio}
         <table className="profile-stats">
           <tr>
@@ -262,6 +256,7 @@ var ProfileView = React.createClass({
           <h3 className='followers-header'>Followers: </h3>
           <div>{followersList}</div>
         </div>
+        <div style={{display: 'block', width: '300px', 'max-width': '100%', margin: '0 auto', marginTop: '50px'}}>{followButton}</div>
       </div>
     );
   }
