@@ -759,6 +759,10 @@ form {
     border-bottom-left-radius: 10px;
     -webkit-transform:translate(-30px, -2px);
   }
+  .message-footer {
+    float: right;
+    clear: right;
+  }
 }
 
 .chat-bubble {
@@ -795,6 +799,7 @@ form {
 
   .message-footer {
     float: left;
+    clear: border-left;
   }
 }
 

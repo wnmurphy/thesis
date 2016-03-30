@@ -47,23 +47,25 @@ var Chat = React.createClass({
   render: function () {
     var user = localStorage.getItem('username');
 
+    var messageElement = "";
+
     var messages = this.state.messages.map(function(message) {
       if (user === message.username) {
         var bubble = "user-bubble clear";
+        messageElement = (<div className={bubble}>
+                            <div className="message-text">{message.text}</div>
+                            <div className="message-footer">{timeController.timestampToTime(message.timeStamp)}</div>
+                          </div>);
       } else {
         var bubble = "chat-bubble clear";
+        messageElement = (<div className={bubble}>
+                            <div className="message-text">{message.text}</div>
+                            <div className="message-footer">{message.username} {timeController.timestampToTime(message.timeStamp)}</div>
+                          </div>);
       }
-      var self = <div className={bubble}>
-                    <div className="message-text">{message.text}</div>
-                    <div className="message-footer">{message.username} {timeController.timestampToTime(message.timeStamp)}</div>
-                  </div>;
 
-      return (
-        <div className={bubble}>
-          <div className="message-text">{message.text}</div>
-          <div className="message-footer">{message.username} {timeController.timestampToTime(message.timeStamp)}</div>
-        </div>
-      )
+      return messageElement;
+
     }, this);
 
     return (
