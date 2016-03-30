@@ -127,14 +127,20 @@ var SpotView = React.createClass({
     return (
       <div className="spot-container">
         <div className="create-map-view-container">
-          <div id="map"></div>
+          <div id="map">
+          </div>
+          <div className="spot-view-address">
+            <p>{this.state.spot.address}</p>
+          </div>
         </div>
         <div className='spot-view-container'>
-          <p style={{'text-align': 'center', 'font-size': '24'}}>{this.state.spot.name}</p>
-          <p style={{'text-align': 'center'}}>{timeController.stringifyTime(this.state.spot)}</p>
-          <p style={{'text-align': 'center'}}><small>Created by <a href={this.state.creatorId} className="spot-view-creatorid">{this.state.spot.creator}</a></small></p>
-          <p>{this.state.spot.description}</p>
-          <p>{this.state.spot.address}</p>
+          <p style={{color: '#122931', 'background-color': '#EFF0F1', margin: '10px', 'text-align': 'center', 'font-size': '24'}}>{this.state.spot.name}</p>
+          <p style={{color: '#122931', margin: '5px', 'text-align': 'center'}}>{timeController.stringifyTime(this.state.spot, true)}</p>
+          <div className='spot-view-profile-picture' style={{'background-image': 'url(' + this.state.spot.img + ')'}}></div>
+          <p style={{color: '#4A5053', margin: '1px', 'text-align': 'center'}}><small>{this.state.spot.category}</small></p>
+          <p style={{color: '#4A5053', margin: '1px', 'text-align': 'center'}}><small>Created by <a style={{color: '#4A5053'}} href={this.state.creatorId} className="spot-view-creatorid">{this.state.spot.creator}</a></small></p>
+          <p style={{color: '#122931', 'margin-top': '15px', 'text-align': 'center'}}>About This Spot</p>
+          <p style={{color: '#8B9596'}}>{this.state.spot.description}</p>
             <DirectionsLink location={this.state.spot.location} />
             <div className='button' onClick={this.checkAuth}><i className="material-icons">check_circle</i>&nbsp;Save spot</div>
             <div className='button' onClick={this.toggleChat}><i className="material-icons">message</i>&nbsp;show chat</div>
