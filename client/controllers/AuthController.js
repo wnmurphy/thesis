@@ -22,6 +22,8 @@ var AuthController = {
 
   signOut: function (callback) {
     localStorage.removeItem('token');
+    localStorage.removeItem('username');
+    localStorage.removeItem('userId');
     AuthController.initAuth();
     window.location.hash = '';
   },

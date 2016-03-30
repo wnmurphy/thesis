@@ -17,7 +17,8 @@ var SpotView = React.createClass({
       sharing: false,
       showChat: "",
       messages: [],
-      login: 'hide'
+      login: 'hide',
+      saving: false
     };
   },
 
@@ -101,17 +102,26 @@ var SpotView = React.createClass({
   },
 
   checkAuth: function() {
+    //async issue to call this.post after setting state for saving to true
     if (localStorage.getItem('token')) {
-      this.post();
+      this.setState({saving: true}, this.post);
     } else {
-      this.setState({login: 'show'});
+      this.setState({login: 'show', saving: true});
     }
   },
 
   post: function() {
-    SaveSpotController.saveSpot(this.state.spotId, function(spot) {
-    }, function(err) {
-    });
+    //save spots only runs when user clicks save spot from DOM
+    var context = this;
+    if(this.state.saving) {
+      SaveSpotController.saveSpot(this.state.spotId, function(spot) {
+        context.setState({toastMessage: 'Spot Saved'});
+      }, function(err) {
+        context.setState({toastMessage: 'Spot Already Saved'});
+        console.error(err);
+      });
+    }
+
   },
 
   render: function() {
@@ -119,7 +129,7 @@ var SpotView = React.createClass({
     var chatContainerClass = "chat-card-container";
 
     if (this.state.end) {
-      var end = <p style={{'font-style': 'italic', 'font-size': '14px'}}>{this.state.end}</p>
+      var end = <p style={{'font-style': 'italic', 'fontSize': '14px'}}>{this.state.end}</p>
     } else {
       var end = null;
     }
@@ -134,19 +144,20 @@ var SpotView = React.createClass({
           </div>
         </div>
         <div className='spot-view-container'>
-          <p style={{color: '#122931', 'background-color': '#fff', margin: '10px', 'text-align': 'center', 'font-size': '24'}}>{this.state.spot.name}</p>
-          <p style={{color: '#122931', 'margin-top': '2.5px', 'text-align': 'center'}}>{timeController.stringifyTime(this.state.spot, true)}</p>
-          <a href={this.state.creatorId}><div className='spot-view-profile-picture' style={{'background-image': 'url(' + this.state.spot.img + ')'}}></div></a>
-          <p style={{color: '#4A5053', margin: '1px', 'text-align': 'center'}}><small>Created by {this.state.spot.creator}</small></p>
-          <p style={{'padding-top': '7.5px', 'font-size': '1.5em', color: '#4A5053', margin: '1px', 'text-align': 'center'}}><i className={categories[this.state.spot.category]}></i></p>
-          <p style={{color: '#122931', 'margin-top': '15px', 'text-align': 'center'}}>About This Spot</p>
-          <div className='description-container' style={{display: 'block', width: '350px', 'max-width': '100%', margin: '0 auto'}}>
-            <p style={{color: '#8B9596', 'text-align': 'justify'}}>{this.state.spot.description}</p>
+          <p style={{color: '#122931', 'backgroundColor': '#EFF0F1', margin: '10px', 'textAlign': 'center', 'fontSize': '24'}}>{this.state.spot.name}</p>
+          <p style={{color: '#122931', 'marginTop': '2.5px', 'textAlign': 'center'}}>{timeController.stringifyTime(this.state.spot, true)}</p>
+          <div className='spot-view-profile-picture' style={{'backgroundImage': 'url(' + this.state.spot.img + ')'}}></div>
+          <p style={{color: '#4A5053', margin: '1px', 'textAlign': 'center'}}><small>Created by <a style={{color: '#4A5053'}} href={this.state.creatorId} className="spot-view-creatorid">{this.state.spot.creator}</a></small></p>
+          <p style={{'paddingTop': '7.5px', 'fontSize': '1.5em', color: '#4A5053', margin: '1px', 'textAlign': 'center'}}><i className={categories[this.state.spot.category]}></i></p>
+          <p style={{color: '#122931', 'marginTop': '15px', 'textAlign': 'center'}}>About This Spot</p>
+          <div className='description-container' style={{display: 'block', width: '350px', 'maxWidth': '100%', margin: '0 auto'}}>
+            <p style={{color: '#8B9596', 'textAlign': 'justify'}}>{this.state.spot.description}</p>
           </div>
             <div className='button-container' style={{display: 'block', width: '300px', 'max-width': '100%', margin: '0 auto'}}>
               <DirectionsLink location={this.state.spot.location} />
               <div className='button' onClick={this.checkAuth}><i className="material-icons">check_circle</i>&nbsp;Save spot</div>
               <div className='button' onClick={this.toggleChat}><i className="material-icons">message</i>&nbsp;show chat</div>
+              <Toast message={this.state.toastMessage} />
             </div>
         </div>
         <div className={this.state.shareClass} onClick={this.toggleShare}>

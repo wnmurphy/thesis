@@ -140,10 +140,6 @@ body {
       height: 38px !important;
     }
 
-    &:hover {
-      background-color: $color-light;
-    }
-
   }
 }
 
@@ -274,9 +270,7 @@ body {
     -webkit-transition: all 0.3s;
             transition: all 0.3s;
 
-    &:hover {
-      background-color: $secondary-light;
-    }
+    
   }
 }
 
@@ -554,7 +548,9 @@ form {
   top: calc(100% - #{$nav-height});
   left: 0;
   width: calc(100% - 52px);
-  background-color: rgba(0,0,0,0.2);
+  background-color: rgba(0,0,0,0.8);
+  color: white;
+  font-weight: bold;
   margin: 5px;
   padding: 5px 20px;
   text-align: center;
