@@ -134,7 +134,7 @@ var SpotView = React.createClass({
           </div>
         </div>
         <div className='spot-view-container'>
-          <p style={{color: '#122931', 'background-color': '#EFF0F1', margin: '10px', 'text-align': 'center', 'font-size': '24'}}>{this.state.spot.name}</p>
+          <p style={{color: '#122931', 'background-color': '#fff', margin: '10px', 'text-align': 'center', 'font-size': '24'}}>{this.state.spot.name}</p>
           <p style={{color: '#122931', 'margin-top': '2.5px', 'text-align': 'center'}}>{timeController.stringifyTime(this.state.spot, true)}</p>
           <a href={this.state.creatorId}><div className='spot-view-profile-picture' style={{'background-image': 'url(' + this.state.spot.img + ')'}}></div></a>
           <p style={{color: '#4A5053', margin: '1px', 'text-align': 'center'}}><small>Created by {this.state.spot.creator}</small></p>
