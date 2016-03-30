@@ -101,6 +101,7 @@ body {
 }
 
 #app-container {
+  background-color: #EFF0F1;
   position: fixed;
   left: 0;
   top: 0;
@@ -229,6 +230,7 @@ body {
 #map, .map-view-container {
   height: 100%;
   width: 100vw;
+  background-color: rgb(239, 239, 234);
 }
 
 // #map {
@@ -398,6 +400,7 @@ form {
 
 .spot-view-container {
   padding: 0 3em;
+  background-color: #EFF0F1;
 }
 
 .category-icon-container, .spot-name-container{
@@ -986,3 +989,25 @@ input#start {
   margin: 0 auto;
 }
 
+.spot-view-address {
+  box-shadow: 1px 2px #CCCCCC;
+  position: relative;
+  background-color: rgb(255, 255, 255);
+  text-align: center;
+  vertical-align: middle;
+  width: auto;
+  height: $nav-height;
+  z-index: 400;
+  top: -#{$nav-height + 30px};
+  margin: 17.5px;
+
+  p {
+    width: 100%;
+    padding: 5px;
+    position: relative;
+    top: 50%;
+    -webkit-transform: translateY(-50%);
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%);
+  }
+}
