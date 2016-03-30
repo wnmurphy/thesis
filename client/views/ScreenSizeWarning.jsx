@@ -23,7 +23,7 @@ var ScreenSizeWarning = React.createClass({
             <h2>We love irl and we think you will too!</h2>
             <h2>But you'll probably love it even more on your phone...</h2>
             <div className='warning-buttons'>
-              <a href="mailto:?subject=irl&body=" className='button'>send me a link</a>
+              <a href="mailto:?subject=irl - browse spots, create spots, share spots&body=Get started with irl on mobile! http://www.irl.events/" className='button'>send me a link</a>
               <div className='button' onClick={this.dismiss}>i just want in</div>
             </div>
           </div>
