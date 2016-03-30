@@ -70,9 +70,7 @@ var ProfileView = React.createClass({
       console.error(err);
     });
     setTimeout(function() {
-      context.setState({toastMessage: ''}, function() {
-        console.log('toastMessage changed');
-      });
+      context.setState({toastMessage: ''});
     }, 5000);
   },
 

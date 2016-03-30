@@ -122,7 +122,8 @@ body {
     }
 
     &.active {
-      background-color: $color-dark;
+      border-bottom: 7px solid #235C44;
+      height: 38px !important;
     }
 
     &:hover {
@@ -927,6 +928,17 @@ input#start {
   color: white;
 }
 
-.feed-update {
-  color: #DA6D00;
+
+.feed-icon {
+  position: relative;
+  left: 0.3em;
 }
+
+
+.feed-update {
+  position: relative;
+  color: #2B4F71;
+  top: -0.5em;
+  font-size: 0.9em;
+}
+

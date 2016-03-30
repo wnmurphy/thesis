@@ -566,7 +566,6 @@ module.exports = {
 
     // Convert distance (m) to distance (mi).
     distance = distance * 0.000621371;
-    console.log('distance between', distance);
     return distance;
   },
 
