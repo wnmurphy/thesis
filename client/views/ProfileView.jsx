@@ -195,8 +195,11 @@ var ProfileView = React.createClass({
                             </div>);
       }
     } else {
-      var followButton = (<div className="button" onClick={this.followUser}>Follow {this.state.username}</div>);
+      var followButton = (<div className="button" onClick={this.followUser}>Follow &nbsp; {this.state.username}</div>);
       if(this.state.img) {
+        var style = {
+          'background-image': 'url(' + this.state.img + ')'
+        };
         var profileImage = <div className="profile-picture" style={style} />
       } else {
         var profileImage = (<div className="no-profile-picture">
@@ -256,7 +259,7 @@ var ProfileView = React.createClass({
           <h3 className='followers-header'>Followers: </h3>
           <div>{followersList}</div>
         </div>
-        <div style={{display: 'block', width: '300px', 'max-width': '100%', margin: '0 auto', marginTop: '50px'}}>{followButton}</div>
+        <div style={{display: 'block', width: '300px', maxWidth: '100%', margin: '0 auto', marginTop: '50px'}}>{followButton}</div>
       </div>
     );
   }
