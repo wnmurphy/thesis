@@ -26,20 +26,6 @@ var NavBar = React.createClass({
     socket.on('updateFeed', function (follower) {
       context.setState({feedUpdate: true, icon: "fa fa-bell feed-update"}); 
     });
-
-    // socket.on('newMessage', function(message) {
-    //   console.log('new message', message);
-    //   if(message.username !== localStorage.getItem('username')) {
-    //     context.setState({feedUpdate: true, 
-    //                       icon: "fa fa-comment-o fa-2x feed-update",
-    //                       uri: '#/spot/' + message.spotId
-    //                     })
-    //   }
-      
-    // });  
-
-    
-    // <i className="fa fa-bell feed-update"></i>
   },
 
   updateFeed: function() {
