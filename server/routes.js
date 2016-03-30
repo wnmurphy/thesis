@@ -133,7 +133,7 @@ module.exports = function(app, express, io) {
         result.img = profile.img;
         res.json(result);
       }, function(error) {
-        res.send(404, error);
+        res.send(200, error);
       })
     }, function(err) {
       res.send(404, err);
