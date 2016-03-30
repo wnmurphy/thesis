@@ -56,10 +56,12 @@ var timeController = {
   },
 
   hoursToMS: function(hours) {
+    hours = hours || 0;
     return hours * 3600000;
   },
 
   minutesToMS: function(minutes) {
+    minutes = minutes || 0;
     return minutes * 60000;
   },
 
