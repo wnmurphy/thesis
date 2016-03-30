@@ -41,7 +41,6 @@ var Chat = React.createClass({
 
   handleChange: function(event) {
     this.setState({message: event.target.value})
-    console.log("MESSAGE", this.state.message);
   },
 
   render: function () {

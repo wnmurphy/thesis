@@ -35,6 +35,6 @@ deploy:
     secret_access_key:
       secure: EYJ6M+itqXysKlacZiqtXY88VRijjR8/eR2UgDSZf6XHptgyPHpdNimJYIDopBXDFdf/2KDqTqZgcUpE5PEblZ2v3FbNbSb+v1yePVjtsZouLkZpk53XMl1RM0UPJiMb6NaVlQUkpd/ubGCt2JKs4NIt+h2PMiHGvDB9C6RRNbgJ7c+V7OETvy3ATA18t9ixZR6YKg7e57h6+2cXanHZS3MB4/UwtyTxbKMgXtbFRnK6WNbIM2bG9+Bl1PzVK6cEDGaXW42HZaC8BVhb4E3sVh+3cloPhUrbOudNQOedugVoEQlRWkxWO19owNjAux6HhRVdxt6kh1IkErJ9Qv8Yyk4pG6exuSmKJw0lk5syDrV8z1r7Zg72MtzMIlkPlJ/SD+EQSBlF+gD+4oZ2962d8uK9Hu+CVQ96P08eih1t81NctTOCm4nB42modRPbN3Y+CBufBK8xQNNP8D/egahlpLCqqLNgC41T/IG5Dr/n8m6oIi56i6sbuwd3lRuld0Wqx3cE7WPbS2fSvYchZtVWu0jPJv2l7PPmCOaCHIoSAv6tsFPlK0sB/JbCpXqZhe6U+lHiKlQtgDHsHZ7NiY/6c4tQSRIuv00Dt5KG/PowepOsOjT4TtXNeVasXZhEpOidR4IOFOA41N+8Ph7zEAwZgDXr0VVTkiS0daT3Z7nA8RI=
     on:
-    repo: https://github.com/hrr12MYLTR/thesis.git # Deploy only using my user repo for now
-    branches: master
+      repo: https://github.com/hrr12MYLTR/thesis.git
+      branches: master
     
