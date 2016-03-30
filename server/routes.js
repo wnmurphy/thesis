@@ -94,7 +94,6 @@ module.exports = function(app, express, io) {
         }
       });
     } else {
-      console.log("no token");
       helpers.getProfile(id, function(result) {
         res.json({result: result, currentUser: false});
       }, function(err) {
@@ -107,7 +106,6 @@ module.exports = function(app, express, io) {
   app.put('/api/profile', function (req, res){
     if (req.headers.token) {
       helpers.checkToken(JSON.parse(req.headers.token), function (decoded) {
-        console.log('token verified');
         var userId = decoded.userId.toString();
         helpers.updateProfile(userId, req.body, function () {
           res.sendStatus(202);
@@ -115,11 +113,9 @@ module.exports = function(app, express, io) {
           res.sendStatus(404);
         });
       }, function (err) {
-        console.log('invalid token');
         res.send(404, 'invalid token');
       });
     } else {
-      console.log("no token");
       res.send(404, 'user not signed in');
     }
   });
@@ -182,7 +178,6 @@ module.exports = function(app, express, io) {
     // broadcast spotAdded event to trigger client-side map refresh.
     socket.on('newSpot', function(newSpot){
       socket.broadcast.emit('spotDrop', newSpot);
-      console.log('newspot', newSpot);
 
       // Update live feed when a user you're subscribed to creates a new spot.
       var followersArray = [];
@@ -193,7 +188,6 @@ module.exports = function(app, express, io) {
       });
 
       helpers.getFollowers(newSpot.followers, function(data) {
-        console.log('dataaaaaaa', data);
         data.Items.forEach(function(users) {
           if(!users.lastId) {
             if(newSpotFollowers.indexOf(users.userId) !== -1) {
@@ -205,8 +199,6 @@ module.exports = function(app, express, io) {
         followersArray.forEach(function(user) {
           var currSockets = io.sockets.clients();
           var currentUsers = Object.keys(currSockets.connected);
-          console.log('currentusers', currentUsers);
-          console.log('newSpotFollowers', newSpotFollowers);
           if(currentUsers.indexOf(user) !== -1) {
             io.sockets.connected[user].emit('updateFeed');
           }

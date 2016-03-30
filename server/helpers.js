@@ -62,7 +62,6 @@ module.exports = {
             console.error('Error updating data item', err);
           }
           else {
-            console.log('Updated data item successfully');
 
             // If we have all the info we need, create the new spot.
             if(spot.name && spot.creator && spot.creatorId && spot.category && spot.location && spot.description && spot.start) {
@@ -109,7 +108,6 @@ module.exports = {
                     }
                   };
                   dbSchema.update(params, function(err, data) {
-                    console.log('spot creator id', spot.creatorId);
                     if (err) {
                       console.error('error updating user\'s spotCount', err);
                       fail(err);
@@ -342,11 +340,9 @@ module.exports = {
       else if(user.Count === 1) {
         compare(info.password, user.Items[0].password, function (err, correct) {
           if(err) {
-            console.log("failed encryption test");
             fail('encryption error');
           } else {
             if(correct) {
-              console.log("passed encryption test");
               success({
                 userId: user.Items[0].userId,
                 username: user.Items[0].username,
@@ -696,65 +692,63 @@ module.exports = {
 
         // Find user that the user wants to follow.
         dbSchema.scan(params, function (err, follow) {
-
-          // If user has not already followed that user
-          console.log("Should be Bell: ", user.Items[0].username);
-          console.log("Should be Michelle : ", follow.Items[0].username);
-          console.log("Bell is following: ", user.Items[0].following);
-          var found = false;
-          for (var i = 0; i < user.Items[0].following.length; i++) {
-            console.log(user.Items[0].following[i].userId, ' = ', follow.Items[0].userId);
-            if (user.Items[0].following[i].userId == follow.Items[0].userId) {
-              console.log("switch found");
-              found = true;
-              break;
-            }
-          }
-          console.log("found? ", found);
-          if (!found) {
-            params = {
-              TableName: 'Users',
-              Key: { userId: user.Items[0].userId },
-              UpdateExpression: 'SET following = list_append(following, :followUser)',
-              ExpressionAttributeValues: {
-                ':followUser': [{'userId': followUser, 'username': follow.Items[0].username}]
-              }
-            };
-
-            // Update user's 'following' array to include this new user.
-            dbSchema.update(params, function(err, data) {
-              if (err) {
-                console.error(err);
-                fail('error following user');
-              } else {
-                params = {
-                  TableName: 'Users',
-                  Key: {
-                    userId: parseInt(followUser)
-                  },
-                  UpdateExpression: 'SET #followers = list_append(followers, :followers)',
-                  ExpressionAttributeNames: {
-                    '#followers': 'followers'
-                  },
-                  ExpressionAttributeValues: {
-                    ':followers': [{'userId': user.Items[0].userId, 'username': user.Items[0].username, 'socketId': user.Items[0].socketId}]
-                  }
-                };
-
-                // Update 'followers' property for the followed user.
-                dbSchema.update(params, function(err, follower) {
-                  if (err) {
-                    console.error(err);
-                    fail('error updating followers property of user being followed');
-                  } else {
-                    success('successfully followed user');
-                  }
-                });
-              }
-            });
+          if (err) {
+            console.error(err);
+            fail('Server error');
           } else {
-            fail('user has already followed this user');
-          }
+            // If user has not already followed that user
+            var found = false;
+            for (var i = 0; i < user.Items[0].following.length; i++) {
+              if (user.Items[0].following[i].userId == follow.Items[0].userId) {
+                found = true;
+                break;
+              }
+            }
+            if (!found) {
+              params = {
+                TableName: 'Users',
+                Key: { userId: user.Items[0].userId },
+                UpdateExpression: 'SET following = list_append(following, :followUser)',
+                ExpressionAttributeValues: {
+                  ':followUser': [{'userId': followUser, 'username': follow.Items[0].username}]
+                }
+              };
+
+              // Update user's 'following' array to include this new user.
+              dbSchema.update(params, function(err, data) {
+                if (err) {
+                  console.error(err);
+                  fail('error following user');
+                } else {
+                  params = {
+                    TableName: 'Users',
+                    Key: {
+                      userId: parseInt(followUser)
+                    },
+                    UpdateExpression: 'SET #followers = list_append(followers, :followers)',
+                    ExpressionAttributeNames: {
+                      '#followers': 'followers'
+                    },
+                    ExpressionAttributeValues: {
+                      ':followers': [{'userId': user.Items[0].userId, 'username': user.Items[0].username, 'socketId': user.Items[0].socketId}]
+                    }
+                  };
+
+                  // Update 'followers' property for the followed user.
+                  dbSchema.update(params, function(err, follower) {
+                    if (err) {
+                      console.error(err);
+                      fail('error updating followers property of user being followed');
+                    } else {
+                      success('successfully followed user');
+                    }
+                  });
+                }
+              });
+            } else {
+              fail('user has already followed this user');
+            }
+          } 
         });
       } else {
         fail('failed to get correct user');
