@@ -171,6 +171,7 @@ body {
   justify-content: center;
   align-items: center;
   background-color: rgba(0,0,0,.75);
+  z-index: 700;
 
   a {
     display: inline-flex;
@@ -437,8 +438,8 @@ form {
   left: 0px;
   height: 100%;
   width: 100%;
-  -webkit-transition: all 0.5s;
-          transition: all 0.5s;
+  -webkit-transition: opacity 0.5s;
+          transition: opacity 0.5s;
 }
 
 .share-card-container {
@@ -732,11 +733,11 @@ form {
 .user-bubble {
   position:relative;
   padding:10px 20px;
-  color:white; 
+  color:white;
   background:#0B93F6;
   border-radius: 10px 10px 0 10px;
   float: right;
-    
+
   &:before {
     content:"";
     position:absolute;
@@ -1001,7 +1002,7 @@ input#start {
   vertical-align: middle;
   width: auto;
   height: $nav-height;
-  z-index: 400;
+  z-index: 1;
   top: -#{$nav-height + 30px};
   margin: 17.5px;
 
