@@ -111,7 +111,7 @@ var MapView = React.createClass({
   },
 
   // Center the map on the user's current GPS location.
-  center: function() {
+  center: function () {
     this.state.map.offsetPan(this.state.position, 0, -50);
   },
 

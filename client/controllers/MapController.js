@@ -351,8 +351,8 @@ var createMarker = function (spot, animate, context) {
 var sweepMarkers = function (context, callback) {
   context.state.markers.forEach(function (marker, index, object) {
     var match = false;
-    for(var i = 0; i < context.state.spots.length; i++) {
-      if(context.state.spots[i].spotId.toString() === marker.getId().toString()) {
+    for (var i = 0; i < context.state.spots.length; i++) {
+      if (context.state.spots[i].spotId.toString() === marker.getId().toString()) {
         var cache = context.state.spots;
         cache.splice(context.state.spots[i], 1);
         context.setState({spots: cache});

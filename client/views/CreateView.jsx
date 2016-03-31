@@ -2,10 +2,10 @@
 var CreateView = React.createClass({
 
   // Sets current user location and creates the map.
-  componentDidMount: function() {
+  componentDidMount: function () {
     var context = this;
     var setLocation = globalState.location;
-    if(!setLocation) {
+    if (!setLocation) {
       getLocation(function(location) {
         initMap(location, context, context.searchMap);
       }, this);
@@ -53,14 +53,14 @@ var CreateView = React.createClass({
     this.setState({marker: marker}, function() {
 
       // Listen for new address autocomplete value, and update map marker.
-      google.maps.event.addListener(autocomplete, 'place_changed', function() {
+      google.maps.event.addListener(autocomplete, 'place_changed', function () {
 
         var place = autocomplete.getPlace();
 
         if (typeof place.address_components === 'undefined') {
           var first = $(".pac-container .pac-item:first").text();
           var service = new google.maps.places.PlacesService(map);
-          service.textSearch({query: place.name, bounds: map.getBounds()}, function(results, status) {
+          service.textSearch({query: place.name, bounds: map.getBounds()}, function (results, status) {
             if (status === google.maps.places.PlacesServiceStatus.OK) {
               placeMarker(context, results[0], infowindow, map);
             }
@@ -78,7 +78,7 @@ var CreateView = React.createClass({
   sendSpot: function (event) {
     event.preventDefault();
     var context = this;
-    if(this.state.hours || this.state.minutes) {
+    if (this.state.hours || this.state.minutes) {
       var duration = timeController.hoursToMS(this.state.hours) + timeController.minutesToMS(this.state.minutes);
     }
     $.ajax({
@@ -124,7 +124,7 @@ var CreateView = React.createClass({
       lng: globalState.location.longitude
     }
 
-    geocoder.geocode({location: location}, function(results, status) {
+    geocoder.geocode({location: location}, function (results, status) {
       if (status !== 'OK') {
         return console.error('Cannot find user address from location');
       }
@@ -134,7 +134,7 @@ var CreateView = React.createClass({
   },
 
   // Updates event category when user changes category selector.
-  selectChange: function(category) {
+  selectChange: function (category) {
     this.setState({category: category});
   },
 
@@ -158,7 +158,6 @@ var CreateView = React.createClass({
   changeAddress: function (event) {
     this.setState({address: event.target.value});
   },
-
 
   render: function () {
     // Saves user input in case user navigates away from page.

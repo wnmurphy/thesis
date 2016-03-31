@@ -77,7 +77,7 @@ var ProfileController = {
   },
 
   // Send POST request to update list of followed users.
-  followUser: function(followId, success, fail) {
+  followUser: function (followId, success, fail) {
     $.ajax({
       method: 'POST',
       url: '/api/followUser/',
