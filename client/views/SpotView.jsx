@@ -128,12 +128,6 @@ var SpotView = React.createClass({
 
     var chatContainerClass = "chat-card-container";
 
-    if (this.state.end) {
-      var end = <p style={{'font-style': 'italic', 'fontSize': '14px'}}>{this.state.end}</p>
-    } else {
-      var end = null;
-    }
-
     return (
       <div className="spot-container">
         <div className="create-map-view-container">
