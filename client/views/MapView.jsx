@@ -203,8 +203,8 @@ var FilterSearch = React.createClass({
   
   render: function () {
     return (
-      <div style={{width: 'calc(100vw / 2)', opacity: '0.75'}}>
-        <form className={this.props.filterClass} style={{padding: '0px'}} onChange={this.handleChange}>
+      <div className="filter-container">
+        <form className={"filter-form" + this.props.filterClass} onChange={this.handleChange}>
           <input type="text" id="filter-search" placeholder="Filter Spots" defaultValue={this.state.filter || ''} autoComplete='off' />
         </form>
       </div>
