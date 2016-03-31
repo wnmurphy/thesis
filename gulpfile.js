@@ -102,7 +102,7 @@ gulp.task('build', function() {
   gulp.src(path.concat)
   .pipe(react())
   .pipe(concat(path.minified_out))
-  // .pipe(uglify())
+  .pipe(uglify())
   .pipe(gulp.dest(path.dest_build));
 });
 
