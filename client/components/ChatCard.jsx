@@ -86,6 +86,5 @@ var Chat = React.createClass({
 });
 
 var scrollChat =  function () {
-  console.log($(".chat-container").height());
   $(".chat-container").animate({ scrollTop: $('.chat-container').height() + 100}, 500);
 }

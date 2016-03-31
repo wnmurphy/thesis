@@ -29,7 +29,6 @@ var ProfileController = {
       url: '/api/profile',
       data: profile,
       success: function (data) {
-        console.log(data);
       },
       error: function (error) {
         console.log(error);

@@ -32,7 +32,8 @@ var ProfileView = React.createClass({
                           subject: 'Check out ' + profile.username,
                           url: 'app.irl.events/#/profile/' + profile.userId
                         }});
-    }, function (message) {console.log(message)});
+    }, function (message) {
+    });
 
     return state;
   },
@@ -66,7 +67,6 @@ var ProfileView = React.createClass({
     this.setState({followers: count});
     ProfileController.followUser(this.state.userId, function (data) {
       context.setState({toastMessage: 'Following User'});
-      console.log(data);
     }, function (err) {
       context.setState({toastMessage: 'Already Following'});
       console.error(err);

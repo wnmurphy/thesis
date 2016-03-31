@@ -29,7 +29,6 @@ var FeedView = React.createClass({
       if (data.followedUsersSpots.length) {
         context.setState({followedUsersSpots: data.followedUsersSpots});
       }
-      console.log("success");
     }, function(err) {
       console.log(err);
     });
