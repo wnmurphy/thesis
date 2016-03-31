@@ -50,7 +50,7 @@ var CreateView = React.createClass({
 
     this.setState({infowindow: infowindow});
 
-    this.setState({marker: marker}, function() {
+    this.setState({marker: marker}, function () {
 
       // Listen for new address autocomplete value, and update map marker.
       google.maps.event.addListener(autocomplete, 'place_changed', function () {
