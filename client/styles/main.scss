@@ -1030,3 +1030,56 @@ input#start {
 .filter-form {
   padding: 0px;
 }
+
+.spot-view-name {
+  color: #122931;
+  margin: 10px;
+  text-align: center;
+  font-size: 24;
+}
+
+.spot-view-time {
+  color: #122931;
+  margin-top: 2.5px;
+  text-align: center;
+}
+
+.spot-view-creator {
+  color: #4A5053;
+  margin: 1px;
+  text-align: center;
+  font-size: 24;
+}
+
+.spot-view-category {
+  color: #4A5053;
+  margin: 1px;
+  text-align: center;
+  font-size: 1.5em;
+  padding-top: 7.5px;
+}
+
+.spot-view-about {
+  color: #122931;
+  margin-top: 15px;
+  text-align: center;
+}
+
+.description-container {
+  display: block;
+  width: 350px;
+  max-width: 100%;
+  margin: 0 auto;
+}
+
+.spot-view-description {
+  color: #8B9596;
+  text-align: justify;
+}
+
+.button-container {
+  display: block;
+  width: 300px;
+  max-width: 100%;
+  margin: 0 auto;
+}
