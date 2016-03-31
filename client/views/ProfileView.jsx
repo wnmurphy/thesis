@@ -178,7 +178,7 @@ var ProfileView = React.createClass({
       });
 
       // Retrieve user's profile image, otherwise render default.
-      if(this.state.img) {
+      if (this.state.img) {
         var style = {
           'background-image': 'url(' + this.state.img + ')'
         };
@@ -233,9 +233,9 @@ var ProfileView = React.createClass({
       <div className="profile-view">
         {this.state.toastMessage ? <Toast message={this.state.toastMessage} /> : null}
         <div className="profile-header">
-          <div style={{display: "block", margin: "0 auto", marginTop: "20px"}}>{profileImage}</div>
+          <div>{profileImage}</div>
         </div>
-        <div className="profile-name"><p style={{padding: "2.5px", fontSize: "24px"}}>{this.state.username}</p></div>
+        <div className="profile-name"><p>{this.state.username}</p></div>
         {bio}
         <table className="profile-stats">
           <tr>
@@ -260,7 +260,7 @@ var ProfileView = React.createClass({
           <h3 className='followers-header'>Followers: </h3>
           <div className='follow-list'>{followersList}</div>
         </div>
-        <div style={{display: 'block', width: '300px', maxWidth: '100%', margin: '0 auto', marginTop: '50px'}}>{followButton}</div>
+        <div className='follow-button'>{followButton}</div>
       </div>
     );
   }

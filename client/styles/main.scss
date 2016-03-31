@@ -580,6 +580,11 @@ form {
 .profile-header {
   display: flex;
   align-items: center;
+  div {
+    display: block;
+    margin: 0 auto; 
+    margin-top: 20px;
+  }
 }
 
 .profile-picture {
@@ -650,9 +655,13 @@ form {
   text-align: center;
   display: block;
   margin: 0 auto;
+  p {
+    padding: 2.5px;
+    font-size: 24px;
+  }
 }
 
-.follow-button, .save-button, .save-spot-button {
+.save-button, .save-spot-button {
   display: block;
   background-color: $primary-color;
   border-radius: 10px;
@@ -665,6 +674,14 @@ form {
   &:hover {
     background-color: $color-light;
   }
+}
+
+.follow-button {
+  display: block;
+  width: 300px;
+  max-width: 100%;
+  margin: 0 auto;
+  margin-top: 50px;
 }
 
 .save-button {
