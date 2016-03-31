@@ -3,7 +3,8 @@ var LoginRequired = React.createClass({
   getDefaultProps: function () {
     // post runs when user is already signed in or after successful signin
     return {
-      parent: {post: function () {}}
+      parent: {post: function () {}},
+      response: ''
     };
   },
 
@@ -82,7 +83,7 @@ var LoginCard = React.createClass({
           <div className="button" onClick={this.handleSubmit}>Log In</div>
           <div className="button" onClick={this.toggleCard}>Create Account</div>
         </form>
-        <Toast message={this.state.response} />
+        <p style={{textAlign: 'center', color: 'red'}}>{this.state.response}</p>
       </div>
     );
   }
@@ -125,7 +126,7 @@ var SignupCard = React.createClass({
           <div className="button" onClick={this.handleSubmit}>Signup</div>
           <div className="button" onClick={this.toggleCard}>Existing Account</div>
         </form>
-        <Toast message={this.state.response} />
+        <p style={{textAlign: 'center', color: 'red'}}>{this.state.response}</p>
       </div>
     );
   }

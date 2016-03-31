@@ -48,7 +48,7 @@ var AuthController = {
 
       // If credentials fail, sign out and send error.
       error: function (error) {
-        AuthController.signOut();
+        // AuthController.signOut();
         fail(error.responseText);
       }
     });
