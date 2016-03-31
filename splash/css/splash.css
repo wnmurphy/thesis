@@ -98,6 +98,18 @@ h3.tagline {
   border-radius: 100%;
 }
 
+.team-member {
+  -webkit-transition: all 0.5s;
+  transition: all 0.5s;
+  cursor: pointer;
+  color: black;
+}
+
+.team-member:hover {
+  -webkit-transform: scale(1.03);
+          transform: scale(1.03);
+}
+
 .tech {
 }
 
