@@ -72,6 +72,10 @@ h3.tagline {
   background-color: #56A681;
 }
 
+.team a {
+  color: #000000;
+}
+
 .team-member-photo {
   display: flex;
   justify-content: center;
@@ -108,9 +112,6 @@ h3.tagline {
 .team-member:hover {
   -webkit-transform: scale(1.03);
           transform: scale(1.03);
-}
-
-.tech {
 }
 
 .tech-name {
