@@ -52,7 +52,7 @@ var SearchView = React.createClass({
     // Apply different styles depending on whether search result is a user or a spot.
     var results = this.state.results.map(function(result) {
     var creatorIdLink = "/#/profile/" + result.creatorId;
-      if(result.email) {
+      if (result.email) {
           return (
             <div className="search-result">
               <div className="spot-name-container" onClick={this.profileRedirect.bind(this, result.userId)}>
