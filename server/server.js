@@ -6,7 +6,7 @@ var env = require('node-env-file');
 var helpers = require('./helpers.js');
 var db = require('../db/db.js');
 
-if(!process.env.TRAVIS) {
+if (!process.env.TRAVIS) {
   env(__dirname + '../../.env');
 }
 
@@ -18,7 +18,7 @@ app.use(parser.json());
 app.use(parser.urlencoded({extended: true}));
 app.use('/', express.static(__dirname + '../../client'));
 
-var server = app.listen(port, function() {
+var server = app.listen(port, function () {
   console.log('listening on port', port);
   setTimeout(helpers.spotCleaner, 3600000);
 });

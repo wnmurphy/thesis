@@ -9,12 +9,12 @@ var SearchView = React.createClass({
   },
 
   // Listen for updates to search input field, and update search query in state.
-  handleChange: function(event) {
+  handleChange: function (event) {
     this.setState({query: event.target.value});
   },
 
   // Submit search query to server.
-  handleSubmit: function(event) {
+  handleSubmit: function (event) {
     event.preventDefault();
     var context = this;
     $.ajax({
@@ -38,21 +38,21 @@ var SearchView = React.createClass({
   },
 
   // Redirect to spot's page on click if search result is a spot.
-  spotRedirect: function(spotId) {
+  spotRedirect: function (spotId) {
     window.location.hash = "/spot/" + spotId;
   },
 
   // Redirect to user's profile page on click if search result is a user.
-  profileRedirect: function(userId) {
+  profileRedirect: function (userId) {
     window.location.hash = "/profile/" + userId;
   },
 
-  render: function() {
+  render: function () {
     // Create a div for each search result returned from handleSubmit AJAX call.
     // Apply different styles depending on whether search result is a user or a spot.
     var results = this.state.results.map(function(result) {
     var creatorIdLink = "/#/profile/" + result.creatorId;
-      if(result.email) {
+      if (result.email) {
           return (
             <div className="search-result">
               <div className="spot-name-container" onClick={this.profileRedirect.bind(this, result.userId)}>

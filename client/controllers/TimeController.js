@@ -1,5 +1,5 @@
 // Get and format current time.
-var getTime = function() {
+var getTime = function () {
   var date = new Date();
   var hours = date.getHours().toString();
   var minutes = date.getMinutes().toString();
@@ -55,17 +55,17 @@ var timeController = {
     return output.join('');
   },
 
-  hoursToMS: function(hours) {
+  hoursToMS: function (hours) {
     hours = hours || 0;
     return hours * 3600000;
   },
 
-  minutesToMS: function(minutes) {
+  minutesToMS: function (minutes) {
     minutes = minutes || 0;
     return minutes * 60000;
   },
 
-  msToDuration: function(ms) {
+  msToDuration: function (ms) {
     var hourStr = " hour ";
     var convertMin, minutes, hours, minStr;
 
@@ -95,7 +95,7 @@ var timeController = {
     }
   },
 
-  stringifyTime: function(spot, flag) {
+  stringifyTime: function (spot, flag) {
     var timeString = "";
     if (spot.start && Number(spot.start) > new Date().getTime()) {
       if (flag) {

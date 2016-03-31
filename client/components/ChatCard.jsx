@@ -22,7 +22,7 @@ var Chat = React.createClass({
     })
   },
 
-  handleSubmit: function(event) {
+  handleSubmit: function (event) {
     event.preventDefault();
 
     var timeStamp = new Date();
@@ -39,7 +39,7 @@ var Chat = React.createClass({
     scrollChat();
   },
 
-  handleChange: function(event) {
+  handleChange: function (event) {
     this.setState({message: event.target.value})
   },
 
@@ -48,7 +48,7 @@ var Chat = React.createClass({
 
     var messageElement = "";
 
-    var messages = this.state.messages.map(function(message) {
+    var messages = this.state.messages.map(function (message) {
       if (user === message.username) {
         var bubble = "user-bubble clear";
         messageElement = (<div className={bubble}>
@@ -86,6 +86,5 @@ var Chat = React.createClass({
 });
 
 var scrollChat =  function () {
-  console.log($(".chat-container").height());
   $(".chat-container").animate({ scrollTop: $('.chat-container').height() + 100}, 500);
 }

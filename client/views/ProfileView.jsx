@@ -32,7 +32,7 @@ var ProfileView = React.createClass({
                           subject: 'Check out ' + profile.username,
                           url: 'app.irl.events/#/profile/' + profile.userId
                         }});
-    }, function (message) {console.log(message)});
+    });
 
     return state;
   },
@@ -60,18 +60,17 @@ var ProfileView = React.createClass({
   },
 
   // Add the userId of the currently displayed profile to current user's follow list.
-  followUser: function() {
+  followUser: function () {
     var context = this;
-    var count = this.state.followers + 1;
-    this.setState({followers: count});
     ProfileController.followUser(this.state.userId, function (data) {
+      var uptick = this.state.followers + 1;
+      this.setState({followers: uptick});
       context.setState({toastMessage: 'Following User'});
-      console.log(data);
     }, function (err) {
       context.setState({toastMessage: 'Already Following'});
       console.error(err);
     });
-    setTimeout(function() {
+    setTimeout(function () {
       context.setState({toastMessage: ''});
     }, 5000);
   },
@@ -115,7 +114,7 @@ var ProfileView = React.createClass({
     this.setState(this.updateState());
   },
 
-  render: function() {
+  render: function () {
 
     // Check whether you're on someone else's profile or your own.
     if (!window.location.hash.substring(10) !== this.state.requireAuth) {
@@ -198,7 +197,7 @@ var ProfileView = React.createClass({
       }
     } else {
       var followButton = (<div className="button" onClick={this.followUser}>Follow &nbsp; {this.state.username}</div>);
-      if(this.state.img) {
+      if (this.state.img) {
         var style = {
           'background-image': 'url(' + this.state.img + ')'
         };

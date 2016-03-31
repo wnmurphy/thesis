@@ -209,27 +209,27 @@ var initMap = function (location, context, callback) {
 
   // Extend Map prototype with ability to offset the map center.
   // Useful for styling map around other elements.
-  google.maps.Map.prototype.offsetPan = function(position, x, y) {
+  google.maps.Map.prototype.offsetPan = function (position, x, y) {
     var map = this;
     var overlay = new google.maps.OverlayView();
-    overlay.onAdd = function() {
+    overlay.onAdd = function () {
       var projection = this.getProjection();
       var point = projection.fromLatLngToContainerPixel(position);
       point.x = point.x + x;
       point.y = point.y + y;
       map.panTo(projection.fromContainerPixelToLatLng(point));
     };
-    overlay.draw = function() {};
+    overlay.draw = function () {};
     overlay.setMap(this);
   };
 
   // Listen for the end of a drag and update the map center.
-  google.maps.event.addListener(map, 'dragend', function(event) {
+  google.maps.event.addListener(map, 'dragend', function (event) {
     var center = {
       latitude: this.center.lat(),
       longitude: this.center.lng()
     };
-    context.setState({center: center}, function() {
+    context.setState({center: center}, function () {
       if (context.getSpots) {
         context.getSpots();
       }
@@ -237,7 +237,7 @@ var initMap = function (location, context, callback) {
     context.setState({selected: false});
   });
 
-  google.maps.event.addListener(map, 'zoom_changed', function(event) {
+  google.maps.event.addListener(map, 'zoom_changed', function (event) {
     if (context.state.selected) {
       map.offsetPan(context.state.selected, 0, -50);
     }
@@ -253,7 +253,7 @@ var initMap = function (location, context, callback) {
     icon: icon,
     position: position,
     map: map,
-    getPosition: function() {
+    getPosition: function () {
       return this.position;
     }
   });
@@ -269,7 +269,7 @@ var initMap = function (location, context, callback) {
 
 // Loop through spot data from server.
 // Generate a map marker and summary bubble for each spot.
-var createMarker = function(spot, animate, context) {
+var createMarker = function (spot, animate, context) {
 
   var contentString = '<div style="font-size: 14px"><strong><a style="color: black; text-decoration: none" href="#/spot/' + spot.spotId +'">' + spot.name  + '</a></strong></div>' +
                       '<div style="font-size: 11px;"><strong>by <a href="/#/profile/' + spot.creatorId + '" class="map-view-userid">' + spot.creator + '</a>' + '</strong></div>' +
@@ -310,13 +310,13 @@ var createMarker = function(spot, animate, context) {
     getId: function() {
       return this.id;
     },
-    getPosition: function() {
+    getPosition: function () {
       return this.position;
     },
-    getFields: function() {
+    getFields: function () {
       return this.fields;
     },
-    getInfoWindow: function() {
+    getInfoWindow: function () {
       return this.infoWindow;
     }
   });
@@ -348,11 +348,11 @@ var createMarker = function(spot, animate, context) {
   });
 };
 
-var sweepMarkers = function(context, callback) {
-  context.state.markers.forEach(function(marker, index, object) {
+var sweepMarkers = function (context, callback) {
+  context.state.markers.forEach(function (marker, index, object) {
     var match = false;
-    for(var i = 0; i < context.state.spots.length; i++) {
-      if(context.state.spots[i].spotId.toString() === marker.getId().toString()) {
+    for (var i = 0; i < context.state.spots.length; i++) {
+      if (context.state.spots[i].spotId.toString() === marker.getId().toString()) {
         var cache = context.state.spots;
         cache.splice(context.state.spots[i], 1);
         context.setState({spots: cache});
@@ -369,7 +369,7 @@ var sweepMarkers = function(context, callback) {
   callback();
 };
 
-var placeMarker = function(context, query, infoWindow, map, name) {
+var placeMarker = function (context, query, infoWindow, map, name) {
 
   context.setState({location: {latitude: query.geometry.location.lat(), longitude: query.geometry.location.lng() } });
 

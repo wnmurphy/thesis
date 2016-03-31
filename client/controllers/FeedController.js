@@ -1,6 +1,6 @@
 // This controller retrieves feed information from server.
 var FeedController = {
-  getSpots: function(success, fail) {
+  getSpots: function (success, fail) {
     $.ajax({
       method: 'GET',
       url: '/api/feed/' + localStorage.getItem('userId'),

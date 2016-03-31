@@ -1,6 +1,6 @@
 // Handles saving spots to your feed.
 var SaveSpotController = {
-  saveSpot: function(spotId, success, fail) {
+  saveSpot: function (spotId, success, fail) {
     $.ajax({
       method: 'POST',
       url: '/api/saveSpot/',
