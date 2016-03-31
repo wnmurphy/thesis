@@ -1,7 +1,7 @@
 // This component renders the full-page view for more spot information.
 var SpotView = React.createClass({
 
-  getInitialState: function() {
+  getInitialState: function () {
     var hash = window.location.hash.substr(1);
     return {
       spotHash: hash,
@@ -24,7 +24,7 @@ var SpotView = React.createClass({
 
   // Load spot's data from server via AJAX.
   // Load spot's chat messages via socket.
-  componentDidMount: function() {
+  componentDidMount: function () {
     var context = this;
     this.getSpot();
     var id = Number(this.state.spotHash.split('/spot/')[1]);
@@ -37,7 +37,7 @@ var SpotView = React.createClass({
 
   // Defines AJAX call to server to retrieve spot data.
   // Adds a new map marker if successful.
-  getSpot: function() {
+  getSpot: function () {
     var context = this;
 
     this.setState({loading: true});
@@ -60,7 +60,7 @@ var SpotView = React.createClass({
           marker.setOptions({optimized: false});
           marker.setIcon('/img/map/marker_animated.gif');
         });
-        if(data.end) {
+        if (data.end) {
           var durationTime = timeController.msToDuration(Number(data.end));
           context.setState({end: durationTime});
         }
@@ -88,7 +88,7 @@ var SpotView = React.createClass({
 
   // Open chat card when user clicks chat button.
   toggleChat: function (){
-    if(this.state.showChat === ""){
+    if (this.state.showChat === ""){
       this.setState({
         showChat: " show",
         buttonIcon: "fa fa-times"
@@ -101,7 +101,7 @@ var SpotView = React.createClass({
     }
   },
 
-  checkAuth: function() {
+  checkAuth: function () {
     //async issue to call this.post after setting state for saving to true
     if (localStorage.getItem('token')) {
       this.setState({saving: true}, this.post);
@@ -110,11 +110,11 @@ var SpotView = React.createClass({
     }
   },
 
-  post: function() {
+  post: function () {
     //save spots only runs when user clicks save spot from DOM
     var context = this;
-    if(this.state.saving) {
-      SaveSpotController.saveSpot(this.state.spotId, function(spot) {
+    if (this.state.saving) {
+      SaveSpotController.saveSpot(this.state.spotId, function (spot) {
         context.setState({toastMessage: 'Spot Saved'});
       }, function(err) {
         context.setState({toastMessage: 'Spot Already Saved'});
@@ -124,7 +124,7 @@ var SpotView = React.createClass({
 
   },
 
-  render: function() {
+  render: function () {
 
     var chatContainerClass = "chat-card-container";
 
