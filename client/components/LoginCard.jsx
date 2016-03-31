@@ -21,7 +21,6 @@ var LoginRequired = React.createClass({
   },
 
   handleLogin: function () {
-    console.log("handling login");
     this.setState({cardContainerClass: 'createView-card-container hide'});
     this.props.parent.post();
   },
@@ -54,7 +53,6 @@ var LoginCard = React.createClass({
 
   handleChange: function (e) {
     var newState = {};
-    console.log("handleChange:", this.state);
     newState[e.target.name] = e.target.value;
     this.setState(newState);
   },
@@ -66,11 +64,8 @@ var LoginCard = React.createClass({
   handleSubmit: function (e) {
     e.preventDefault();
     var context = this;
-    console.log("handleSubmit:", this.state);
     // AuthController.js
     AuthController.sendLogin(this.state, function() {
-      console.log("Handling login in LoginCard");
-      console.log('context: ', context);
       context.props.parent.handleLogin();
     }, function(message) {
       context.setState({response: message});
@@ -78,7 +73,6 @@ var LoginCard = React.createClass({
   },
 
   render: function() {
-    console.log("Rendering LoginView");
     return (
       <div className='login-card'>
         <a className='close-login' href='/#/'>x</a>
@@ -101,7 +95,6 @@ var SignupCard = React.createClass({
 
   handleChange: function (e) {
     var newState = {};
-    console.log("handleChange:", this.state);
     newState[e.target.name] = e.target.value;
     this.setState(newState);
   },
@@ -113,11 +106,8 @@ var SignupCard = React.createClass({
   handleSubmit: function (e) {
     e.preventDefault();
     var context = this;
-    console.log("handleSubmit:", this.state);
     // AuthController.js
     AuthController.sendSignup(this.state, function() {
-      console.log("Handling signup in LoginCard");
-      console.log('context: ', context);
       context.props.parent.handleLogin();
     }, function(message) {
       context.setState({response: message});
@@ -125,7 +115,6 @@ var SignupCard = React.createClass({
   },
 
   render: function() {
-    console.log("Rendering LoginView");
     return (
       <div className='login-card'>
         <a className='close-login' href='/#/'>x</a>

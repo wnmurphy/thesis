@@ -199,11 +199,11 @@ var CreateView = React.createClass({
             </select>
             <input type="text" id="description" placeholder="Description" defaultValue={this.state.description || ''} required autoComplete='off'/>
             <span className="time-input">Start Time</span>
-            <input type="time" id="start" step="900" placeholder="Start" defaultValue={this.state.start || ''} required />
+            <input type="time" id="start" placeholder="Start" defaultValue={this.state.start || ''} required />
             <span className="time-input">Duration</span>
             <div className="duration-input-container">
-              <input type="number" className="duration-input" step="1" min="1" max="24" id="hours" placeholder="Hours" defaultValue={this.state.hours || 0} />
-              <input type="number" className="duration-input" step="15" min="0" max="60" id="minutes" placeholder="Minutes" defaultValue={this.state.minutes || 0}/>
+              <input type="number" className="duration-input" min="1" max="24" id="hours" placeholder="Hours" defaultValue={this.state.hours || 0} />
+              <input type="number" className="duration-input" min="0" max="60" id="minutes" placeholder="Minutes" defaultValue={this.state.minutes || 0}/>
             </div>
               <div className="button" onClick={this.sendSpot}>Submit</div>
           </form>
