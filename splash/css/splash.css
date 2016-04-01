@@ -134,10 +134,16 @@ h3.tagline {
   background-color: rgb(144, 213, 181) !important;
   color: white;
 }
+
+footer img {
+  max-height: 45px;
+}
+
 .slider {
   width: 375px;
   height: 667px;
 }
+
 .slider-container {
   width: 100%;
   display: flex;
