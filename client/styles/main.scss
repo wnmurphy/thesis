@@ -580,6 +580,11 @@ form {
 .profile-header {
   display: flex;
   align-items: center;
+  div {
+    display: block;
+    margin: 0 auto; 
+    margin-top: 20px;
+  }
 }
 
 .profile-picture {
@@ -650,9 +655,13 @@ form {
   text-align: center;
   display: block;
   margin: 0 auto;
+  p {
+    padding: 2.5px;
+    font-size: 24px;
+  }
 }
 
-.follow-button, .save-button, .save-spot-button {
+.save-button, .save-spot-button {
   display: block;
   background-color: $primary-color;
   border-radius: 10px;
@@ -665,6 +674,14 @@ form {
   &:hover {
     background-color: $color-light;
   }
+}
+
+.follow-button {
+  display: block;
+  width: 300px;
+  max-width: 100%;
+  margin: 0 auto;
+  margin-top: 50px;
 }
 
 .save-button {
@@ -1020,4 +1037,66 @@ input#start {
 .follow-list {
   margin-left: 20px;
   margin-right: 20px;
+}
+
+.filter-container {
+  width: calc(100vw / 2);
+  opacity: 0.75;
+}
+
+.filter-form {
+  padding: 0px;
+}
+
+.spot-view-name {
+  color: #122931;
+  margin: 10px;
+  text-align: center;
+  font-size: 24;
+}
+
+.spot-view-time {
+  color: #122931;
+  margin-top: 2.5px;
+  text-align: center;
+}
+
+.spot-view-creator {
+  color: #4A5053;
+  margin: 1px;
+  text-align: center;
+  font-size: 24;
+}
+
+.spot-view-category {
+  color: #4A5053;
+  margin: 1px;
+  text-align: center;
+  font-size: 1.5em;
+  padding-top: 7.5px;
+}
+
+.spot-view-about {
+  color: #122931;
+  margin-top: 15px;
+  text-align: center;
+}
+
+.description-container {
+  display: block;
+  width: 350px;
+  max-width: 100%;
+  margin: 0 auto;
+}
+
+.spot-view-description {
+  color: #8B9596;
+  text-align: justify;
+}
+
+.button-container {
+  display: block;
+  width: 300px;
+  max-width: 100%;
+  margin: 0 auto;
 }

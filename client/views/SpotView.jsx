@@ -128,12 +128,6 @@ var SpotView = React.createClass({
 
     var chatContainerClass = "chat-card-container";
 
-    if (this.state.end) {
-      var end = <p style={{'font-style': 'italic', 'fontSize': '14px'}}>{this.state.end}</p>
-    } else {
-      var end = null;
-    }
-
     return (
       <div className="spot-container">
         <div className="create-map-view-container">
@@ -144,16 +138,16 @@ var SpotView = React.createClass({
           </div>
         </div>
         <div className='spot-view-container'>
-          <p style={{color: '#122931', margin: '10px', 'textAlign': 'center', 'fontSize': '24'}}>{this.state.spot.name}</p>
-          <p style={{color: '#122931', 'marginTop': '2.5px', 'textAlign': 'center'}}>{timeController.stringifyTime(this.state.spot, true)}</p>
+          <p className='spot-view-name'>{this.state.spot.name}</p>
+          <p className='spot-view-time'>{timeController.stringifyTime(this.state.spot, true)}</p>
           <a href={this.state.creatorId}><div className='spot-view-profile-picture' style={{'backgroundImage': 'url(' + this.state.spot.img + ')'}}></div></a>
-          <p style={{color: '#4A5053', margin: '1px', 'textAlign': 'center'}}><small>Created by {this.state.spot.creator}</small></p>
-          <p style={{'paddingTop': '7.5px', 'fontSize': '1.5em', color: '#4A5053', margin: '1px', 'textAlign': 'center'}}><i className={categories[this.state.spot.category]}></i></p>
-          <p style={{color: '#122931', 'marginTop': '15px', 'textAlign': 'center'}}>About This Spot</p>
-          <div className='description-container' style={{display: 'block', width: '350px', 'maxWidth': '100%', margin: '0 auto'}}>
-            <p style={{color: '#8B9596', 'textAlign': 'justify'}}>{this.state.spot.description}</p>
+          <p className='spot-view-creator'><small>Created by {this.state.spot.creator}</small></p>
+          <p className='spot-view-category'><i className={categories[this.state.spot.category]}></i></p>
+          <p className='spot-view-about'>About This Spot</p>
+          <div className='description-container'>
+            <p className='spot-view-description'></p>
           </div>
-            <div className='button-container' style={{display: 'block', width: '300px', 'max-width': '100%', margin: '0 auto'}}>
+            <div className='button-container'>
               <DirectionsLink location={this.state.spot.location} />
               <div className='button' onClick={this.checkAuth}><i className="material-icons">check_circle</i>&nbsp;Save spot</div>
               <div className='button' onClick={this.toggleChat}><i className="material-icons">message</i>&nbsp;show chat</div>
