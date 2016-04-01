@@ -7,7 +7,6 @@ var LoginRequired = React.createClass({
       parent: {
         post: function () {}
       }
-
     };
   },
 
