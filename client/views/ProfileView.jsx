@@ -233,7 +233,7 @@ var ProfileView = React.createClass({
       <div className="profile-view">
         {this.state.toastMessage ? <Toast message={this.state.toastMessage} /> : null}
         <div className="profile-header">
-          <div>{profileImage}</div>
+          <div className="profile-image">{profileImage}</div>
         </div>
         <div className="profile-name"><p>{this.state.username}</p></div>
         {bio}
