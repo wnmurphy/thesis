@@ -9,7 +9,7 @@ var DirectionsLink = React.createClass({
     };
   },
 
-  render: function (){
+  render: function () {
     var link = 'https://www.google.com/maps/dir/Current+Location/';
     link = link + this.props.location.latitude + ',' + this.props.location.longitude;
 

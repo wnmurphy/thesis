@@ -3,8 +3,11 @@ var LoginRequired = React.createClass({
   getDefaultProps: function () {
     // post runs when user is already signed in or after successful signin
     return {
-      parent: {post: function () {}},
-      response: ''
+      response: '',
+      parent: {
+        post: function () {}
+      }
+
     };
   },
 
@@ -49,7 +52,9 @@ var LoginRequired = React.createClass({
 
 var LoginCard = React.createClass({
   getInitialState: function () {
-    return {response: ''};
+    return {
+      response: ''
+    }
   },
 
   handleChange: function (e) {
@@ -91,7 +96,9 @@ var LoginCard = React.createClass({
 
 var SignupCard = React.createClass({
   getInitialState: function () {
-    return {response: ''};
+    return {
+      response: ''
+    }
   },
 
   handleChange: function (e) {
