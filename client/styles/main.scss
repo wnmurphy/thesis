@@ -580,11 +580,12 @@ form {
 .profile-header {
   display: flex;
   align-items: center;
-  div {
-    display: block;
-    margin: 0 auto; 
-    margin-top: 20px;
-  }
+}
+
+.profile-image {
+  display: block;
+  margin: 0 auto; 
+  margin-top: 20px;
 }
 
 .profile-picture {

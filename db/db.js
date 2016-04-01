@@ -3,12 +3,12 @@ var helpers = require('../server/helpers.js');
 var env = require('node-env-file');
 var pe, accessKeyId, secretAccessKey, region, endpoint;
 
-if(!process.env.TRAVIS) {
+if (!process.env.TRAVIS) {
   pe = env(__dirname + '../../.env');
 }
 
 
-if(process.env.accessKeyId) {
+if (process.env.accessKeyId) {
   accessKeyId = pe.accessKeyId;
   secretAccessKey = pe.secretAccessKey;
   endpoint = "dynamodb.us-east-1.amazonaws.com";
@@ -72,7 +72,7 @@ db.createTable(userTableParams, function (err, data) {
       }
     };
 
-    dbSchema.put(userParams, function(err, data) {
+    dbSchema.put(userParams, function (err, data) {
       if (err) {
         console.error('Users: on item put', err);
       }
@@ -97,7 +97,7 @@ db.createTable(spotTableParams, function (err, data) {
       }
     };
 
-    dbSchema.put(spotParams, function(err, data) {
+    dbSchema.put(spotParams, function (err, data) {
       if (err) {
         console.error('on item put', err);
         helpers.spotCleaner();
@@ -116,7 +116,7 @@ db.createTable(spotTableParams, function (err, data) {
   
 
 
-db.listTables(function(err, data) {
+db.listTables(function (err, data) {
   console.log(data);
 });
 
