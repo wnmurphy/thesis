@@ -32,6 +32,30 @@ var path = {
     '!client/dist/**/*.jsx',
     '!client/lib/**/*.js'
   ],
+  concat: [
+    'client/controllers/MapController.js',
+    'client/controllers/TimeController.js',
+    'client/controllers/LocationController.js',
+    'client/controllers/AuthController.js',
+    'client/controllers/ProfileController.js',
+    'client/controllers/FeedController.js',
+    'client/controllers/MetaController.js',
+    'client/controllers/SaveSpotController.js',
+    'client/dist/src/components/Toast.js',
+    'client/dist/src/components/ChatCard.js',
+    'client/dist/src/components/DirectionsLink.js',
+    'client/dist/src/views/ScreenSizeWarning.js',
+    'client/dist/src/views/SpotView.js',
+    'client/dist/src/views/MapView.js',
+    'client/dist/src/views/FeedView.js',
+    'client/dist/src/views/ProfileView.js',
+    'client/dist/src/views/SearchView.js',
+    'client/dist/src/views/CreateView.js',
+    'client/dist/src/components/NavBar.js',
+    'client/dist/src/components/ShareCard.js',
+    'client/dist/src/components/LoginCard.js',
+    'client/dist/src/app.js'
+  ],
 
   testjsx: [
     'tests/*.jsx'
@@ -75,10 +99,10 @@ gulp.task('watchtests', function() {
 gulp.task('default', ['watch', 'watchtests']);
 
 gulp.task('build', function() {
-  gulp.src(path.js)
+  gulp.src(path.concat)
   .pipe(react())
   .pipe(concat(path.minified_out))
-  .pipe(uglify(path.minified_out))
+  .pipe(uglify())
   .pipe(gulp.dest(path.dest_build));
 });
 
@@ -90,4 +114,4 @@ gulp.task('replacehtml', function() {
 
 gulp.task('buildTest', ['transform', 'test']);
 
-gulp.task('production', ['replacehtml', 'build']);
+gulp.task('production', ['transform', 'build']);
